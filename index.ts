@@ -1,7 +1,10 @@
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
+import dotenv from 'dotenv';
 import {z as zod} from "zod";
 import axios from 'axios';
+
+dotenv.config();
 
 const server = new McpServer({
     name: "whispr",
@@ -32,7 +35,7 @@ server.tool(
                 "X-API-Key": "1327b28b-a1a4-23bc-8cfa-d836e36808b1",
             }
 
-            const response = await axios.get(`http://10.69.43.144:8880/api/modules/wp-toolkit/v1/installations`, {
+            const response = await axios.get(`${process.env.API_BASE_URL}/modules/wp-toolkit/v1/installations`, {
                 headers,
                 validateStatus: () => true,
             });

@@ -14,7 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mcp_js_1 = require("@modelcontextprotocol/sdk/server/mcp.js");
 const stdio_js_1 = require("@modelcontextprotocol/sdk/server/stdio.js");
+const dotenv_1 = __importDefault(require("dotenv"));
 const axios_1 = __importDefault(require("axios"));
+dotenv_1.default.config();
 const server = new mcp_js_1.McpServer({
     name: "whispr",
     version: "1.0.0"
@@ -34,7 +36,7 @@ server.tool("list-websites", "Returns the list of available WordPress websites."
             "Accept": "application/json",
             "X-API-Key": "1327b28b-a1a4-23bc-8cfa-d836e36808b1",
         };
-        const response = yield axios_1.default.get(`http://10.69.43.144:8880/api/modules/wp-toolkit/v1/installations`, {
+        const response = yield axios_1.default.get(`${process.env.API_BASE_URL}/modules/wp-toolkit/v1/installations`, {
             headers,
             validateStatus: () => true,
         });
