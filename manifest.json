@@ -1,0 +1,52 @@
+{
+  "dxt_version": "0.1",
+  "name": "whispr",
+  "display_name": "Whispr",
+  "version": "1.0.0",
+  "description": "MCP adapter to WP Toolkit’s REST API",
+  "author": {
+    "name": "Aleksey Filatev",
+    "email": "agxmeister@gmail.com"
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/index.js"
+      ],
+      "env": {
+        "API_BASE_URL": "${user_config.API_BASE_URL}",
+        "API_KEY": "${user_config.API_KEY}"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "wp-toolkit-api-how-to",
+      "description": "Provides the comprehensive instruction on how to manage WordPress websites using WP Toolkit REST API."
+    },
+    {
+      "name": "wp-toolkit-api",
+      "description": "Performs the given API call to WP Toolkit. Important: read the how-to before use."
+    }
+  ],
+  "user_config": {
+    "API_BASE_URL": {
+      "type": "string",
+      "title": "Plesk REST API base URL.",
+      "description": "Plesk REST API base URL.",
+      "required": true,
+      "sensitive": false
+    },
+    "API_KEY": {
+      "type": "string",
+      "title": "Plesk REST API key.",
+      "description": "Plesk REST API key.",
+      "required": true,
+      "sensitive": true
+    }
+  },
+  "license": "ISC"
+}
