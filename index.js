@@ -23,114 +23,91 @@ const server = new mcp_js_1.McpServer({
     name: "whispr",
     version: "1.0.0"
 });
-server.tool("wp-toolkit-api-how-to", "Provides the comprehensive instruction on how to manage WordPress websites using WP Toolkit REST API.", () => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield axios_1.default.get(`${process.env.API_BASE_URL}/modules/wp-toolkit/v1/specification/public`);
-    const schema = (0, dereference_json_schema_1.dereferenceSync)(response.data);
-    const calls = Object.entries(schema.paths)
-        .filter(([path]) => [
-        "/v1/installations",
-        "/v1/installations/{installationId}",
-        "/v1/installations/{installationId}/features/debug/status",
-        "/v1/installations/{installationId}/features/debug/settings",
-        "/v1/installations/{installationId}/features/maintenance/status",
-        "/v1/installations/{installationId}/features/maintenance/settings",
-        "/v1/installations/{installationId}/backups/meta",
-        "/v1/features/backups/creator",
-        "/v1/features/backups/restorer",
-    ].includes(path))
-        .reduce((acc, [path, pathData]) => [...acc, ...Object.entries(pathData).map(([method, methodData]) => [path, method, methodData])], [])
-        .map(([path, method, methodData]) => `${method.toUpperCase()} ${path} - ${methodData.description}.\nRequest body schema: ${methodData.requestBody ? JSON.stringify(methodData.requestBody.content['application/json'].schema, null, 2) : "none"}`);
+const endpointSchema = zod_1.z.object({
+    method: zod_1.z.enum(["GET", "POST", "PUT", "PATCH"])
+        .describe("HTTP method"),
+    path: zod_1.z.string()
+        .describe("Path, e.g., /v1/installations"),
+}).describe("REST API endpoint");
+const wpToolkitApiEndpointDetailsSchema = zod_1.z.object({
+    endpoint: endpointSchema,
+});
+const wpToolkitApiRequestSchema = zod_1.z.object({
+    endpoint: endpointSchema,
+    data: zod_1.z.string()
+        .describe("JSON-encoded parameters, if needed"),
+});
+const getEndpoints = () => __awaiter(void 0, void 0, void 0, function* () {
+    return Object.entries((0, dereference_json_schema_1.dereferenceSync)((yield axios_1.default.get(`${process.env.API_BASE_URL}/modules/wp-toolkit/v1/specification/public`))
+        .data).paths).reduce((acc, [path, pathData]) => [
+        ...acc,
+        ...Object.entries(pathData)
+            .map(([method, methodData]) => ({
+            method: method.toUpperCase(),
+            path: path,
+            details: methodData,
+        }))
+    ], []);
+});
+server.tool("wp-toolkit-api-endpoints", "Provides a list of REST API endpoints for managing WordPress websites. Before using an endpoint, check its details.", () => __awaiter(void 0, void 0, void 0, function* () {
+    return ({
+        content: [{
+                type: "text",
+                text: (yield getEndpoints())
+                    .map(({ method, path, details }) => `${method} ${path} - ${details.description}`)
+                    .join("\n\n"),
+            }]
+    });
+}));
+server.tool("wp-toolkit-api-endpoint-details", "Provides details on a specific REST API endpoint to manage WordPress websites.", wpToolkitApiEndpointDetailsSchema.shape, (_a) => __awaiter(void 0, [_a], void 0, function* ({ endpoint }) {
+    const target = (yield getEndpoints())
+        .filter(({ method, path }) => path === endpoint.path && method === endpoint.method).shift();
+    if (!target) {
+        return {
+            content: [{
+                    type: "text",
+                    text: `Endpoint ${endpoint.method} ${endpoint.path} does not exists.`,
+                }],
+            isError: true,
+        };
+    }
+    const text = `${target.method} ${target.path} - ${target.details.description}`
+        + (target.details.requestBody
+            ? (target.details.requestBody.required ? `\n\nRequest body required, ` : `\n\nRequest body optional, `)
+                + `schema: \n\n${JSON.stringify(target.details.requestBody.content['application/json'].schema, null, 2)}`
+            : `\n\nRequest body should be empty.`);
     return {
         content: [{
                 type: "text",
-                text: calls.join("\n\n"),
+                text: text,
             }]
     };
 }));
-const wpToolkitApiSchema = zod_1.z.object({
-    method: zod_1.z.enum(["GET", "POST", "PUT", "PATCH"]).describe("HTTP method to use for the API call, e.g., GET, PUT."),
-    endpoint: zod_1.z.string().describe("API endpoint to call, e.g., /v1/installations"),
-    data: zod_1.z.string().describe("JSON-encoded parameters for the request body, if required."),
-});
-server.tool("wp-toolkit-api", "Performs the given API call to WP Toolkit. Important: read the how-to before use.", wpToolkitApiSchema.shape, (_a) => __awaiter(void 0, [_a], void 0, function* ({ method, endpoint, data }) {
+server.tool("wp-toolkit-api", "Request a specific REST API endpoint to manage WordPress websites. Before using an endpoint, check its details.", wpToolkitApiRequestSchema.shape, (_a) => __awaiter(void 0, [_a], void 0, function* ({ endpoint, data }) {
     try {
-        const headers = {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "X-API-Key": process.env.API_KEY,
-        };
-        const params = JSON.parse(data || "{}");
-        let response;
-        if (method === "GET") {
-            response = yield axios_1.default.get(`${process.env.API_BASE_URL}/modules/wp-toolkit${endpoint}`, {
-                headers,
-                validateStatus: () => true,
-            });
-        }
-        else if (method === "POST") {
-            response = yield axios_1.default.post(`${process.env.API_BASE_URL}/modules/wp-toolkit${endpoint}`, params, {
-                headers,
-                validateStatus: () => true,
-            });
-        }
-        else if (method === "PUT") {
-            response = yield axios_1.default.put(`${process.env.API_BASE_URL}/modules/wp-toolkit${endpoint}`, params, {
-                headers,
-                validateStatus: () => true,
-            });
-        }
-        else if (method === "PATCH") {
-            response = yield axios_1.default.patch(`${process.env.API_BASE_URL}/modules/wp-toolkit${endpoint}`, params, {
-                headers,
-                validateStatus: () => true,
-            });
-        }
-        if (!response || !response.data) {
-            return {
-                content: [{
-                        type: "text",
-                        text: `No response data received from the API.`,
-                    }],
-                metadata: {
-                    statusCode: response ? response.status : null,
-                    headers: response ? response.headers : null,
-                    data: null
-                }
-            };
-        }
+        const response = yield (0, axios_1.default)({
+            headers: {
+                "Content-Type": "application/json",
+                "X-API-Key": process.env.API_KEY,
+            },
+            method: endpoint.method,
+            url: `${process.env.API_BASE_URL}/modules/wp-toolkit${endpoint.path}`,
+            data: JSON.parse(data || "{}"),
+        });
         return {
             content: [{
                     type: "text",
-                    text: `Status Code: ${response.status}\n\nResponse Body:\n${JSON.stringify(response.data, null, 2)}`,
+                    text: `HTTP code ${response.status}, response body: \n\n${JSON.stringify(response.data, null, 2)}`,
                 }],
-            metadata: {
-                statusCode: response.status,
-                headers: response.headers,
-                data: response.data
-            }
         };
     }
     catch (error) {
-        if (axios_1.default.isAxiosError(error)) {
-            return {
-                content: [{
-                        type: "text",
-                        text: `Error making request: ${error.message}`,
-                    }],
-                metadata: {
-                    error: error.message,
-                    code: error.code
-                }
-            };
-        }
         return {
             content: [{
                     type: "text",
-                    text: `Unexpected error: ${error instanceof Error ? error.message : String(error)}`,
+                    text: `Error: ${error instanceof Error ? error.message : String(error)}`,
                 }],
-            metadata: {
-                error: error instanceof Error ? error.message : String(error)
-            }
+            isError: true,
         };
     }
 }));

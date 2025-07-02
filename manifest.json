@@ -24,12 +24,16 @@
   },
   "tools": [
     {
-      "name": "wp-toolkit-api-how-to",
-      "description": "Provides the comprehensive instruction on how to manage WordPress websites using WP Toolkit REST API."
+      "name": "wp-toolkit-api-endpoints",
+      "description": "Provides a list of REST API endpoints for managing WordPress websites. Before using an endpoint, check its details."
+    },
+    {
+      "name": "wp-toolkit-api-endpoint-details",
+      "description": "Provides details on a specific REST API endpoint to manage WordPress websites."
     },
     {
       "name": "wp-toolkit-api",
-      "description": "Performs the given API call to WP Toolkit. Important: read the how-to before use."
+      "description": "Request a specific REST API endpoint to manage WordPress websites. Before using an endpoint, check its details."
     }
   ],
   "user_config": {
