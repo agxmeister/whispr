@@ -13,7 +13,7 @@ const server = new McpServer({
 });
 
 const endpointSchema = zod.object({
-    method: zod.enum(["GET", "POST", "PUT", "PATCH"])
+    method: zod.enum(["GET", "POST", "PUT", "PATCH", "DELETE"])
         .describe("HTTP method"),
     path: zod.string()
         .describe("Path, e.g., /v1/installations"),
@@ -25,26 +25,23 @@ const wpToolkitApiEndpointDetailsSchema = zod.object({
 
 const wpToolkitApiRequestSchema = zod.object({
     endpoint: endpointSchema,
-    data: zod.string()
+    data: zod.string().optional()
         .describe("JSON-encoded parameters, if needed"),
 })
 
 type Endpoint = {
-    method: "GET" | "POST" | "PUT" | "PATCH",
+    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     path: string,
     details: EndpointDetails,
 }
 
 type EndpointDetails = {
+    summary: string,
     description: string,
-    requestBody?: {
-        required: boolean,
-        content: {
-            'application/json': {
-                schema: Record<string, any>,
-            }
-        }
-    }
+    parameters?: [
+        Record<string, any>
+    ],
+    requestBody?: Record<string, any>
 }
 
 const getEndpoints = async (): Promise<Endpoint[]> =>
@@ -74,7 +71,7 @@ server.tool(
             type: "text",
             text: (await getEndpoints())
                 .map(({method, path, details}) =>
-                    `${method} ${path} - ${details.description}`
+                    `${method} ${path} - ${details.summary ?? details.description}`,
                 )
                 .join("\n\n"),
         }]
@@ -101,17 +98,16 @@ server.tool(
             };
         }
 
-        const text = `${target.method} ${target.path} - ${target.details.description}`
-            + (target.details.requestBody
-                ? (target.details.requestBody.required ? `\n\nRequest body required, ` : `\n\nRequest body optional, `)
-                    + `schema: \n\n${JSON.stringify(target.details.requestBody.content['application/json'].schema, null, 2)}`
-                : `\n\nRequest body should be empty.`
-            );
-
         return {
             content: [{
                 type: "text",
-                text: text,
+                text: `${target.method} ${target.path} - ${target.details.description}
+                    ${target.details.parameters
+                        ? `\n\nParameters:\n\n${JSON.stringify(target.details.parameters, null, 2)}`
+                        : "\n\nNo parameters expected."}
+                    ${target.details.requestBody
+                        ? `\n\nRequest body:\n\n${JSON.stringify(target.details.requestBody, null, 2)}`
+                        : "\n\nRequest body must be empty."}`,
             }]
         }
     }
@@ -135,7 +131,7 @@ server.tool(
             return {
                 content: [{
                     type: "text",
-                    text: `HTTP code ${response.status}, response body: \n\n${JSON.stringify(response.data, null, 2)}`,
+                    text: `HTTP code ${response.status}, response body:\n\n${JSON.stringify(response.data, null, 2)}`,
                 }],
             };
         } catch (error) {
