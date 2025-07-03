@@ -2,7 +2,7 @@ import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import dotenv from 'dotenv';
 import {z as zod} from "zod";
-import axios from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
 import {dereferenceSync} from "dereference-json-schema";
 
 dotenv.config();
@@ -121,7 +121,7 @@ server.tool(
     wpToolkitApiRequestSchema.shape,
     async ({endpoint, parameters, body}) => {
         try {
-            const response = await axios({
+            const config: AxiosRequestConfig = {
                 headers: {
                     "Content-Type": "application/json",
                     "X-API-Key": process.env.API_KEY,
@@ -129,7 +129,10 @@ server.tool(
                 method: endpoint.method,
                 url: `${process.env.API_BASE_URL}/modules/wp-toolkit${endpoint.path}?${parameters || ""}`,
                 data: JSON.parse(body || "{}"),
-            })
+                maxRedirects: 0,
+                validateStatus: (status) => status < 400,
+            };
+            const response = await axios(config);
             return {
                 content: [{
                     type: "text",
