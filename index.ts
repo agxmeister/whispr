@@ -25,8 +25,10 @@ const wpToolkitApiEndpointDetailsSchema = zod.object({
 
 const wpToolkitApiRequestSchema = zod.object({
     endpoint: endpointSchema,
-    data: zod.string().optional()
-        .describe("JSON-encoded parameters, if needed"),
+    parameters: zod.string().optional()
+        .describe("URL-encoded request parameters, if applicable"),
+    body: zod.string().optional()
+        .describe("JSON-encoded request body, if applicable"),
 })
 
 type Endpoint = {
@@ -117,7 +119,7 @@ server.tool(
     "wp-toolkit-api",
     "Request a specific REST API endpoint to manage WordPress websites. Before using an endpoint, check its details.",
     wpToolkitApiRequestSchema.shape,
-    async ({endpoint, data}) => {
+    async ({endpoint, parameters, body}) => {
         try {
             const response = await axios({
                 headers: {
@@ -125,8 +127,8 @@ server.tool(
                     "X-API-Key": process.env.API_KEY,
                 },
                 method: endpoint.method,
-                url: `${process.env.API_BASE_URL}/modules/wp-toolkit${endpoint.path}`,
-                data: JSON.parse(data || "{}"),
+                url: `${process.env.API_BASE_URL}/modules/wp-toolkit${endpoint.path}?${parameters || ""}`,
+                data: JSON.parse(body || "{}"),
             })
             return {
                 content: [{
