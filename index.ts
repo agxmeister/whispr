@@ -49,7 +49,7 @@ type EndpointDetails = {
 const getEndpoints = async (): Promise<Endpoint[]> =>
     Object.entries(
         dereferenceSync(
-            (await axios.get(`${process.env.API_BASE_URL}/modules/wp-toolkit/v1/specification/public`))
+            (await axios.get(`${process.env.API_BASE_URL}/v1/specification/public`))
                 .data
         ).paths
     ).reduce(
@@ -127,7 +127,7 @@ server.tool(
                     "X-API-Key": process.env.API_KEY,
                 },
                 method: endpoint.method,
-                url: `${process.env.API_BASE_URL}/modules/wp-toolkit${endpoint.path}?${parameters || ""}`,
+                url: `${process.env.API_BASE_URL}${endpoint.path}?${parameters || ""}`,
                 data: JSON.parse(body || "{}"),
                 maxRedirects: 0,
                 validateStatus: (status) => status < 400,

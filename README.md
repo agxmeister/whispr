@@ -25,7 +25,7 @@ Build the Claude Desktop Extension (whispr.dxt):
                     "<realpath-to-stdio-entry-point>"
                 ],
                 "env": {
-                    "API_BASE_URL": "http://<your-plesk-hostname>:8880/api",
+                    "API_BASE_URL": "http://<your-plesk-hostname>:8880/api/modules/wp-toolkit",
                     "API_KEY": "<your-plesk-secret-key>"
                 }
             }
