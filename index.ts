@@ -97,6 +97,21 @@ const services: Service[] = [{
         getApiEndpointDetails: "Provides details on a specific REST API endpoint to manage WordPress websites.",
         callApiEndpoint: "Request a specific REST API endpoint to manage WordPress websites. Before using an endpoint, check its details.",
     },
+}, {
+    name: "miro",
+    url: {
+        api: `https://api.miro.com`,
+        specification: `https://developers.miro.com/openapi/6628045c567473003e032eba`,
+    },
+    authorization: {
+        key: "Authorization",
+        value: `Bearer ${process.env.MIRO_API_KEY}`,
+    },
+    tool: {
+        getApiEndpoints: "Provides a list of REST API endpoints for managing Miro boards. Before using an endpoint, check its details.",
+        getApiEndpointDetails: "Provides details on a specific REST API endpoint to manage Miro boards.",
+        callApiEndpoint: "Request a specific REST API endpoint to manage Miro boards. Before using an endpoint, check its details.",
+    },
 }];
 
 for (const service of services) {
