@@ -180,7 +180,7 @@ for (const service of services) {
                     url: `${service.url.api}${endpoint.path}?${parameters || ""}`,
                     data: JSON.parse(body || "{}"),
                     maxRedirects: 0,
-                    validateStatus: (status) => status < 400,
+                    validateStatus: (status) => status < 500,
                 };
                 const response = await axios(config);
                 return {
@@ -188,6 +188,7 @@ for (const service of services) {
                         type: "text",
                         text: `HTTP code ${response.status}, response body:\n\n${JSON.stringify(response.data, null, 2)}`,
                     }],
+                    isError: response.status >= 400,
                 };
             } catch (error) {
                 return {
