@@ -178,7 +178,7 @@ for (const service of services) {
                     },
                     method: endpoint.method,
                     url: `${service.url.api}${endpoint.path}?${parameters || ""}`,
-                    data: JSON.parse(body || "{}"),
+                    data: body ? JSON.parse(body) : undefined,
                     maxRedirects: 0,
                     validateStatus: (status) => status < 500,
                 };
