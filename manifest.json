@@ -3,7 +3,7 @@
   "name": "whispr",
   "display_name": "Whispr",
   "version": "1.0.0",
-  "description": "MCP adapter to WP Toolkit’s REST API",
+  "description": "MCP adapter to the REST API of external services.",
   "author": {
     "name": "Aleksey Filatev",
     "email": "agxmeister@gmail.com"
@@ -17,37 +17,57 @@
         "${__dirname}/index.js"
       ],
       "env": {
-        "API_BASE_URL": "${user_config.API_BASE_URL}",
-        "API_KEY": "${user_config.API_KEY}"
+        "PLESK_API_BASE_URL": "${user_config.PLESK_API_BASE_URL}",
+        "PLESK_API_KEY": "${user_config.PLESK_API_KEY}",
+        "MIRO_API_KEY": "${user_config.MIRO_API_KEY}"
       }
     }
   },
   "tools": [
     {
-      "name": "wp-toolkit-api-endpoints",
+      "name": "wp-toolkit-get-api-endpoints",
       "description": "Provides a list of REST API endpoints for managing WordPress websites. Before using an endpoint, check its details."
     },
     {
-      "name": "wp-toolkit-api-endpoint-details",
+      "name": "wp-toolkit-get-api-endpoint-details",
       "description": "Provides details on a specific REST API endpoint to manage WordPress websites."
     },
     {
-      "name": "wp-toolkit-api",
+      "name": "wp-toolkit-call-api-endpoint",
       "description": "Request a specific REST API endpoint to manage WordPress websites. Before using an endpoint, check its details."
+    },
+    {
+      "name": "miro-get-api-endpoints",
+      "description": "Provides a list of REST API endpoints for managing Miro boards. Before using an endpoint, check its details."
+    },
+    {
+      "name": "miro-get-api-endpoint-details",
+      "description": "Provides details on a specific REST API endpoint to manage Miro boards."
+    },
+    {
+      "name": "miro-call-api-endpoint",
+      "description": "Request a specific REST API endpoint to manage Miro boards. Before using an endpoint, check its details."
     }
   ],
   "user_config": {
-    "API_BASE_URL": {
+    "PLESK_API_BASE_URL": {
       "type": "string",
       "title": "Plesk REST API base URL.",
       "description": "Plesk REST API base URL.",
       "required": true,
       "sensitive": false
     },
-    "API_KEY": {
+    "PLESK_API_KEY": {
       "type": "string",
       "title": "Plesk REST API key.",
       "description": "Plesk REST API key.",
+      "required": true,
+      "sensitive": true
+    },
+    "MIRO_API_KEY": {
+      "type": "string",
+      "title": "Miro REST API key.",
+      "description": "Miro REST API key.",
       "required": true,
       "sensitive": true
     }

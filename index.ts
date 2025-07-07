@@ -85,12 +85,12 @@ const getEndpoints = async (specificationUrl: string): Promise<Endpoint[]> =>
 const services: Service[] = [{
     name: "wp-toolkit",
     url: {
-        api: `${process.env.API_BASE_URL}`,
-        specification: `${process.env.API_BASE_URL}/v1/specification/public`,
+        api: `${process.env.PLESK_API_BASE_URL}/modules/wp-toolkit`,
+        specification: `${process.env.PLESK_API_BASE_URL}/modules/wp-toolkit/v1/specification/public`,
     },
     authorization: {
         key: "X-API-Key",
-        value: `${process.env.API_KEY}`,
+        value: `${process.env.PLESK_API_KEY}`,
     },
     tool: {
         getApiEndpoints: "Provides a list of REST API endpoints for managing WordPress websites. Before using an endpoint, check its details.",
