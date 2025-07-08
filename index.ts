@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import {z as zod} from "zod";
 import axios, {AxiosRequestConfig} from 'axios';
 import {dereferenceSync} from "dereference-json-schema";
+import * as fs from 'fs';
+import * as path from 'path';
 
 dotenv.config();
 
@@ -82,37 +84,10 @@ const getEndpoints = async (specificationUrl: string): Promise<Endpoint[]> =>
         []
     );
 
-const services: Service[] = [{
-    name: "wp-toolkit",
-    url: {
-        api: `${process.env.PLESK_API_BASE_URL}/modules/wp-toolkit`,
-        specification: `${process.env.PLESK_API_BASE_URL}/modules/wp-toolkit/v1/specification/public`,
-    },
-    authorization: {
-        key: "X-API-Key",
-        value: `${process.env.PLESK_API_KEY}`,
-    },
-    tool: {
-        getApiEndpoints: "Provides a list of REST API endpoints for managing WordPress websites. Before using an endpoint, check its details.",
-        getApiEndpointDetails: "Provides details on a specific REST API endpoint to manage WordPress websites.",
-        callApiEndpoint: "Request a specific REST API endpoint to manage WordPress websites. Before using an endpoint, check its details.",
-    },
-}, {
-    name: "miro",
-    url: {
-        api: `https://api.miro.com`,
-        specification: `https://developers.miro.com/openapi/6628045c567473003e032eba`,
-    },
-    authorization: {
-        key: "Authorization",
-        value: `Bearer ${process.env.MIRO_API_KEY}`,
-    },
-    tool: {
-        getApiEndpoints: "Provides a list of REST API endpoints for managing Miro boards. Before using an endpoint, check its details.",
-        getApiEndpointDetails: "Provides details on a specific REST API endpoint to manage Miro boards.",
-        callApiEndpoint: "Request a specific REST API endpoint to manage Miro boards. Before using an endpoint, check its details.",
-    },
-}];
+const services: Service[] = JSON.parse(Object.entries(process.env).reduce(
+    (string, [key, value]) => string.split(`{{${key}}}`).join(value),
+    fs.readFileSync(path.join(__dirname, 'services.json'), 'utf8'),
+));
 
 for (const service of services) {
     server.tool(
