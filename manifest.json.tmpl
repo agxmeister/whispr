@@ -1,0 +1,25 @@
+{
+    "dxt_version": "0.1",
+    "name": "whispr",
+    "display_name": "Whispr",
+    "version": "1.0.0",
+    "description": "MCP adapter to the REST API of external services.",
+    "author": {
+        "name": "Aleksey Filatev",
+        "email": "agxmeister@gmail.com"
+    },
+    "server": {
+        "type": "node",
+        "entry_point": "dst/index.js",
+        "mcp_config": {
+            "command": "node",
+            "args": [
+                "${__dirname}/dst/index.js"
+            ],
+            "env": {}
+        }
+    },
+    "tools": [],
+    "user_config": {},
+    "license": "ISC"
+}
