@@ -2,6 +2,7 @@
 
 /dist/*
 !/dist/.gitkeep
+/manifest.json
 /whispr.dxt
 
 .DS_Store

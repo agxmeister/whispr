@@ -10,6 +10,7 @@ Build the STDIO entry point (index.js):
 
 Build the Claude Desktop Extension (whispr.dxt):
 
+`npx ts-node scripts/build-manifest.ts`
 `npx @anthropic-ai/dxt pack`
 
 ### How to configure
