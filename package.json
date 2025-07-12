@@ -15,9 +15,11 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.13.2",
+    "@types/minimist": "^1.2.5",
     "axios": "^1.10.0",
     "dereference-json-schema": "^0.2.1",
     "dotenv": "^16.6.1",
+    "minimist": "^1.2.8",
     "zod": "^3.25.67"
   }
 }
