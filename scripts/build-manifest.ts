@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import minimist from 'minimist';
 import {getServices} from "../src/utils";
 
 type Manifest = {
@@ -12,14 +13,21 @@ type Manifest = {
     tools: Record<string, string>[];
 }
 
+const args = minimist(process.argv.slice(2));
 const rootDir = path.resolve(__dirname, '..');
 const templatePath = path.join(rootDir, 'manifest.json.tmpl');
 const outputPath = path.join(rootDir, 'manifest.json');
+const filterServices = args.services
+    ? args.services.split(',').map((service: string) => service.trim())
+    : [];
 
 (async () => {
     const manifest = JSON.parse(fs.readFileSync(templatePath, 'utf-8')) as Manifest;
 
-    for (const service of (await getServices())) {
+    const services = (await getServices())
+        .filter(service => filterServices.length > 0 ? filterServices.includes(service.name) : true);
+
+    for (const service of services) {
         manifest.tools.push({
             name: `${service.name}-get-api-endpoints`,
             description: service.tool.getApiEndpoints,
