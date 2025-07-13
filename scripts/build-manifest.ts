@@ -15,8 +15,12 @@ type Manifest = {
 
 const args = minimist(process.argv.slice(2));
 const rootDir = path.resolve(__dirname, '..');
-const templatePath = path.join(rootDir, 'manifest.json.tmpl');
-const outputPath = path.join(rootDir, 'manifest.json');
+const templatePath = args.template
+    ? path.resolve(args.template)
+    : path.join(rootDir, 'manifest.json.tmpl');
+const outputPath = args.output
+    ? path.resolve(args.output)
+    : path.join(rootDir, 'manifest.json');
 const filterServices = args.services
     ? args.services.split(',').map((service: string) => service.trim())
     : [];
