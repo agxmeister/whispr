@@ -24,11 +24,14 @@ const outputPath = args.output
 const filterServices = args.services
     ? args.services.split(',').map((service: string) => service.trim())
     : [];
+const configPath = args.config
+    ? path.resolve(args.config)
+    : undefined;
 
 (async () => {
     const manifest = JSON.parse(fs.readFileSync(templatePath, 'utf-8')) as Manifest;
 
-    const services = (await getServices())
+    const services = (await getServices(configPath))
         .filter(service => filterServices.length > 0 ? filterServices.includes(service.name) : true);
 
     for (const service of services) {
