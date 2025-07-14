@@ -17,7 +17,7 @@ const args = minimist(process.argv.slice(2));
 const rootDir = path.resolve(__dirname, '..');
 const templatePath = args.template
     ? path.resolve(args.template)
-    : path.join(rootDir, 'manifest.json.tmpl');
+    : path.join(rootDir, 'manifest-template.json');
 const outputPath = args.output
     ? path.resolve(args.output)
     : path.join(rootDir, 'manifest.json');
