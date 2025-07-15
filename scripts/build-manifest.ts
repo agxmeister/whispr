@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import minimist from 'minimist';
 import {getServices} from "../src/utils";
+import {getDescriptions} from "../src/server/tools";
 
 type Manifest = {
     server: {
@@ -35,15 +36,17 @@ const configPath = args.config
         .filter(service => filterServices.length > 0 ? filterServices.includes(service.name) : true);
 
     for (const service of services) {
+        const descriptions = getDescriptions(service);
+
         manifest.tools.push({
             name: `${service.name}-get-api-endpoints`,
-            description: service.tool.getApiEndpoints,
+            description: descriptions.getApiEndpoints,
         }, {
             name: `${service.name}-get-api-endpoint-details`,
-            description: service.tool.getApiEndpointDetails,
+            description: descriptions.getApiEndpointDetails,
         }, {
             name: `${service.name}-call-api-endpoint`,
-            description: service.tool.callApiEndpoint,
+            description: descriptions.callApiEndpoint,
         });
 
         for (const config of service.config) {

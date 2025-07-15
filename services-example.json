@@ -1,6 +1,7 @@
 [
     {
         "name": "miro",
+        "description": "Miro is an online whiteboard.",
         "url": {
             "api": "https://api.miro.com",
             "specification": "https://developers.miro.com/openapi/6628045c567473003e032eba"

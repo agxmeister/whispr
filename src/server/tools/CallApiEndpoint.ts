@@ -3,12 +3,13 @@ import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {Service} from "../../types";
 import {callApiEndpointSchema} from "./schemas";
 import {Tool} from "./types";
+import {getDescriptions} from "./utils";
 
 export const CallApiEndpoint: Tool = {
     attach: (service: Service, server: McpServer) => {
         server.tool(
             `${service.name}-call-api-endpoint`,
-            `${service.tool.callApiEndpoint}`,
+            `${getDescriptions(service).callApiEndpoint}`,
             callApiEndpointSchema.shape,
             async ({endpoint, parameters, body}) => {
                 try {

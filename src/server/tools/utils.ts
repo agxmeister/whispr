@@ -1,6 +1,7 @@
 import axios from "axios";
 import {dereferenceSync} from "dereference-json-schema";
 import {OpenApiEndpoint} from "./types";
+import {Service} from "../../types";
 
 export const getOpenApiEndpoints = async (specificationUrl: string): Promise<OpenApiEndpoint[]> =>
     Object.entries(
@@ -20,3 +21,9 @@ export const getOpenApiEndpoints = async (specificationUrl: string): Promise<Ope
         ],
         []
     );
+
+export const getDescriptions = (service: Service) => ({
+    getApiEndpoints: `${service.tool.getApiEndpoints}`,
+    getApiEndpointDetails: `${service.tool.getApiEndpointDetails}`,
+    callApiEndpoint: `${service.tool.callApiEndpoint}`,
+});

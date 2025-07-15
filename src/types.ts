@@ -1,5 +1,6 @@
 export type Service = {
     name: string,
+    description: string,
     url: {
         api: string,
         specification: string,
