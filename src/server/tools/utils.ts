@@ -22,8 +22,14 @@ export const getOpenApiEndpoints = async (specificationUrl: string): Promise<Ope
         []
     );
 
+export const getNames = (service: Service) => ({
+    getApiEndpoints: `${service.name.toLowerCase()}-get-api-endpoints`,
+    getApiEndpointDetails: `${service.name.toLowerCase()}-get-api-endpoint-details`,
+    callApiEndpoint: `${service.name.toLowerCase()}-call-api-endpoint`,
+});
+
 export const getDescriptions = (service: Service) => ({
-    getApiEndpoints: `${service.tool.getApiEndpoints}`,
-    getApiEndpointDetails: `${service.tool.getApiEndpointDetails}`,
-    callApiEndpoint: `${service.tool.callApiEndpoint}`,
+    getApiEndpoints: `Returns a list of ${service.name} REST API endpoints. Use it if you want to ${service.tasks.join(", ")}. Before using an endpoint, get its details.`,
+    getApiEndpointDetails: `Returns details on how to use a specific ${service.name} REST API endpoint.`,
+    callApiEndpoint: `Calls a specific ${service.name} REST API endpoint.`,
 });

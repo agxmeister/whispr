@@ -1,2 +1,2 @@
-export {ServerBuilder} from "./ServerBuilder.js";
-export {getServer} from "./utils.js";
+export {ServerBuilder} from "./ServerBuilder";
+export {getServer} from "./utils";
