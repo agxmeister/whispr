@@ -50,7 +50,7 @@ const configPath = args.config
             description: descriptions.callApiEndpoint,
         });
 
-        for (const config of service.config) {
+        for (const config of service.configuration) {
             manifest.server.mcp_config.env = {
                 ...manifest.server.mcp_config.env,
                 [config.name]: `\${user_config.${config.name}}`,

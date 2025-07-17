@@ -11,7 +11,7 @@ export const GetApiEndpointDetails: Tool = {
             `${getDescriptions(service).getApiEndpointDetails}`,
             getApiEndpointDetailsSchema.shape,
             async ({endpoint}) => {
-                const target = (await getOpenApiEndpoints(service.url.specification))
+                const target = (await getOpenApiEndpoints(service.api.specification))
                     .filter(({method, path}) =>
                         path === endpoint.path && method === endpoint.method
                     ).shift();

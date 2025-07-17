@@ -11,7 +11,7 @@ export const GetApiEndpoints: Tool = {
             async () => ({
                 content: [{
                     type: "text",
-                    text: (await getOpenApiEndpoints(service.url.specification))
+                    text: (await getOpenApiEndpoints(service.api.specification))
                         .map(({method, path, details}) =>
                             `${method} ${path} - ${details.summary ?? details.description}`,
                         )

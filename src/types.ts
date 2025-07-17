@@ -2,20 +2,14 @@ export type Service = {
     name: string,
     description: string,
     tasks: string[],
-    url: {
-        api: string,
+    api: {
         specification: string,
+        request: {
+            url: string,
+            headers: Record<string, string>,
+        },
     },
-    authorization: {
-        key: string,
-        value: string,
-    },
-    tool: {
-        getApiEndpoints: string,
-        getApiEndpointDetails: string,
-        callApiEndpoint: string,
-    },
-    config: {
+    configuration: {
         name: string,
         description: string,
         sensitive: boolean,

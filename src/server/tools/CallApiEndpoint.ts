@@ -16,10 +16,10 @@ export const CallApiEndpoint: Tool = {
                     const config: AxiosRequestConfig = {
                         headers: {
                             "Content-Type": "application/json",
-                            [service.authorization.key]: service.authorization.value,
+                            ...service.api.request.headers,
                         },
                         method: endpoint.method,
-                        url: `${service.url.api}${endpoint.path}?${parameters || ""}`,
+                        url: `${service.api.request.url}${endpoint.path}?${parameters || ""}`,
                         data: body ? JSON.parse(body) : undefined,
                         maxRedirects: 0,
                         validateStatus: (status) => status < 500,

@@ -5,17 +5,18 @@
         "tasks": [
             "manage Miro boards"
         ],
-        "url": {
-            "api": "https://api.miro.com",
-            "specification": "https://developers.miro.com/openapi/6628045c567473003e032eba"
+        "api": {
+            "specification": "https://developers.miro.com/openapi/6628045c567473003e032eba",
+            "request": {
+                "url": "https://api.miro.com",
+                "headers": {
+                    "Authorization": "Bearer {{MIRO_API_KEY}}"
+                }
+            }
         },
-        "authorization": {
-            "key": "Authorization",
-            "value": "Bearer {{MIRO_API_KEY}}"
-        },
-        "config": [{
+        "configuration": [{
             "name": "MIRO_API_KEY",
-            "description": "Miro REST API key.",
+            "description": "Access token for the Miro REST API. See https://developers.miro.com/docs/getting-started-with-oauth on how to get one.",
             "sensitive": true
         }]
     }
