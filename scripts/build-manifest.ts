@@ -22,18 +22,18 @@ const templatePath = args.template
 const outputPath = args.output
     ? path.resolve(args.output)
     : path.join(rootDir, 'manifest.json');
-const filterServices = args.services
-    ? args.services.split(',').map((service: string) => service.trim())
-    : [];
-const configPath = args.config
-    ? path.resolve(args.config)
+const servicesPath = args.services
+    ? path.resolve(args.services)
     : undefined;
+const filter = args.filter
+    ? args.filter.split(',').map((service: string) => service.trim().toLowerCase())
+    : [];
 
 (async () => {
     const manifest = JSON.parse(fs.readFileSync(templatePath, 'utf-8')) as Manifest;
 
-    const services = (await getServices(configPath))
-        .filter(service => filterServices.length > 0 ? filterServices.includes(service.name) : true);
+    const services = (await getServices(servicesPath))
+        .filter(service => filter.length > 0 ? filter.includes(service.name.toLowerCase()) : true);
 
     for (const service of services) {
         const names = getNames(service);
