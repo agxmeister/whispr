@@ -16,13 +16,13 @@ const servicesPath = args.services
 
     const args = [indexPath];
     if (servicesPath) {
-        args.push("--config", servicesPath);
+        args.push("--services", servicesPath);
     }
 
     const env: Record<string, string> = {};
     for (const service of services) {
-        for (const config of service.configuration) {
-            env[config.name] = `---> ${config.description} <---`;
+        for (const variable of service.configuration) {
+            env[variable.name] = `---> ${variable.description} <---`;
         }
     }
 

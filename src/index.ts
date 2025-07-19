@@ -8,8 +8,8 @@ dotenv.config();
 const args = minimist(process.argv.slice(2));
 
 (async () => {
-    const server = await getServer(args.config
-        ? path.resolve(args.config)
+    const server = await getServer(args.services
+        ? path.resolve(args.services)
         : undefined
     );
     const transport = new StdioServerTransport();
