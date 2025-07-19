@@ -15,25 +15,30 @@ Build the Claude Desktop Extension (whispr.dxt):
 
 ### How to configure
 
-```
+Generate the MCP configuration:
+
+`npm run build-mcp-configuration`
+
+The output will look like this:
+
+```json
 {
-    "mcp": {
-        "servers": {
-            "whispr": {
-                "type": "stdio",
-                "command": "node",
-                "args": [
-                    "<realpath-to-stdio-entry-point>"
-                ],
-                "env": {
-                    "API_BASE_URL": "http://<your-plesk-hostname>:8880/api/modules/wp-toolkit",
-                    "API_KEY": "<your-plesk-secret-key>"
-                }
-            }
-        }
+    "type": "stdio",
+    "command": "node",
+    "args": [
+        "/path/to/whispr/dist/index.js",
+        "--config",
+        "/path/to/whispr/services.json"
+    ],
+    "env": {
+        "MIRO_API_KEY": "",
+        "JIRA_CREDENTIALS": ""
     }
 }
 ```
+
+Add these lines to your MCP client's configuration file and fill in the environment variables.
+
 ### How to troubleshoot
 
 `npx @modelcontextprotocol/inspector`
