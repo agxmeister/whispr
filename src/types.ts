@@ -1,6 +1,6 @@
 export type Service = {
     name: string,
-    description: string,
+    description?: string,
     tasks: string[],
     api: {
         specification: string,
