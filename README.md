@@ -15,6 +15,10 @@ Build the Claude Desktop Extension (whispr.dxt):
 
 ### How to configure
 
+Generate the services' configuration:
+
+`npx ts-node scripts/build-services-configuration.ts`
+
 Generate the MCP configuration:
 
 `npx ts-node scripts/build-mcp-configuration.ts`

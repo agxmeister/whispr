@@ -12,6 +12,6 @@ export type Service = {
     configuration: {
         name: string,
         description: string,
-        sensitive: boolean,
+        sensitive?: boolean,
     }[],
 }

@@ -4,7 +4,7 @@ import minimist from 'minimist';
 import {getServices} from "../src/utils";
 import {getNames, getDescriptions} from "../src/server/tools";
 
-type Manifest = {
+type DxtManifest = {
     server: {
         mcp_config: {
             env: Record<string, any>;
@@ -18,7 +18,7 @@ const args = minimist(process.argv.slice(2));
 const rootDir = path.resolve(__dirname, '..');
 const templatePath = args.template
     ? path.resolve(args.template)
-    : path.join(rootDir, 'manifest-template.json');
+    : path.join(rootDir, 'dxt-manifest-template.json');
 const outputPath = args.output
     ? path.resolve(args.output)
     : path.join(rootDir, 'manifest.json');
@@ -30,7 +30,7 @@ const filter = args.filter
     : [];
 
 (async () => {
-    const manifest = JSON.parse(fs.readFileSync(templatePath, 'utf-8')) as Manifest;
+    const manifest = JSON.parse(fs.readFileSync(templatePath, 'utf-8')) as DxtManifest;
 
     const services = (await getServices(servicesPath))
         .filter(service => filter.length > 0 ? filter.includes(service.name.toLowerCase()) : true);

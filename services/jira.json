@@ -1,0 +1,20 @@
+{
+    "name": "Jira",
+    "tasks": [
+        "manage Jira work items"
+    ],
+    "api": {
+        "specification": "https://dac-static.atlassian.com/cloud/jira/platform/swagger.v3.json",
+        "request": {
+            "url": "https://webpros.atlassian.net",
+            "headers": {
+                "Authorization": "Basic {{JIRA_CREDENTIALS}}"
+            }
+        }
+    },
+    "configuration": [{
+        "name": "JIRA_CREDENTIALS",
+        "description": "See https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis on how to get one.",
+        "sensitive": true
+    }]
+}

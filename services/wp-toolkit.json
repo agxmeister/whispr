@@ -1,0 +1,23 @@
+{
+    "name": "wp-toolkit",
+    "tasks": [
+        "manage WordPress websites"
+    ],
+    "api": {
+        "specification": "{{PLESK_API_BASE_URL}}/modules/wp-toolkit/v1/specification/public",
+        "request": {
+            "url": "{{PLESK_API_BASE_URL}}/modules/wp-toolkit",
+            "headers": {
+                "X-API-Key": "{{PLESK_API_KEY}}"
+            }
+        }
+    },
+    "configuration": [{
+        "name": "PLESK_API_BASE_URL",
+        "description": "Base URL for the Plesk REST API. This should be your Plesk server URL followed by '/api/v2'."
+    }, {
+        "name": "PLESK_API_KEY",
+        "description": "API key for authenticating with the Plesk REST API. You can generate this in your Plesk panel under Tools & Settings > API Keys.",
+        "sensitive": true
+    }]
+}

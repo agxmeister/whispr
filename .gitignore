@@ -3,8 +3,6 @@
 /dist/*
 !/dist/.gitkeep
 /services.json
-/services-*.json
-!/services-example.json
 /manifest.json
 /whispr.dxt
 
