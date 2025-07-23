@@ -1,26 +1,34 @@
-import axios from "axios";
+import * as yaml from "js-yaml";
 import {dereferenceSync} from "dereference-json-schema";
 import {OpenApiEndpoint} from "./types";
 import {Service} from "../../types";
 
+const getSpecification = async (specificationUrl: string): Promise<any> => {
+    const data = await (await fetch(specificationUrl)).text();
+    try {
+        return JSON.parse(data);
+    } catch (error) {
+        try {
+            return yaml.load(data);
+        } catch (error) {
+        }
+    }
+};
+
 export const getOpenApiEndpoints = async (specificationUrl: string): Promise<OpenApiEndpoint[]> =>
-    Object.entries(
-        dereferenceSync(
-            (await axios.get(specificationUrl))
-                .data
-        ).paths
-    ).reduce(
-        (acc: any[], [path, pathData]: [string, any]) => [
-            ...acc,
-            ...Object.entries(pathData)
-                .map(([method, methodData]: [string, any]) => ({
-                    method: method.toUpperCase(),
-                    path: path,
-                    details: methodData,
-                }))
-        ],
-        []
-    );
+    Object.entries(dereferenceSync(await getSpecification(specificationUrl)).paths)
+        .reduce(
+            (acc: any[], [path, pathData]: [string, any]) => [
+                ...acc,
+                ...Object.entries(pathData)
+                    .map(([method, methodData]: [string, any]) => ({
+                        method: method.toUpperCase(),
+                        path: path,
+                        details: methodData,
+                    }))
+            ],
+            []
+        );
 
 export const getNames = (service: Service) => ({
     getApiEndpoints: `${service.name.toLowerCase()}-get-api-endpoints`,
