@@ -1,0 +1,22 @@
+{
+    "name": "Slack",
+    "description": "Slack is a messaging platform for teams that brings all communication together in one place.",
+    "tasks": [
+        "send Slack messages",
+        "read Slack conversations"
+    ],
+    "api": {
+        "specification": "https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2.json",
+        "request": {
+            "url": "https://slack.com/api",
+            "headers": {
+                "Authorization": "Bearer {{SLACK_USER_TOKEN}}"
+            }
+        }
+    },
+    "configuration": [{
+        "name": "SLACK_USER_TOKEN",
+        "description": "User access token for the Slack REST API. See https://api.slack.com/apps on how to get one.",
+        "sensitive": true
+    }]
+}
