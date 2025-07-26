@@ -1,0 +1,29 @@
+{
+    "name": "Confluence",
+    "description": "Confluence is a collaboration platform for creating, sharing, and organizing content in teams and organizations.",
+    "tasks": [
+        "manage Confluence spaces, pages, and content",
+        "search Confluence content"
+    ],
+    "api": {
+        "specification": "https://developer.atlassian.com/cloud/confluence/swagger.v3.json",
+        "request": {
+            "url": "https://{{CONFLUENCE_DOMAIN}}.atlassian.net",
+            "headers": {
+                "Authorization": "Basic {{CONFLUENCE_CREDENTIALS}}"
+            }
+        }
+    },
+    "configuration": [
+        {
+            "name": "CONFLUENCE_DOMAIN",
+            "description": "Your Confluence domain (the part before .atlassian.net).",
+            "sensitive": false
+        },
+        {
+            "name": "CONFLUENCE_CREDENTIALS",
+            "description": "See https://developer.atlassian.com/cloud/confluence/basic-auth-for-rest-apis/ on how to get one.",
+            "sensitive": true
+        }
+    ]
+}
