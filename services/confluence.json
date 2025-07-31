@@ -6,9 +6,9 @@
         "search Confluence content"
     ],
     "api": {
-        "specification": "https://developer.atlassian.com/cloud/confluence/swagger.v3.json",
+        "specification": "https://dac-static.atlassian.com/cloud/confluence/openapi-v2.v3.json",
         "request": {
-            "url": "https://{{CONFLUENCE_DOMAIN}}.atlassian.net",
+            "url": "https://{{CONFLUENCE_DOMAIN}}.atlassian.net/wiki/api/v2",
             "headers": {
                 "Authorization": "Basic {{CONFLUENCE_CREDENTIALS}}"
             }
