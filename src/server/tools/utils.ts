@@ -21,6 +21,7 @@ export const getOpenApiEndpoints = async (specificationUrl: string): Promise<Ope
             (acc: any[], [path, pathData]: [string, any]) => [
                 ...acc,
                 ...Object.entries(pathData)
+                    .filter(([_, methodData]: [string, any]) => !methodData.deprecated)
                     .map(([method, methodData]: [string, any]) => ({
                         method: method.toUpperCase(),
                         path: path,
