@@ -2,9 +2,17 @@ import * as yaml from "js-yaml";
 import {dereferenceSync} from "dereference-json-schema";
 import {OpenApiEndpoint} from "./types";
 import {Service} from "../../types";
+import axios from "axios";
+import * as https from "https";
 
 const getSpecification = async (specificationUrl: string): Promise<any> => {
-    const data = await (await fetch(specificationUrl)).text();
+    const data = (await axios.get(specificationUrl, {
+        responseType: 'text',
+        httpsAgent: new https.Agent({
+            rejectUnauthorized: false
+        }),
+    })).data;
+
     try {
         return JSON.parse(data);
     } catch (error) {
