@@ -1,0 +1,31 @@
+{
+    "name": "WordPress",
+    "description": "WordPress is a content management system (CMS) that allows you to create and manage websites, blogs, and online content through its REST API.",
+    "tasks": [
+        "manage WordPress posts and pages",
+        "manage WordPress menus and navigation",
+        "manage WordPress themes and plugins",
+        "manage WordPress site settings and configuration"
+    ],
+    "api": {
+        "specification": "{{WORDPRESS_BASE_URL}}/wp-json/wp-openapi/v1/schema",
+        "request": {
+            "url": "{{WORDPRESS_BASE_URL}}/wp-json",
+            "headers": {
+                "Authorization": "Basic {{WORDPRESS_CREDENTIALS}}"
+            }
+        }
+    },
+    "configuration": [
+        {
+            "name": "WORDPRESS_BASE_URL",
+            "description": "Base URL of your WordPress site.",
+            "sensitive": false
+        },
+        {
+            "name": "WORDPRESS_CREDENTIALS",
+            "description": "See https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/ to get one.",
+            "sensitive": true
+        }
+    ]
+}
