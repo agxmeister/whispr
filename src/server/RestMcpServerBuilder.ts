@@ -1,8 +1,9 @@
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {Service} from "../types";
 import {Tool} from "./tools";
+import {McpServerBuilder} from "./types";
 
-export class ServerBuilder
+export class RestMcpServerBuilder implements McpServerBuilder
 {
     private readonly server: McpServer;
 

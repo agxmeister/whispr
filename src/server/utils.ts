@@ -1,13 +1,7 @@
-import {ServerBuilder} from "./ServerBuilder";
-import {CallApiEndpoint, GetApiEndpointDetails, GetApiEndpoints} from "./tools";
 import {Service} from "../types";
+import {McpServerBuilder} from "./types";
 
-export const getServer = async (services: Service[]) => {
-    const builder = new ServerBuilder([
-        GetApiEndpoints,
-        GetApiEndpointDetails,
-        CallApiEndpoint,
-    ]);
+export const getServer = async (builder: McpServerBuilder, services: Service[]) => {
     for (const service of services) {
         builder.addService(service);
     }
