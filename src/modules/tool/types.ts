@@ -1,8 +1,10 @@
-import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
-import {Service} from "../../types";
+import {Edge} from "../edge/types";
 
 export interface Tool {
-    attach: (service: Service, server: McpServer) => void;
+    getName(): string;
+    getDescription(): string;
+    getSchema(): any;
+    getHandler(): (...args: any[]) => Promise<any>;
 }
 
 export type OpenApiEndpoint = {
@@ -18,4 +20,8 @@ export type OpenApiEndpointDetails = {
         Record<string, any>
     ],
     requestBody?: Record<string, any>
+}
+
+export interface EdgeToolFactory {
+    create(edge: Edge): Tool;
 }

@@ -1,4 +1,4 @@
-export type Service = {
+export type Edge = {
     name: string,
     description?: string,
     tasks: string[],
@@ -14,4 +14,11 @@ export type Service = {
         description: string,
         sensitive?: boolean,
     }[],
+    refine: {
+        description: {
+            glance: string,
+            gauge: string,
+            go: string,
+        },
+    }
 }

@@ -31,8 +31,8 @@ The output will look like this:
     "command": "node",
     "args": [
         "/path/to/whispr/dist/index.js",
-        "--config",
-        "/path/to/whispr/services.json"
+        "--edges",
+        "/path/to/whispr/edges.json"
     ],
     "env": {
         "MIRO_API_KEY": "",

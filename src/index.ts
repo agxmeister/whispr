@@ -1,25 +1,27 @@
 import dotenv from 'dotenv';
-import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
-import {getServer, RestMcpServerBuilder} from "./server";
-import {CallApiEndpoint, GetApiEndpointDetails, GetApiEndpoints} from "./server/tools";
 import minimist from 'minimist';
 import path from 'path';
-import {getServices} from "./utils";
+import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
+import {EdgeService, EdgeRepository} from "./modules/edge";
+import {McpService} from "./modules/mcp";
+import {CallApiEndpointFactory, GetApiEndpointDetailsFactory, GetApiEndpointsFactory} from "./modules/tool";
 
 dotenv.config();
 const args = minimist(process.argv.slice(2));
 
 (async () => {
-    const serverBuilder = new RestMcpServerBuilder([
-        GetApiEndpoints,
-        GetApiEndpointDetails,
-        CallApiEndpoint,
-    ]);
-    const services = await getServices(args.services
-        ? path.resolve(args.services)
-        : undefined
+    const edgeRepository = new EdgeRepository(args.edges
+        ? path.resolve(args.edges)
+        : path.join(__dirname, '../edges.json')
     );
-    const server = await getServer(serverBuilder, services);
+    const edgeService = new EdgeService(edgeRepository);
+    const edges = await edgeService.getEdges();
+    const serverService = new McpService();
+    const server = serverService.getMcpServer(edges, [
+        new GetApiEndpointsFactory(),
+        new GetApiEndpointDetailsFactory(),
+        new CallApiEndpointFactory(),
+    ]);
     const transport = new StdioServerTransport();
     await server.connect(transport);
 })();
