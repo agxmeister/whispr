@@ -14,11 +14,4 @@ export type Edge = {
         description: string,
         sensitive?: boolean,
     }[],
-    refine: {
-        description: {
-            glance: string,
-            gauge: string,
-            go: string,
-        },
-    }
 }

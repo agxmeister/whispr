@@ -3,15 +3,14 @@ import axios, {AxiosRequestConfig} from "axios";
 import https from "https";
 import {EdgeTool} from "./EdgeTool";
 import {callApiEndpointSchema} from "./schemas";
-import {getNames, getDescriptions} from "./utils";
 
 export class CallApiEndpoint extends EdgeTool {
     getName(): string {
-        return getNames(this.edge).callApiEndpoint;
+        return `${this.edge.name.toLowerCase()}-call-api-endpoint`;
     }
 
     getDescription(): string {
-        return getDescriptions(this.edge).callApiEndpoint;
+        return `Calls a specific ${this.edge.name} REST API endpoint.`;
     }
 
     getSchema() {

@@ -1,18 +1,18 @@
-import {z as zod} from "zod";
 import {EdgeTool} from "./EdgeTool";
-import {getNames, getDescriptions, getOpenApiEndpoints, getApiEndpointDescription} from "./utils";
+import {getApiEndpointsSchema} from "./schemas";
+import {getApiEndpointDescription, getOpenApiEndpoints} from "./utils";
 
 export class GetApiEndpoints extends EdgeTool {
     getName(): string {
-        return getNames(this.edge).getApiEndpoints;
+        return `${this.edge.name.toLowerCase()}-get-api-endpoints`;
     }
 
     getDescription(): string {
-        return getDescriptions(this.edge).getApiEndpoints;
+        return `Returns a list of ${this.edge.name} REST API endpoints. Use it if you want to ${this.edge.tasks.join(", ")}. Before using an endpoint, get its details.`;
     }
 
     getSchema() {
-        return zod.object({}).shape;
+        return getApiEndpointsSchema.shape;
     }
 
     getHandler() {

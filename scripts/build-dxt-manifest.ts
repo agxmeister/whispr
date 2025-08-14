@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import minimist from 'minimist';
 import {EdgeService, EdgeRepository} from "../src/modules/edge";
-import {getNames, getDescriptions} from "../src/modules/tool";
+import {CallApiEndpointFactory, GetApiEndpointsFactory, GetApiEndpointDetailsFactory} from "../src/modules/tool";
 
 type DxtManifest = {
     server: {
@@ -24,7 +24,7 @@ const outputPath = args.output
     : path.join(rootDir, 'manifest.json');
 const edgesPath = args.edges
     ? path.resolve(args.edges)
-    : undefined;
+    : path.join(__dirname, '../edges.json');
 const filter = args.filter
     ? args.filter.split(',').map((edge: string) => edge.trim().toLowerCase())
     : [];
@@ -38,18 +38,19 @@ const filter = args.filter
         .filter(edge => filter.length > 0 ? filter.includes(edge.name.toLowerCase()) : true);
 
     for (const edge of edges) {
-        const names = getNames(edge);
-        const descriptions = getDescriptions(edge);
+        const getApiEndpointsTool = new GetApiEndpointsFactory().create(edge);
+        const getApiEndpointDetailsTool = new GetApiEndpointDetailsFactory().create(edge);
+        const callApiEndpointTool = new CallApiEndpointFactory().create(edge);
 
         manifest.tools.push({
-            name: names.getApiEndpoints,
-            description: descriptions.getApiEndpoints,
+            name: getApiEndpointsTool.getName(),
+            description: getApiEndpointsTool.getDescription(),
         }, {
-            name: names.getApiEndpointDetails,
-            description: descriptions.getApiEndpointDetails,
+            name: getApiEndpointDetailsTool.getName(),
+            description: getApiEndpointDetailsTool.getDescription(),
         }, {
-            name: names.callApiEndpoint,
-            description: descriptions.callApiEndpoint,
+            name: callApiEndpointTool.getName(),
+            description: callApiEndpointTool.getDescription(),
         });
 
         for (const config of edge.configuration) {

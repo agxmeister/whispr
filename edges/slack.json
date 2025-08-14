@@ -2,8 +2,8 @@
     "name": "Slack",
     "description": "Slack is a messaging platform for teams that brings all communication together in one place.",
     "tasks": [
-        "send Slack messages",
-        "read Slack conversations"
+        "read Slack threads,",
+        "send Slack messages"
     ],
     "api": {
         "specification": "https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2.json",

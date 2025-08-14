@@ -1,15 +1,15 @@
 import {z as zod} from "zod";
 import {EdgeTool} from "./EdgeTool";
 import {getApiEndpointDetailsSchema} from "./schemas";
-import {getNames, getDescriptions, getOpenApiEndpoints} from "./utils";
+import {getOpenApiEndpoints} from "./utils";
 
 export class GetApiEndpointDetails extends EdgeTool {
     getName(): string {
-        return getNames(this.edge).getApiEndpointDetails;
+        return `${this.edge.name.toLowerCase()}-get-api-endpoint-details`;
     }
 
     getDescription(): string {
-        return getDescriptions(this.edge).getApiEndpointDetails;
+        return `Returns details on how to use a specific ${this.edge.name} REST API endpoint.`;
     }
 
     getSchema() {

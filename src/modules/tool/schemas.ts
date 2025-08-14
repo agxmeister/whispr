@@ -7,6 +7,9 @@ const apiEndpointsSchema = zod.object({
         .describe("Path, e.g., /v1/installations"),
 }).describe("REST API endpoint");
 
+export const getApiEndpointsSchema = zod.object({
+});
+
 export const getApiEndpointDetailsSchema = zod.object({
     endpoint: apiEndpointsSchema,
 });
