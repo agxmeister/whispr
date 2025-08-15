@@ -5,6 +5,7 @@ import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import {EdgeService, EdgeRepository} from "./modules/edge";
 import {McpService} from "./modules/mcp";
 import {CallApiEndpointFactory, GetApiEndpointDetailsFactory, GetApiEndpointsFactory} from "./modules/tool";
+import {RatatouilleFactory} from "./modules/assistant/ratatouille";
 
 dotenv.config();
 const args = minimist(process.argv.slice(2));
@@ -21,6 +22,11 @@ const args = minimist(process.argv.slice(2));
         new GetApiEndpointsFactory(),
         new GetApiEndpointDetailsFactory(),
         new CallApiEndpointFactory(),
+    ], [
+        new RatatouilleFactory({
+            apiUrl: process.env.ASSISTANT_RATATOUILLE_API_URL || "http://localhost:3000",
+            chiefName: process.env.ASSISTANT_RATATOUILLE_CHIEF_NAME || "jarvis"
+        }),
     ]);
     const transport = new StdioServerTransport();
     await server.connect(transport);

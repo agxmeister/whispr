@@ -1,10 +1,14 @@
-import {Edge} from "../edge/types";
+import {Edge} from "../edge";
 
 export interface Tool {
     getName(): string;
     getDescription(): string;
     getSchema(): any;
     getHandler(): (...args: any[]) => Promise<any>;
+}
+
+export interface EdgeToolFactory {
+    create(edge: Edge): Tool;
 }
 
 export type OpenApiEndpoint = {
@@ -20,8 +24,4 @@ export type OpenApiEndpointDetails = {
         Record<string, any>
     ],
     requestBody?: Record<string, any>
-}
-
-export interface EdgeToolFactory {
-    create(edge: Edge): Tool;
 }
