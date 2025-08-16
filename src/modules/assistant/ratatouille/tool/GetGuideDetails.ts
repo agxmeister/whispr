@@ -4,16 +4,16 @@ import axios from "axios";
 import {RatatouilleOptions} from "../types";
 import {getRecipeDetailsSchema} from "../schemas";
 
-export class GetRecipeDetails implements Tool {
+export class GetGuideDetails implements Tool {
     constructor(readonly options: RatatouilleOptions) {
     }
 
     getName(): string {
-        return `${this.options.chiefName}-get-recipe-details`;
+        return `${this.options.chiefName.toLowerCase()}-get-guide-details`;
     }
 
     getDescription(): string {
-        return "Get detailed information about a specific recipe";
+        return `Use this tool if ${this.options.chiefName} was asked to do something and you know a guide identity. It returns the guide. Then, follow the guide to completion.`;
     }
 
     getSchema() {
@@ -23,10 +23,10 @@ export class GetRecipeDetails implements Tool {
     getHandler(): (...args: any[]) => Promise<any> {
         return async ({recipeId}: zod.infer<typeof getRecipeDetailsSchema>) => {
             try {
-                const response = await axios.get(`${this.options.apiUrl}/api/chief/${this.options.chiefName}/recipe/${recipeId}`);
+                const response = await axios.get(`${this.options.apiUrl}/chief/${this.options.chiefName}/recipe/${recipeId}`);
                 const recipe = response.data;
                 
-                let formattedText = `# Recipe: ${recipe.summary}\n\n`;
+                let formattedText = `# Guide: ${recipe.summary}\n\n`;
                 
                 if (recipe.description) {
                     formattedText += `**Description:**\n${recipe.description}\n\n`;
@@ -73,7 +73,7 @@ export class GetRecipeDetails implements Tool {
                 return {
                     content: [{
                         type: "text",
-                        text: `Error fetching recipe details: ${error instanceof Error ? error.message : String(error)}`,
+                        text: `Error fetching guide details: ${error instanceof Error ? error.message : String(error)}`,
                     }]
                 };
             }

@@ -24,8 +24,8 @@ const args = minimist(process.argv.slice(2));
         new CallApiEndpointFactory(),
     ], [
         new RatatouilleFactory({
-            apiUrl: process.env.ASSISTANT_RATATOUILLE_API_URL || "http://localhost:3000",
-            chiefName: process.env.ASSISTANT_RATATOUILLE_CHIEF_NAME || "jarvis"
+            apiUrl: process.env.ASSISTANT_RATATOUILLE_API_URL || "",
+            chiefName: process.env.ASSISTANT_RATATOUILLE_CHIEF_NAME || "",
         }),
     ]);
     const transport = new StdioServerTransport();

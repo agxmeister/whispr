@@ -1,6 +1,6 @@
 import {Assistant, AssistantFactory} from "../types";
 import {Ratatouille} from "./Ratatouille";
-import {GetRecipes, GetRecipeDetails} from "./tool";
+import {GetGuides, GetGuideDetails, ManageGuide} from "./tool";
 import {RatatouilleOptions} from "./types";
 
 export class RatatouilleFactory implements AssistantFactory {
@@ -9,8 +9,9 @@ export class RatatouilleFactory implements AssistantFactory {
 
     create(): Assistant {
         return new Ratatouille([
-            new GetRecipes(this.options),
-            new GetRecipeDetails(this.options)
+            new GetGuides(this.options),
+            new GetGuideDetails(this.options),
+            new ManageGuide(this.options)
         ], this.options);
     }
 }

@@ -3,16 +3,16 @@ import axios from "axios";
 import {RatatouilleOptions} from "../types";
 import {getRecipesSchema} from "../schemas";
 
-export class GetRecipes implements Tool {
+export class GetGuides implements Tool {
     constructor(readonly options: RatatouilleOptions) {
     }
 
     getName(): string {
-        return `${this.options.chiefName}-get_recipes`;
+        return `${this.options.chiefName.toLowerCase()}-get-guides`;
     }
 
     getDescription(): string {
-        return "Get a list of all recipes from the Ratatouille API";
+        return `Use this tool if ${this.options.chiefName} was asked to do something. It returns a list of available guides. Then, use ${this.options.chiefName.toLowerCase()}-get-guide-details to get the guide.`;
     }
 
     getSchema() {
@@ -22,7 +22,7 @@ export class GetRecipes implements Tool {
     getHandler(): (...args: any[]) => Promise<any> {
         return async () => {
             try {
-                const response = await axios.get(`${this.options.apiUrl}/api/chief/${this.options.chiefName}/recipe`);
+                const response = await axios.get(`${this.options.apiUrl}/chief/${this.options.chiefName}/recipe`);
                 const recipes = response.data;
                 
                 const recipeList = recipes.map((recipe: {id: string, summary: string}) => 
@@ -39,7 +39,7 @@ export class GetRecipes implements Tool {
                 return {
                     content: [{
                         type: "text",
-                        text: `Error fetching recipes: ${error instanceof Error ? error.message : String(error)}`,
+                        text: `Error fetching guides: ${error instanceof Error ? error.message : String(error)}`,
                     }]
                 };
             }
