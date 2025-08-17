@@ -2,7 +2,7 @@ import {z as zod} from "zod";
 import {Tool} from "../../../tool";
 import axios from "axios";
 import {RatatouilleOptions} from "../types";
-import {getRecipeDetailsSchema} from "../schemas";
+import {getGuideDetailsSchema} from "../schemas";
 
 export class GetGuideDetails implements Tool {
     constructor(readonly options: RatatouilleOptions) {
@@ -17,11 +17,11 @@ export class GetGuideDetails implements Tool {
     }
 
     getSchema() {
-        return getRecipeDetailsSchema.shape;
+        return getGuideDetailsSchema.shape;
     }
 
     getHandler(): (...args: any[]) => Promise<any> {
-        return async ({recipeId}: zod.infer<typeof getRecipeDetailsSchema>) => {
+        return async ({recipeId}: zod.infer<typeof getGuideDetailsSchema>) => {
             try {
                 const response = await axios.get(`${this.options.apiUrl}/chief/${this.options.chiefName}/recipe/${recipeId}`);
                 const recipe = response.data;

@@ -2,7 +2,7 @@ import {z as zod} from "zod";
 import {Tool} from "../../../tool";
 import axios from "axios";
 import {RatatouilleOptions} from "../types";
-import {manageRecipeSchema} from "../schemas";
+import {manageGuideSchema} from "../schemas";
 
 export class ManageGuide implements Tool {
     constructor(readonly options: RatatouilleOptions) {
@@ -17,52 +17,42 @@ export class ManageGuide implements Tool {
     }
 
     getSchema() {
-        return manageRecipeSchema.shape;
+        return manageGuideSchema.shape;
     }
 
     getHandler(): (...args: any[]) => Promise<any> {
-        return async (params: zod.infer<typeof manageRecipeSchema>) => {
-            try {
-                const { operation, recipeId, ...recipeData } = params;
-                
-                switch (operation) {
-                    case "create":
-                        return await this.createRecipe(recipeData);
-                    case "update":
-                        if (!recipeId) {
-                            throw new Error("Guide identity is required for update operation");
-                        }
-                        return await this.updateRecipe(recipeId, recipeData);
-                    case "delete":
-                        if (!recipeId) {
-                            throw new Error("Guide identity is required for delete operation");
-                        }
-                        return await this.deleteRecipe(recipeId);
-                    default:
-                        throw new Error(`Unknown operation: ${operation}`);
-                }
-            } catch (error) {
+        return async (params: zod.infer<typeof manageGuideSchema>) => {
+            const action = params.action;
+            if (!["create", "update", "delete"].includes(action.type)) {
                 return {
                     content: [{
                         type: "text",
-                        text: `Error managing guide: ${error instanceof Error ? error.message : String(error)}`,
+                        text: `Error managing guide: action ${action.type} is not supported.`,
                     }],
                     isError: true,
                 };
+            }
+
+            if (action.type === "create") {
+                return await this.createRecipe(action);
+            }
+
+            if (action.type === "update") {
+                const { recipeId, ...updateData } = action;
+                return await this.updateRecipe(recipeId, updateData);
+            }
+
+            if (action.type === "delete") {
+                return await this.deleteRecipe(action.recipeId);
             }
         };
     }
 
     private async createRecipe(recipeData: any) {
-        if (!recipeData.summary) {
-            throw new Error("Summary is required for creating a guide");
-        }
-
         const response = await axios.post(
             `${this.options.apiUrl}/chief/${this.options.chiefName}/recipe`,
-            this.cleanRecipeData(recipeData)
+            recipeData
         );
-
         const recipe = response.data;
         return {
             content: [{
@@ -75,9 +65,8 @@ export class ManageGuide implements Tool {
     private async updateRecipe(recipeId: string, recipeData: any) {
         const response = await axios.put(
             `${this.options.apiUrl}/chief/${this.options.chiefName}/recipe/${recipeId}`,
-            this.cleanRecipeData(recipeData)
+            recipeData
         );
-
         const recipe = response.data;
         return {
             content: [{
@@ -89,24 +78,11 @@ export class ManageGuide implements Tool {
 
     private async deleteRecipe(recipeId: string) {
         await axios.delete(`${this.options.apiUrl}/chief/${this.options.chiefName}/recipe/${recipeId}`);
-
         return {
             content: [{
                 type: "text",
                 text: `Guide with identity "${recipeId}" has been deleted successfully.`,
             }]
         };
-    }
-
-    private cleanRecipeData(data: any) {
-        const cleanData: any = {};
-        
-        if (data.summary !== undefined) cleanData.summary = data.summary;
-        if (data.description !== undefined) cleanData.description = data.description;
-        if (data.preconditions !== undefined) cleanData.preconditions = data.preconditions;
-        if (data.steps !== undefined) cleanData.steps = data.steps;
-        if (data.postconditions !== undefined) cleanData.postconditions = data.postconditions;
-        
-        return cleanData;
     }
 }

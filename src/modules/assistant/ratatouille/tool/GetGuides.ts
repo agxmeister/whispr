@@ -1,7 +1,7 @@
 import {Tool} from "../../../tool";
 import axios from "axios";
 import {RatatouilleOptions} from "../types";
-import {getRecipesSchema} from "../schemas";
+import {getGuidesSchema} from "../schemas";
 
 export class GetGuides implements Tool {
     constructor(readonly options: RatatouilleOptions) {
@@ -16,7 +16,7 @@ export class GetGuides implements Tool {
     }
 
     getSchema() {
-        return getRecipesSchema.shape;
+        return getGuidesSchema.shape;
     }
 
     getHandler(): (...args: any[]) => Promise<any> {
