@@ -23,16 +23,12 @@ export class GetGuides implements Tool {
         return async () => {
             try {
                 const response = await axios.get(`${this.options.apiUrl}/chief/${this.options.chiefName}/recipe`);
-                const recipes = response.data;
-                
-                const recipeList = recipes.map((recipe: {id: string, summary: string}) => 
-                    `[${recipe.id}] ${recipe.summary}`
-                ).join('\n');
-
                 return {
                     content: [{
                         type: "text",
-                        text: recipeList,
+                        text: response.data.map((recipe: {id: string, summary: string}) =>
+                            `[${recipe.id}] ${recipe.summary}`
+                        ).join('\n'),
                     }]
                 };
             } catch (error) {

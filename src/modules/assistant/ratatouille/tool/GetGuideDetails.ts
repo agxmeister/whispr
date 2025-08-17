@@ -24,49 +24,10 @@ export class GetGuideDetails implements Tool {
         return async ({recipeId}: zod.infer<typeof getGuideDetailsSchema>) => {
             try {
                 const response = await axios.get(`${this.options.apiUrl}/chief/${this.options.chiefName}/recipe/${recipeId}`);
-                const recipe = response.data;
-                
-                let formattedText = `# Guide: ${recipe.summary}\n\n`;
-                
-                if (recipe.description) {
-                    formattedText += `**Description:**\n${recipe.description}\n\n`;
-                }
-                
-                if (recipe.preconditions && recipe.preconditions.length > 0) {
-                    formattedText += `**Preconditions:**\n`;
-                    recipe.preconditions.forEach((precondition: string, index: number) => {
-                        formattedText += `${index + 1}. ${precondition}\n`;
-                    });
-                    formattedText += '\n';
-                }
-                
-                if (recipe.steps && recipe.steps.length > 0) {
-                    formattedText += `**Steps:**\n`;
-                    recipe.steps.forEach((step: string, index: number) => {
-                        formattedText += `${index + 1}. ${step}\n`;
-                    });
-                    formattedText += '\n';
-                }
-                
-                if (recipe.postconditions && recipe.postconditions.length > 0) {
-                    formattedText += `**Postconditions:**\n`;
-                    recipe.postconditions.forEach((postcondition: string, index: number) => {
-                        formattedText += `${index + 1}. ${postcondition}\n`;
-                    });
-                    formattedText += '\n';
-                }
-                
-                if (recipe.createdAt) {
-                    formattedText += `*Created: ${recipe.createdAt}*\n`;
-                }
-                if (recipe.updatedAt) {
-                    formattedText += `*Updated: ${recipe.updatedAt}*\n`;
-                }
-
                 return {
                     content: [{
                         type: "text",
-                        text: formattedText,
+                        text: JSON.stringify(response.data, null, 4),
                     }]
                 };
             } catch (error) {
