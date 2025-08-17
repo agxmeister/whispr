@@ -1,9 +1,8 @@
 import {Assistant} from "../types";
 import {Tool} from "../../tool";
-import {RatatouilleOptions} from "./types";
 
 export class Ratatouille implements Assistant {
-    constructor(readonly tools: Tool[], readonly options: RatatouilleOptions) {
+    constructor(readonly tools: Tool[]) {
     }
 
     getName(): string {
@@ -16,9 +15,5 @@ export class Ratatouille implements Assistant {
 
     getTools(): Tool[] {
         return this.tools;
-    }
-
-    getOptions(): RatatouilleOptions {
-        return this.options;
     }
 }

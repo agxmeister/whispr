@@ -1,4 +1,4 @@
-export interface RatatouilleOptions {
+export type RatatouilleOptions = {
     apiUrl: string;
     chiefName: string;
 }
