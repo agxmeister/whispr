@@ -3,6 +3,7 @@ import minimist from 'minimist';
 import path from 'path';
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import {EdgeService, EdgeRepository} from "./modules/edge";
+import {ConfigService, ConfigRepository} from "./modules/config";
 import {McpService} from "./modules/mcp";
 import {CallApiEndpointFactory, GetApiEndpointDetailsFactory, GetApiEndpointsFactory} from "./modules/tool";
 import {RatatouilleFactory} from "./modules/assistant/ratatouille";
@@ -11,10 +12,12 @@ dotenv.config();
 const args = minimist(process.argv.slice(2));
 
 (async () => {
-    const edgeRepository = new EdgeRepository(args.edges
-        ? path.resolve(args.edges)
-        : path.join(__dirname, '../edges.json')
+    const configRepository = new ConfigRepository(args.config
+        ? path.resolve(args.config)
+        : path.join(__dirname, '../config.json')
     );
+    const configService = new ConfigService(configRepository);
+    const edgeRepository = new EdgeRepository(configService);
     const edgeService = new EdgeService(edgeRepository);
     const edges = await edgeService.getEdges();
     const serverService = new McpService();

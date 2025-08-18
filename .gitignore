@@ -2,8 +2,8 @@
 
 /dist/*
 !/dist/.gitkeep
-/edges.json
-/edges-*.json
+/config.json
+/config-*.json
 /manifest.json
 /whispr.dxt
 

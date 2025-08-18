@@ -9,18 +9,5 @@
         "request": {
             "url": "http://localhost:3000/api"
         }
-    },
-    "configuration": [
-        {
-            "name": "NAME",
-            "description": "Your assistant's name."
-        }
-    ],
-    "refine": {
-        "description": {
-            "glance": "Whenever {{NAME}} was asked to do something, use this tool to list its REST API endpoints.",
-            "gauge": "Whenever {{NAME}} was asked to do something, use this tool to get its REST API endpoint details.",
-            "go": "Whenever {{NAME}} was asked to do something, use this tool to call its REST API endpoint. If you asked for a guide and received it, proceed to execution immediately."
-        }
     }
 }

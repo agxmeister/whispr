@@ -1,24 +1,27 @@
 import * as path from 'path';
 import minimist from 'minimist';
 import {EdgeService, EdgeRepository} from "../src/modules/edge";
+import {ConfigService, ConfigRepository} from "../src/modules/config";
 
 const args = minimist(process.argv.slice(2));
 const rootDir = path.resolve(__dirname, '..');
 
 const indexPath = path.join(rootDir, 'dist/index.js');
 
-const edgesPath = args.edges
-    ? path.resolve(args.edges)
-    : undefined;
+const configPath = args.config
+    ? path.resolve(args.config)
+    : path.join(__dirname, '../config.json');
 
 (async () => {
-    const edgeRepository = new EdgeRepository(edgesPath);
+    const configRepository = new ConfigRepository(configPath);
+    const configService = new ConfigService(configRepository);
+    const edgeRepository = new EdgeRepository(configService);
     const edgeService = new EdgeService(edgeRepository);
     const edges = await edgeService.getEdges();
 
     const args = [indexPath];
-    if (edgesPath) {
-        args.push("--edges", edgesPath);
+    if (configPath) {
+        args.push("--config", configPath);
     }
 
     const env: Record<string, string> = {};

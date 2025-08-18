@@ -1,13 +1,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import minimist from 'minimist';
-import { Edge } from '../src/modules/edge/types';
+import { Edge } from '../src/modules/edge';
 
 const argv = minimist(process.argv.slice(2));
 const rootDir = path.resolve(__dirname, '..');
 
 const inputPath = argv.input || path.join(rootDir, 'edges');
-const outputPath = argv.output || path.join(rootDir, 'edges.json');
+const outputPath = argv.output || path.join(rootDir, 'config.json');
 
 const filter = argv.filter
     ? argv.filter.split(',').map((edge: string) => edge.trim().toLowerCase())
@@ -26,5 +26,6 @@ const filter = argv.filter
         }, [])
         .filter(config => filter.length === 0 || filter.includes(config.name.toLowerCase()));
 
-    fs.writeFileSync(outputPath, JSON.stringify(edges, null, 4));
+    const config = { edges };
+    fs.writeFileSync(outputPath, JSON.stringify(config, null, 4));
 })();

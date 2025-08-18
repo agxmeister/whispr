@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import minimist from 'minimist';
 import {EdgeService, EdgeRepository} from "../src/modules/edge";
+import {ConfigService, ConfigRepository} from "../src/modules/config";
 import {CallApiEndpointFactory, GetApiEndpointsFactory, GetApiEndpointDetailsFactory} from "../src/modules/tool";
 
 type DxtManifest = {
@@ -22,9 +23,9 @@ const templatePath = args.template
 const outputPath = args.output
     ? path.resolve(args.output)
     : path.join(rootDir, 'manifest.json');
-const edgesPath = args.edges
-    ? path.resolve(args.edges)
-    : path.join(__dirname, '../edges.json');
+const configPath = args.config
+    ? path.resolve(args.config)
+    : path.join(__dirname, '../config.json');
 const filter = args.filter
     ? args.filter.split(',').map((edge: string) => edge.trim().toLowerCase())
     : [];
@@ -32,7 +33,9 @@ const filter = args.filter
 (async () => {
     const manifest = JSON.parse(fs.readFileSync(templatePath, 'utf-8')) as DxtManifest;
 
-    const edgeRepository = new EdgeRepository(edgesPath);
+    const configRepository = new ConfigRepository(configPath);
+    const configService = new ConfigService(configRepository);
+    const edgeRepository = new EdgeRepository(configService);
     const edgeService = new EdgeService(edgeRepository);
     const edges = (await edgeService.getEdges())
         .filter(edge => filter.length > 0 ? filter.includes(edge.name.toLowerCase()) : true);

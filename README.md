@@ -17,7 +17,7 @@ Build the Claude Desktop Extension (whispr.dxt):
 
 Generate the services' configuration:
 
-`npx ts-node scripts/build-services-configuration.ts`
+`npx ts-node scripts/build-configuration.ts`
 
 Generate the MCP configuration:
 
@@ -31,8 +31,8 @@ The output will look like this:
     "command": "node",
     "args": [
         "/path/to/whispr/dist/index.js",
-        "--edges",
-        "/path/to/whispr/edges.json"
+        "--config",
+        "/path/to/whispr/config.json"
     ],
     "env": {
         "MIRO_API_KEY": "",
