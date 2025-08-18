@@ -2,7 +2,7 @@
     "name": "Figma",
     "description": "Figma is a collaborative design tool for creating user interfaces, prototypes, and design systems.",
     "tasks": [
-        "manage Figma design components and projects"
+        "manage Figma design components and projects of the team {{FIGMA_TEAM_ID}}"
     ],
     "api": {
         "specification": "https://raw.githubusercontent.com/figma/rest-api-spec/main/openapi/openapi.yaml",
@@ -14,6 +14,9 @@
         }
     },
     "configuration": [{
+        "name": "FIGMA_TEAM_ID",
+        "description": "Your team identity in Figma."
+    }, {
         "name": "FIGMA_ACCESS_TOKEN",
         "description": "Access token for the Figma REST API. See https://help.figma.com/hc/en-us/articles/8085703771159-Manage-personal-access-tokens on how to get one.",
         "sensitive": true
