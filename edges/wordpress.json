@@ -8,22 +8,22 @@
         "manage WordPress site settings and configuration"
     ],
     "api": {
-        "specification": "{{WORDPRESS_BASE_URL}}/wp-json/wp-openapi/v1/schema",
+        "specification": "{{BASE_URL}}/wp-json/wp-openapi/v1/schema",
         "request": {
-            "url": "{{WORDPRESS_BASE_URL}}/wp-json",
+            "url": "{{BASE_URL}}/wp-json",
             "headers": {
-                "Authorization": "Basic {{WORDPRESS_CREDENTIALS}}"
+                "Authorization": "Basic {{CREDENTIALS}}"
             }
         }
     },
     "environment": [
         {
-            "name": "WORDPRESS_BASE_URL",
+            "name": "BASE_URL",
             "description": "Base URL of your WordPress site.",
             "sensitive": false
         },
         {
-            "name": "WORDPRESS_CREDENTIALS",
+            "name": "CREDENTIALS",
             "description": "See https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/ to get one.",
             "sensitive": true
         }

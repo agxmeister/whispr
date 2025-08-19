@@ -9,12 +9,12 @@
         "request": {
             "url": "https://api.miro.com",
             "headers": {
-                "Authorization": "Bearer {{MIRO_API_KEY}}"
+                "Authorization": "Bearer {{API_KEY}}"
             }
         }
     },
     "environment": [{
-        "name": "MIRO_API_KEY",
+        "name": "API_KEY",
         "description": "Access token for the Miro REST API. See https://developers.miro.com/docs/getting-started-with-oauth on how to get one.",
         "sensitive": true
     }]

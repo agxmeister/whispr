@@ -18,14 +18,40 @@ const filter = argv.filter
         .filter(file => path.extname(file) === '.json')
         .reduce<Edge[]>((acc, file) => {
             try {
-                const config: Edge = JSON.parse(fs.readFileSync(path.join(inputPath, file), 'utf-8'));
-                acc.push(config);
+                const edgeFilePath = path.join(inputPath, file);
+                const originalEdge: Edge = JSON.parse(fs.readFileSync(edgeFilePath, 'utf-8'));
+                
+                if (originalEdge.environment) {
+                    const environmentVariableNameMapping: Record<string, string> = {};
+                    originalEdge.environment.forEach(variable => {
+                        environmentVariableNameMapping[variable.name] = `EDGE_${originalEdge.name.toUpperCase()}_${variable.name}`;
+                    });
+                    
+                    let edgeConfiguration = fs.readFileSync(edgeFilePath, 'utf-8');
+                    Object.keys(environmentVariableNameMapping).forEach(name => {
+                        edgeConfiguration = edgeConfiguration
+                            .split(`{{${name}}}`)
+                            .join(`{{${environmentVariableNameMapping[name]}}}`);
+                    });
+                    const edge: Edge = JSON.parse(edgeConfiguration);
+
+                    edge.environment = edge.environment.map(variable => ({
+                        ...variable,
+                        name: environmentVariableNameMapping[variable.name] || variable.name
+                    }));
+                    
+                    acc.push(edge);
+                } else {
+                    acc.push(originalEdge);
+                }
             } catch (error) {
             }
             return acc;
         }, [])
         .filter(config => filter.length === 0 || filter.includes(config.name.toLowerCase()));
 
-    const config = { edges };
+    const config = {
+        edges
+    };
     fs.writeFileSync(outputPath, JSON.stringify(config, null, 4));
 })();

@@ -8,20 +8,20 @@
     "api": {
         "specification": "https://dac-static.atlassian.com/cloud/confluence/openapi-v2.v3.json",
         "request": {
-            "url": "https://{{CONFLUENCE_DOMAIN}}.atlassian.net/wiki/api/v2",
+            "url": "https://{{DOMAIN}}.atlassian.net/wiki/api/v2",
             "headers": {
-                "Authorization": "Basic {{CONFLUENCE_CREDENTIALS}}"
+                "Authorization": "Basic {{CREDENTIALS}}"
             }
         }
     },
     "environment": [
         {
-            "name": "CONFLUENCE_DOMAIN",
+            "name": "DOMAIN",
             "description": "Your Confluence domain (the part before .atlassian.net).",
             "sensitive": false
         },
         {
-            "name": "CONFLUENCE_CREDENTIALS",
+            "name": "CREDENTIALS",
             "description": "See https://developer.atlassian.com/cloud/confluence/basic-auth-for-rest-apis/ on how to get one.",
             "sensitive": true
         }

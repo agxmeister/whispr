@@ -6,17 +6,17 @@
     "api": {
         "specification": "https://dac-static.atlassian.com/cloud/jira/platform/swagger-v3.v3.json",
         "request": {
-            "url": "https://{{JIRA_DOMAIN}}.atlassian.net",
+            "url": "https://{{DOMAIN}}.atlassian.net",
             "headers": {
-                "Authorization": "Basic {{JIRA_CREDENTIALS}}"
+                "Authorization": "Basic {{CREDENTIALS}}"
             }
         }
     },
     "environment": [{
-        "name": "JIRA_DOMAIN",
+        "name": "DOMAIN",
         "description": "Your Jira domain (the part before .atlassian.net)."
     }, {
-        "name": "JIRA_CREDENTIALS",
+        "name": "CREDENTIALS",
         "description": "See https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis on how to get one.",
         "sensitive": true
     }]

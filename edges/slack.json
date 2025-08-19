@@ -10,12 +10,12 @@
         "request": {
             "url": "https://slack.com/api",
             "headers": {
-                "Authorization": "Bearer {{SLACK_USER_TOKEN}}"
+                "Authorization": "Bearer {{USER_TOKEN}}"
             }
         }
     },
     "environment": [{
-        "name": "SLACK_USER_TOKEN",
+        "name": "USER_TOKEN",
         "description": "User access token for the Slack REST API. See https://api.slack.com/apps on how to get one.",
         "sensitive": true
     }]
