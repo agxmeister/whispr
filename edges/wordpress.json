@@ -16,7 +16,7 @@
             }
         }
     },
-    "configuration": [
+    "environment": [
         {
             "name": "WORDPRESS_BASE_URL",
             "description": "Base URL of your WordPress site.",

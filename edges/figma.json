@@ -13,7 +13,7 @@
             }
         }
     },
-    "configuration": [{
+    "environment": [{
         "name": "FIGMA_TEAM_ID",
         "description": "Your team identity in Figma."
     }, {

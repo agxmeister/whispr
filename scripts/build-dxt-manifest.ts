@@ -56,7 +56,7 @@ const filter = args.filter
             description: callApiEndpointTool.getDescription(),
         });
 
-        for (const config of edge.configuration) {
+        for (const config of edge.environment) {
             manifest.server.mcp_config.env = {
                 ...manifest.server.mcp_config.env,
                 [config.name]: `\${user_config.${config.name}}`,

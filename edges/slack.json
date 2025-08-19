@@ -14,7 +14,7 @@
             }
         }
     },
-    "configuration": [{
+    "environment": [{
         "name": "SLACK_USER_TOKEN",
         "description": "User access token for the Slack REST API. See https://api.slack.com/apps on how to get one.",
         "sensitive": true

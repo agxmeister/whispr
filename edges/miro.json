@@ -13,7 +13,7 @@
             }
         }
     },
-    "configuration": [{
+    "environment": [{
         "name": "MIRO_API_KEY",
         "description": "Access token for the Miro REST API. See https://developers.miro.com/docs/getting-started-with-oauth on how to get one.",
         "sensitive": true

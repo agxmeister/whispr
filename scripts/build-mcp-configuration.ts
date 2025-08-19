@@ -26,7 +26,7 @@ const configPath = args.config
 
     const env: Record<string, string> = {};
     for (const edge of edges) {
-        for (const variable of edge.configuration) {
+        for (const variable of edge.environment) {
             env[variable.name] = `---> ${variable.description} <---`;
         }
     }

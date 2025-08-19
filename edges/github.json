@@ -15,7 +15,7 @@
             }
         }
     },
-    "configuration": [{
+    "environment": [{
         "name": "GITHUB_ACCESS_TOKEN",
         "description": "Access token for the GitHub REST API. See https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens on how to get one.",
         "sensitive": true

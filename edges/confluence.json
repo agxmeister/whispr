@@ -14,7 +14,7 @@
             }
         }
     },
-    "configuration": [
+    "environment": [
         {
             "name": "CONFLUENCE_DOMAIN",
             "description": "Your Confluence domain (the part before .atlassian.net).",

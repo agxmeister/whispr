@@ -9,7 +9,7 @@ export type Edge = {
             headers: Record<string, string>,
         },
     },
-    configuration: {
+    environment: {
         name: string,
         description: string,
         sensitive?: boolean,

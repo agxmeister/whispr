@@ -12,7 +12,7 @@
             }
         }
     },
-    "configuration": [{
+    "environment": [{
         "name": "JIRA_DOMAIN",
         "description": "Your Jira domain (the part before .atlassian.net)."
     }, {

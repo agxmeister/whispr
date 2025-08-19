@@ -12,7 +12,7 @@
             }
         }
     },
-    "configuration": [{
+    "environment": [{
         "name": "PLESK_API_BASE_URL",
         "description": "Base URL for the Plesk REST API. This should be your Plesk server URL followed by '/api/v2'."
     }, {
