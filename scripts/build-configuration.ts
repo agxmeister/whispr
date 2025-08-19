@@ -35,10 +35,12 @@ const filter = argv.filter
                     });
                     const edge: Edge = JSON.parse(edgeConfiguration);
 
-                    edge.environment = edge.environment.map(variable => ({
-                        ...variable,
-                        name: environmentVariableNameMapping[variable.name] || variable.name
-                    }));
+                    if (edge.environment) {
+                        edge.environment = edge.environment.map(variable => ({
+                            ...variable,
+                            name: environmentVariableNameMapping[variable.name] || variable.name
+                        }));
+                    }
                     
                     acc.push(edge);
                 } else {

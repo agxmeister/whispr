@@ -56,6 +56,10 @@ const filter = args.filter
             description: callApiEndpointTool.getDescription(),
         });
 
+        if (!edge.environment) {
+            continue;
+        }
+        
         for (const config of edge.environment) {
             manifest.server.mcp_config.env = {
                 ...manifest.server.mcp_config.env,
