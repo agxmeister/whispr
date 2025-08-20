@@ -19,7 +19,7 @@ export class GetApiEndpoints extends EdgeTool {
         return async () => ({
             content: [{
                 type: "text",
-                text: (await getOpenApiEndpoints(this.edge.api.specification))
+                text: (await getOpenApiEndpoints(this.edge.api.specification, this.profile.readonly))
                     .map((openApiEndpoint) => getApiEndpointDescription(openApiEndpoint))
                     .join("\n\n"),
             }]

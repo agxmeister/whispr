@@ -1,4 +1,5 @@
 import {Edge} from "../edge";
+import {Profile} from "../config";
 
 export interface Tool {
     getName(): string;
@@ -8,7 +9,7 @@ export interface Tool {
 }
 
 export interface EdgeToolFactory {
-    create(edge: Edge): Tool;
+    create(edge: Edge, profile: Profile): Tool;
 }
 
 export type OpenApiEndpoint = {
