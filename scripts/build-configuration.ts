@@ -24,7 +24,7 @@ const filter = argv.filter
                 if (originalEdge.environment) {
                     const environmentVariableNameMapping: Record<string, string> = {};
                     originalEdge.environment.forEach(variable => {
-                        environmentVariableNameMapping[variable.name] = `EDGE_${originalEdge.name.toUpperCase()}_${variable.name}`;
+                        environmentVariableNameMapping[variable.name] = `EDGE_${originalEdge.name.split('-').join('_').toUpperCase()}_${variable.name}`;
                     });
                     
                     let edgeConfiguration = fs.readFileSync(edgeFilePath, 'utf-8');
