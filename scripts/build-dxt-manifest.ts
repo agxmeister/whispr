@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import minimist from 'minimist';
 import {EdgeService, EdgeRepository} from "../src/modules/edge";
-import {ConfigService, ConfigRepository} from "../src/modules/config";
+import {ConfigService, ConfigRepository, ProfileService} from "../src/modules/config";
 import {CallApiEndpointFactory, GetApiEndpointsFactory, GetApiEndpointDetailsFactory} from "../src/modules/tool";
 
 type DxtManifest = {
@@ -35,15 +35,17 @@ const filter = args.filter
 
     const configRepository = new ConfigRepository(configPath);
     const configService = new ConfigService(configRepository);
+    const profileService = new ProfileService(await configService.getConfig());
+    const profile = profileService.getProfile();
     const edgeRepository = new EdgeRepository(configService);
     const edgeService = new EdgeService(edgeRepository);
     const edges = (await edgeService.getEdges())
         .filter(edge => filter.length > 0 ? filter.includes(edge.name.toLowerCase()) : true);
 
     for (const edge of edges) {
-        const getApiEndpointsTool = new GetApiEndpointsFactory().create(edge);
-        const getApiEndpointDetailsTool = new GetApiEndpointDetailsFactory().create(edge);
-        const callApiEndpointTool = new CallApiEndpointFactory().create(edge);
+        const getApiEndpointsTool = new GetApiEndpointsFactory().create(edge, profile);
+        const getApiEndpointDetailsTool = new GetApiEndpointDetailsFactory().create(edge, profile);
+        const callApiEndpointTool = new CallApiEndpointFactory().create(edge, profile);
 
         manifest.tools.push({
             name: getApiEndpointsTool.getName(),
