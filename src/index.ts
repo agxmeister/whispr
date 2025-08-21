@@ -7,6 +7,7 @@ import {ConfigService, ConfigRepository, ProfileService} from "./modules/config"
 import {McpService} from "./modules/mcp";
 import {CallApiEndpointFactory, GetApiEndpointDetailsFactory, GetApiEndpointsFactory} from "./modules/tool";
 import {RatatouilleFactory} from "./modules/assistant/ratatouille";
+import {AssistantService} from "./modules/assistant";
 
 dotenv.config();
 const args = minimist(process.argv.slice(2));
@@ -23,6 +24,13 @@ const args = minimist(process.argv.slice(2));
     const edgeRepository = new EdgeRepository(configService);
     const edgeService = new EdgeService(edgeRepository);
     const edges = await edgeService.getEdges();
+    const assistantService = new AssistantService([
+        new RatatouilleFactory({
+            apiUrl: process.env.ASSISTANT_RATATOUILLE_API_URL || "",
+            chiefName: process.env.ASSISTANT_RATATOUILLE_CHIEF_NAME || "",
+        }),
+    ], configService);
+    const assistants = await assistantService.getAssistants();
     const serverService = new McpService();
     const server = serverService.getMcpServer(
         edges,
@@ -32,12 +40,7 @@ const args = minimist(process.argv.slice(2));
             new GetApiEndpointDetailsFactory(),
             new CallApiEndpointFactory(),
         ],
-        [
-            new RatatouilleFactory({
-                apiUrl: process.env.ASSISTANT_RATATOUILLE_API_URL || "",
-                chiefName: process.env.ASSISTANT_RATATOUILLE_CHIEF_NAME || "",
-            }),
-        ]
+        assistants
     );
     const transport = new StdioServerTransport();
     await server.connect(transport);

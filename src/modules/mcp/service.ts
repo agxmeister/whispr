@@ -2,10 +2,10 @@ import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {Edge} from "../edge";
 import {Profile} from "../config";
 import {EdgeToolFactory} from "../tool/types";
-import {AssistantFactory} from "../assistant";
+import {Assistant} from "../assistant";
 
 export class McpService {
-    public getMcpServer(edges: Edge[], profile: Profile, edgeToolFactories: EdgeToolFactory[], assistantFactories: AssistantFactory[] = []): McpServer {
+    public getMcpServer(edges: Edge[], profile: Profile, edgeToolFactories: EdgeToolFactory[], assistants: Assistant[] = []): McpServer {
         const server = new McpServer({
             name: "whispr",
             version: "1.0.0",
@@ -18,8 +18,7 @@ export class McpService {
             }
         }
 
-        for (const factory of assistantFactories) {
-            const assistant = factory.create();
+        for (const assistant of assistants) {
             const tools = assistant.getTools();
             for (const tool of tools) {
                 server.tool(tool.getName(), tool.getDescription(), tool.getSchema(), tool.getHandler());
