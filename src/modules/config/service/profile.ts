@@ -1,13 +1,15 @@
-import { Config, Profile } from "../types";
+import { Profile } from "../types";
+import { ConfigService } from "./config";
 
 export class ProfileService {
-    constructor(private readonly config: Config) {
+    constructor(private readonly configService: ConfigService) {
     }
 
-    getProfile(): Profile {
+    async getProfile(): Promise<Profile> {
+        const config = await this.configService.getConfig();
         return {
             readonly: false,
-            ...this.config.profile,
+            ...config.profile,
         };
     }
 }

@@ -1,15 +1,8 @@
-import {Edge} from "../edge";
-import {Profile} from "../config";
-
 export interface Tool {
     getName(): string;
     getDescription(): string;
     getSchema(): any;
     getHandler(): (...args: any[]) => Promise<any>;
-}
-
-export interface EdgeToolFactory {
-    create(edge: Edge, profile: Profile): Tool;
 }
 
 export type OpenApiEndpoint = {

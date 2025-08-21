@@ -35,17 +35,16 @@ const filter = args.filter
 
     const configRepository = new ConfigRepository(configPath);
     const configService = new ConfigService(configRepository);
-    const profileService = new ProfileService(await configService.getConfig());
-    const profile = profileService.getProfile();
+    const profileService = new ProfileService(configService);
     const edgeRepository = new EdgeRepository(configService);
     const edgeService = new EdgeService(edgeRepository);
     const edges = (await edgeService.getEdges())
         .filter(edge => filter.length > 0 ? filter.includes(edge.name.toLowerCase()) : true);
 
     for (const edge of edges) {
-        const getApiEndpointsTool = new GetApiEndpointsFactory().create(edge, profile);
-        const getApiEndpointDetailsTool = new GetApiEndpointDetailsFactory().create(edge, profile);
-        const callApiEndpointTool = new CallApiEndpointFactory().create(edge, profile);
+        const getApiEndpointsTool = await new GetApiEndpointsFactory(profileService).create(edge);
+        const getApiEndpointDetailsTool = await new GetApiEndpointDetailsFactory(profileService).create(edge);
+        const callApiEndpointTool = await new CallApiEndpointFactory(profileService).create(edge);
 
         manifest.tools.push({
             name: getApiEndpointsTool.getName(),

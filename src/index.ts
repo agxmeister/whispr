@@ -18,9 +18,7 @@ const args = minimist(process.argv.slice(2));
         : path.join(__dirname, '../config.json')
     );
     const configService = new ConfigService(configRepository);
-    const config = await configService.getConfig();
-    const profileService = new ProfileService(config);
-    const profile = profileService.getProfile();
+    const profileService = new ProfileService(configService);
     const edgeRepository = new EdgeRepository(configService);
     const edgeService = new EdgeService(edgeRepository);
     const edges = await edgeService.getEdges();
@@ -32,13 +30,12 @@ const args = minimist(process.argv.slice(2));
     ], configService);
     const assistants = await assistantService.getAssistants();
     const serverService = new McpService();
-    const server = serverService.getMcpServer(
+    const server = await serverService.getMcpServer(
         edges,
-        profile,
         [
-            new GetApiEndpointsFactory(),
-            new GetApiEndpointDetailsFactory(),
-            new CallApiEndpointFactory(),
+            new GetApiEndpointsFactory(profileService),
+            new GetApiEndpointDetailsFactory(profileService),
+            new CallApiEndpointFactory(profileService),
         ],
         assistants
     );
