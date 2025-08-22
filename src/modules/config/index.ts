@@ -1,4 +1,3 @@
-export { ConfigService } from "./service/config";
-export { ProfileService } from "./service/profile";
+export { ConfigService } from "./service";
 export { ConfigRepository } from "./repository";
-export { Config, Profile } from "./types";
+export { Config } from "./types";

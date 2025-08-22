@@ -1,5 +1,5 @@
-import { Profile } from "../types";
-import { ConfigService } from "./config";
+import { Profile } from "./types";
+import { ConfigService } from "../config";
 
 export class ProfileService {
     constructor(private readonly configService: ConfigService) {

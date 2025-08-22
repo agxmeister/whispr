@@ -1,5 +1,5 @@
-import { Config } from "../types";
-import { ConfigRepository } from "../repository";
+import { Config } from "./types";
+import { ConfigRepository } from "./repository";
 
 export class ConfigService {
     constructor(readonly configRepository: ConfigRepository) {

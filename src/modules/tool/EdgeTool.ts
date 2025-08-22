@@ -1,5 +1,5 @@
 import {Edge} from "../edge";
-import {Profile} from "../config";
+import {Profile} from "../profile";
 import {Tool} from "./types";
 
 export abstract class EdgeTool implements Tool {
