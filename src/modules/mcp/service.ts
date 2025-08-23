@@ -1,7 +1,7 @@
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
-import {Edge} from "../edge";
-import {EdgeToolFactory} from "../edge/tool";
-import {Assistant} from "../assistant";
+import {Edge} from "@/modules/edge";
+import {EdgeToolFactory} from "@/modules/edge/tool";
+import {Assistant} from "@/modules/assistant";
 
 export class McpService {
     public async getMcpServer(edges: Edge[], edgeToolFactories: EdgeToolFactory[], assistants: Assistant[] = []): Promise<McpServer> {

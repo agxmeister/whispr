@@ -1,7 +1,7 @@
 import * as path from 'path';
 import minimist from 'minimist';
-import {EdgeService, EdgeRepository} from "../src/modules/edge";
-import {ConfigService, ConfigRepository} from "../src/modules/config";
+import {EdgeService, EdgeRepository} from "@/modules/edge";
+import {ConfigService, ConfigRepository} from "@/modules/config";
 
 const args = minimist(process.argv.slice(2));
 const rootDir = path.resolve(__dirname, '..');

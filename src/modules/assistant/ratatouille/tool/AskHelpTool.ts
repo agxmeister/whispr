@@ -1,6 +1,6 @@
-import {z as zod} from "zod";
-import {Tool} from "../../../mcp";
 import axios from "axios";
+import {z as zod} from "zod";
+import {Tool} from "@/modules/mcp";
 import {RatatouilleOptions} from "../types";
 import {askHelpToolSchema} from "./schemas";
 

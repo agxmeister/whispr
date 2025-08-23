@@ -1,5 +1,5 @@
 import {Edge} from "./types";
-import {ConfigService} from "../config";
+import {ConfigService} from "@/modules/config";
 
 export class EdgeRepository {
     constructor(readonly configService: ConfigService) {

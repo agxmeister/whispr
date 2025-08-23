@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import minimist from 'minimist';
-import { Edge } from '../src/modules/edge';
+import { Edge } from '@/modules/edge';
 
 const argv = minimist(process.argv.slice(2));
 const rootDir = path.resolve(__dirname, '..');

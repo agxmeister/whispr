@@ -1,5 +1,5 @@
 import { Assistant, AssistantFactory } from "./types";
-import { ConfigService } from "../config";
+import { ConfigService } from "@/modules/config";
 
 export class AssistantService {
     constructor(readonly assistantFactories: AssistantFactory[], readonly configService: ConfigService) {

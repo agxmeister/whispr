@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import minimist from 'minimist';
-import {EdgeService, EdgeRepository} from "../src/modules/edge";
-import {ConfigService, ConfigRepository} from "../src/modules/config";
-import {ProfileService} from "../src/modules/profile";
-import {CallApiEndpointFactory, GetApiEndpointsFactory, GetApiEndpointDetailsFactory} from "../src/modules/edge/tool";
+import {EdgeService, EdgeRepository} from "@/modules/edge";
+import {ConfigService, ConfigRepository} from "@/modules/config";
+import {ProfileService} from "@/modules/profile";
+import {CallApiEndpointFactory, GetApiEndpointsFactory, GetApiEndpointDetailsFactory} from "@/modules/edge/tool";
 
 type DxtManifest = {
     server: {
