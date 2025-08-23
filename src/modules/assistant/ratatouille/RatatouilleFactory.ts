@@ -1,7 +1,7 @@
 import {Assistant, AssistantFactory} from "../types";
 import {Ratatouille} from "./Ratatouille";
 import {RatatouilleOptions} from "./types";
-import {AskHelpTool} from "./AskHelpTool";
+import {AskHelpTool} from "./tool";
 
 export class RatatouilleFactory implements AssistantFactory {
     constructor(readonly options: RatatouilleOptions) {

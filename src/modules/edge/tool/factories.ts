@@ -1,5 +1,5 @@
-import {Edge} from "../edge";
-import {Tool} from "./types";
+import {Edge} from "../index";
+import {Tool} from "../../mcp";
 import {EdgeToolFactory} from "./EdgeToolFactory";
 import {CallApiEndpoint} from "./CallApiEndpoint";
 import {GetApiEndpoints} from "./GetApiEndpoints";

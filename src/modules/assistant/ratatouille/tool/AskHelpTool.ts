@@ -1,7 +1,7 @@
 import {z as zod} from "zod";
-import {Tool} from "../../tool";
+import {Tool} from "../../../mcp";
 import axios from "axios";
-import {RatatouilleOptions} from "./types";
+import {RatatouilleOptions} from "../types";
 import {askHelpToolSchema} from "./schemas";
 
 export class AskHelpTool implements Tool {

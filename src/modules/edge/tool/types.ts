@@ -1,10 +1,3 @@
-export interface Tool {
-    getName(): string;
-    getDescription(): string;
-    getSchema(): any;
-    getHandler(): (...args: any[]) => Promise<any>;
-}
-
 export type OpenApiEndpoint = {
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     path: string,

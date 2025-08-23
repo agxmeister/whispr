@@ -6,7 +6,7 @@ import {EdgeService, EdgeRepository} from "./modules/edge";
 import {ConfigService, ConfigRepository} from "./modules/config";
 import {ProfileService} from "./modules/profile";
 import {McpService} from "./modules/mcp";
-import {CallApiEndpointFactory, GetApiEndpointDetailsFactory, GetApiEndpointsFactory} from "./modules/tool";
+import {CallApiEndpointFactory, GetApiEndpointDetailsFactory, GetApiEndpointsFactory} from "./modules/edge/tool";
 import {RatatouilleFactory} from "./modules/assistant/ratatouille";
 import {AssistantService} from "./modules/assistant";
 

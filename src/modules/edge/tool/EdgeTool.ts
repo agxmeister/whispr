@@ -1,6 +1,6 @@
-import {Edge} from "../edge";
-import {Profile} from "../profile";
-import {Tool} from "./types";
+import {Edge} from "../index";
+import {Profile} from "../../profile";
+import {Tool} from "../../mcp";
 
 export abstract class EdgeTool implements Tool {
     constructor(readonly edge: Edge, readonly profile: Profile) {

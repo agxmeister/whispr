@@ -1,6 +1,6 @@
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {Edge} from "../edge";
-import {EdgeToolFactory} from "../tool/EdgeToolFactory";
+import {EdgeToolFactory} from "../edge/tool";
 import {Assistant} from "../assistant";
 
 export class McpService {

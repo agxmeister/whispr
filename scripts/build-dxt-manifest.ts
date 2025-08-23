@@ -4,7 +4,7 @@ import minimist from 'minimist';
 import {EdgeService, EdgeRepository} from "../src/modules/edge";
 import {ConfigService, ConfigRepository} from "../src/modules/config";
 import {ProfileService} from "../src/modules/profile";
-import {CallApiEndpointFactory, GetApiEndpointsFactory, GetApiEndpointDetailsFactory} from "../src/modules/tool";
+import {CallApiEndpointFactory, GetApiEndpointsFactory, GetApiEndpointDetailsFactory} from "../src/modules/edge/tool";
 
 type DxtManifest = {
     server: {
