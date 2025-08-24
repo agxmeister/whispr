@@ -6,7 +6,7 @@ MCP server providing access to the WP Toolkit REST API.
 
 Build the STDIO entry point (index.js):
 
-`npx tsc && npx tsc-alias`
+`npm run build`
 
 Build the Claude Desktop Extension (whispr.dxt):
 
