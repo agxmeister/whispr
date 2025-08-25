@@ -21,3 +21,26 @@ export const callApiEndpointSchema = zod.object({
     body: zod.string().optional()
         .describe("JSON-encoded request body, if applicable"),
 });
+
+export const apiEndpointSchema = zod.object({
+    action: zod.union([
+        zod.object({
+            type: zod.literal("list-endpoints"),
+        })
+            .describe("Returns a list of available REST API endpoints."),
+        zod.object({
+            type: zod.literal("get-endpoint-details"),
+            endpoint: apiEndpointsSchema,
+        })
+            .describe("Returns details on how to use a specific REST API endpoint."),
+        zod.object({
+            type: zod.literal("call-endpoint"),
+            endpoint: apiEndpointsSchema,
+            parameters: zod.string().optional()
+                .describe("URL-encoded request parameters, if applicable"),
+            body: zod.string().optional()
+                .describe("JSON-encoded request body, if applicable"),
+        })
+            .describe("Calls a specific REST API endpoint."),
+    ]),
+});

@@ -4,8 +4,11 @@ import {EdgeToolFactory} from "./EdgeToolFactory";
 import {CallApiEndpoint} from "./CallApiEndpoint";
 import {GetApiEndpoints} from "./GetApiEndpoints";
 import {GetApiEndpointDetails} from "./GetApiEndpointDetails";
+import {ApiEndpoint} from "./ApiEndpoint";
 
 export class CallApiEndpointFactory extends EdgeToolFactory {
+    readonly name = "call-api-endpoint";
+
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
         return new CallApiEndpoint(edge, profile);
@@ -13,6 +16,8 @@ export class CallApiEndpointFactory extends EdgeToolFactory {
 }
 
 export class GetApiEndpointsFactory extends EdgeToolFactory {
+    readonly name = "get-api-endpoints";
+
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
         return new GetApiEndpoints(edge, profile);
@@ -20,8 +25,19 @@ export class GetApiEndpointsFactory extends EdgeToolFactory {
 }
 
 export class GetApiEndpointDetailsFactory extends EdgeToolFactory {
+    readonly name = "get-api-endpoint-details";
+
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
         return new GetApiEndpointDetails(edge, profile);
+    }
+}
+
+export class ApiEndpointFactory extends EdgeToolFactory {
+    readonly name = "api-endpoint";
+
+    async create(edge: Edge): Promise<Tool> {
+        const profile = await this.profileService.getProfile();
+        return new ApiEndpoint(edge, profile);
     }
 }

@@ -6,7 +6,12 @@ import {EdgeService, EdgeRepository} from "@/modules/edge";
 import {ConfigService, ConfigRepository} from "@/modules/config";
 import {ProfileService} from "@/modules/profile";
 import {McpService} from "@/modules/mcp";
-import {CallApiEndpointFactory, GetApiEndpointDetailsFactory, GetApiEndpointsFactory} from "@/modules/edge/tool";
+import {
+    ApiEndpointFactory,
+    CallApiEndpointFactory,
+    GetApiEndpointDetailsFactory,
+    GetApiEndpointsFactory
+} from "@/modules/edge/tool";
 import {RatatouilleFactory} from "@/modules/assistant/ratatouille";
 import {AssistantService} from "@/modules/assistant";
 
@@ -31,13 +36,15 @@ const args = minimist(process.argv.slice(2));
     ], configService);
     const assistants = await assistantService.getAssistants();
     const serverService = new McpService();
+    const profile = await profileService.getProfile();
     const server = await serverService.getMcpServer(
         edges,
         [
+            new ApiEndpointFactory(profileService),
             new GetApiEndpointsFactory(profileService),
             new GetApiEndpointDetailsFactory(profileService),
             new CallApiEndpointFactory(profileService),
-        ],
+        ].filter(factory => profile.edge.tools.includes(factory.name)),
         assistants
     );
     const transport = new StdioServerTransport();

@@ -9,6 +9,9 @@ export class ProfileService {
         const config = await this.configService.getConfig();
         return {
             readonly: false,
+            edge: {
+                tools: ["api-endpoint"],
+            },
             ...config.profile,
         };
     }

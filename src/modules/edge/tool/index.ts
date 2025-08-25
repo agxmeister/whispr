@@ -1,2 +1,2 @@
-export {CallApiEndpointFactory, GetApiEndpointsFactory, GetApiEndpointDetailsFactory} from "./factories";
+export {CallApiEndpointFactory, GetApiEndpointsFactory, GetApiEndpointDetailsFactory, ApiEndpointFactory} from "./factories";
 export {EdgeToolFactory} from "./EdgeToolFactory";

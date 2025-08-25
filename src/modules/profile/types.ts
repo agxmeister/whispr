@@ -1,3 +1,6 @@
 export type Profile = {
-    readonly?: boolean;
+    readonly: boolean;
+    edge: {
+        tools: string[];
+    };
 };
