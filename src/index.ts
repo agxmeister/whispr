@@ -10,7 +10,8 @@ import {
     ApiEndpointFactory,
     CallApiEndpointFactory,
     GetApiEndpointDetailsFactory,
-    GetApiEndpointsFactory
+    GetApiEndpointsFactory,
+    EdgeToolService
 } from "@/modules/edge/tool";
 import {RatatouilleFactory} from "@/modules/assistant/ratatouille";
 import {AssistantService} from "@/modules/assistant";
@@ -28,25 +29,25 @@ const args = minimist(process.argv.slice(2));
     const edgeRepository = new EdgeRepository(configService);
     const edgeService = new EdgeService(edgeRepository);
     const edges = await edgeService.getEdges();
-    const assistantService = new AssistantService([
-        new RatatouilleFactory({
-            apiUrl: process.env.ASSISTANT_RATATOUILLE_API_URL || "",
-            chiefName: process.env.ASSISTANT_RATATOUILLE_CHIEF_NAME || "",
-        }),
-    ], configService);
-    const assistants = await assistantService.getAssistants();
-    const serverService = new McpService();
-    const profile = await profileService.getProfile();
-    const server = await serverService.getMcpServer(
-        edges,
+    const assistantService = new AssistantService(
+        configService,
         [
-            new ApiEndpointFactory(profileService),
-            new GetApiEndpointsFactory(profileService),
-            new GetApiEndpointDetailsFactory(profileService),
-            new CallApiEndpointFactory(profileService),
-        ].filter(factory => profile.edge.tools.includes(factory.name)),
-        assistants
+            new RatatouilleFactory({
+                apiUrl: process.env.ASSISTANT_RATATOUILLE_API_URL || "",
+                chiefName: process.env.ASSISTANT_RATATOUILLE_CHIEF_NAME || "",
+            }),
+        ]
     );
+    const assistantFactories = await assistantService.getAssistantFactories();
+    const serverService = new McpService();
+    const edgeToolService = new EdgeToolService(profileService, [
+        new ApiEndpointFactory(profileService),
+        new GetApiEndpointsFactory(profileService),
+        new GetApiEndpointDetailsFactory(profileService),
+        new CallApiEndpointFactory(profileService),
+    ]);
+    const edgeToolFactories = await edgeToolService.getEdgeToolFactories();
+    const server = await serverService.getMcpServer(edges, edgeToolFactories, assistantFactories);
     const transport = new StdioServerTransport();
     await server.connect(transport);
 })();

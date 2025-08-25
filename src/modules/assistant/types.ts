@@ -7,5 +7,6 @@ export interface Assistant {
 }
 
 export interface AssistantFactory {
+    readonly name: string;
     create(options?: Record<string, string>): Assistant;
 }

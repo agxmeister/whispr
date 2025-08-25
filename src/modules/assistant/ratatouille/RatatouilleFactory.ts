@@ -4,6 +4,8 @@ import {RatatouilleOptions} from "./types";
 import {AskHelpTool} from "./tool";
 
 export class RatatouilleFactory implements AssistantFactory {
+    readonly name = "ratatouille";
+    
     constructor(readonly options: RatatouilleOptions) {
     }
 

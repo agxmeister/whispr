@@ -1,10 +1,10 @@
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {Edge} from "@/modules/edge";
 import {EdgeToolFactory} from "@/modules/edge/tool";
-import {Assistant} from "@/modules/assistant";
+import {AssistantFactory} from "@/modules/assistant";
 
 export class McpService {
-    public async getMcpServer(edges: Edge[], edgeToolFactories: EdgeToolFactory[], assistants: Assistant[] = []): Promise<McpServer> {
+    public async getMcpServer(edges: Edge[], edgeToolFactories: EdgeToolFactory[], assistantFactories: AssistantFactory[] = []): Promise<McpServer> {
         const server = new McpServer({
             name: "whispr",
             version: "1.0.0",
@@ -17,7 +17,8 @@ export class McpService {
             }
         }
 
-        for (const assistant of assistants) {
+        for (const factory of assistantFactories) {
+            const assistant = factory.create();
             const tools = assistant.getTools();
             for (const tool of tools) {
                 server.tool(tool.getName(), tool.getDescription(), tool.getSchema(), tool.getHandler());
