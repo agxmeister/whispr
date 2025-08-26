@@ -1,6 +1,6 @@
 export interface Tool {
-    getName(): string;
-    getDescription(): string;
-    getSchema(): any;
-    getHandler(): (...args: any[]) => Promise<any>;
+    readonly name: string;
+    readonly description: string;
+    readonly schema: any;
+    readonly handler: (...args: any[]) => Promise<any>;
 }

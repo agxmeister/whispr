@@ -6,35 +6,24 @@ import {apiEndpointSchema} from "./schemas";
 import {getApiEndpointDescription, getOpenApiEndpoints} from "./utils";
 
 export class ApiEndpoint extends EdgeTool {
-    getName(): string {
-        return `${this.edge.name.toLowerCase()}-api`;
-    }
+    readonly name = `${this.edge.name.toLowerCase()}-api`;
+    readonly description = `If you want to ${this.edge.tasks.join(", ")}, use this tool to interact with the ${this.edge.name} REST API. A typical workflow is to list available ${this.edge.name} endpoints, get endpoint details, and then call endpoints. Do not call an endpoint before scrutinizing how to use it properly!`;
+    readonly schema = apiEndpointSchema.shape;
+    readonly handler = async (params: zod.infer<typeof apiEndpointSchema>) => {
+        const action = params.action;
 
-    getDescription(): string {
-        return `If you want to ${this.edge.tasks.join(", ")}, use this tool to interact with the ${this.edge.name} REST API. A typical workflow is to list available ${this.edge.name} endpoints, get endpoint details, and then call endpoints. Do not call an endpoint before scrutinizing how to use it properly!`;
-    }
+        if (action.type === "list-endpoints") {
+            return await this.listEndpoints();
+        }
 
-    getSchema() {
-        return apiEndpointSchema.shape;
-    }
+        if (action.type === "get-endpoint-details") {
+            return await this.getEndpointDetails(action.endpoint);
+        }
 
-    getHandler() {
-        return async (params: zod.infer<typeof apiEndpointSchema>) => {
-            const action = params.action;
-
-            if (action.type === "list-endpoints") {
-                return await this.listEndpoints();
-            }
-
-            if (action.type === "get-endpoint-details") {
-                return await this.getEndpointDetails(action.endpoint);
-            }
-
-            if (action.type === "call-endpoint") {
-                return await this.callEndpoint(action.endpoint, action.parameters, action.body);
-            }
-        };
-    }
+        if (action.type === "call-endpoint") {
+            return await this.callEndpoint(action.endpoint, action.parameters, action.body);
+        }
+    };
 
     private async listEndpoints() {
         return {

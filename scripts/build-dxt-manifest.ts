@@ -48,14 +48,14 @@ const filter = args.filter
         const callApiEndpointTool = await new CallApiEndpointFactory(profileService).create(edge);
 
         manifest.tools.push({
-            name: getApiEndpointsTool.getName(),
-            description: getApiEndpointsTool.getDescription(),
+            name: getApiEndpointsTool.name,
+            description: getApiEndpointsTool.description,
         }, {
-            name: getApiEndpointDetailsTool.getName(),
-            description: getApiEndpointDetailsTool.getDescription(),
+            name: getApiEndpointDetailsTool.name,
+            description: getApiEndpointDetailsTool.description,
         }, {
-            name: callApiEndpointTool.getName(),
-            description: callApiEndpointTool.getDescription(),
+            name: callApiEndpointTool.name,
+            description: callApiEndpointTool.description,
         });
 
         if (!edge.environment) {

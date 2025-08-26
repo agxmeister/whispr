@@ -8,44 +8,33 @@ export class AskHelpTool implements Tool {
     constructor(readonly options: RatatouilleOptions) {
     }
 
-    getName(): string {
-        return `${this.options.chiefName.toLowerCase()}-ask-help`;
-    }
+    readonly name = `${this.options.chiefName.toLowerCase()}-ask-help`;
+    readonly description = `Use this tool if ${this.options.chiefName} was asked to do something. Typical workflow is getting the list of available guides, picking the guide that fits the most, and execute its steps until completion. This tool also allows to manage guides - use this ability only if you were explicitly asked to create a new guide or update an existing one.`;
+    readonly schema = askHelpToolSchema.shape;
+    readonly handler = async (params: zod.infer<typeof askHelpToolSchema>) => {
+        const action = params.action;
 
-    getDescription(): string {
-        return `Use this tool if ${this.options.chiefName} was asked to do something. Typical workflow is getting the list of available guides, picking the guide that fits the most, and execute its steps until completion. This tool also allows to manage guides - use this ability only if you were explicitly asked to create a new guide or update an existing one.`;
-    }
+        if (action.type === "list-guides") {
+            return await this.listGuides();
+        }
 
-    getSchema() {
-        return askHelpToolSchema.shape;
-    }
+        if (action.type === "get-guide") {
+            return await this.getGuideDetails(action.guideId);
+        }
 
-    getHandler(): (...args: any[]) => Promise<any> {
-        return async (params: zod.infer<typeof askHelpToolSchema>) => {
-            const action = params.action;
+        if (action.type === "create-guide") {
+            return await this.createGuide(action);
+        }
 
-            if (action.type === "list-guides") {
-                return await this.listGuides();
-            }
+        if (action.type === "update-guide") {
+            const { guideId, ...updateData } = action;
+            return await this.updateGuide(guideId, updateData);
+        }
 
-            if (action.type === "get-guide") {
-                return await this.getGuideDetails(action.guideId);
-            }
-
-            if (action.type === "create-guide") {
-                return await this.createGuide(action);
-            }
-
-            if (action.type === "update-guide") {
-                const { guideId, ...updateData } = action;
-                return await this.updateGuide(guideId, updateData);
-            }
-
-            if (action.type === "delete-guide") {
-                return await this.deleteGuide(action.guideId);
-            }
-        };
-    }
+        if (action.type === "delete-guide") {
+            return await this.deleteGuide(action.guideId);
+        }
+    };
 
     private async listGuides() {
         try {

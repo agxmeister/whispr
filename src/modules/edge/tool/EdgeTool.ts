@@ -6,8 +6,8 @@ export abstract class EdgeTool implements Tool {
     constructor(readonly edge: Edge, readonly profile: Profile) {
     }
 
-    abstract getName(): string;
-    abstract getDescription(): string;
-    abstract getSchema(): any;
-    abstract getHandler(): (...args: any[]) => Promise<any>;
+    abstract readonly name: string;
+    abstract readonly description: string;
+    abstract readonly schema: any;
+    abstract readonly handler: (...args: any[]) => Promise<any>;
 }
