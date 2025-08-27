@@ -5,13 +5,15 @@ import {CallApiEndpoint} from "./CallApiEndpoint";
 import {GetApiEndpoints} from "./GetApiEndpoints";
 import {GetApiEndpointDetails} from "./GetApiEndpointDetails";
 import {ApiEndpoint} from "./ApiEndpoint";
+import {RestApi} from "./RestApi";
 
 export class CallApiEndpointFactory extends EdgeToolFactory {
     readonly name = "call-api-endpoint";
 
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
-        return new CallApiEndpoint(edge, profile);
+        const restApi = this.restApiFactory.create(edge, profile);
+        return new CallApiEndpoint(edge, restApi);
     }
 }
 
@@ -20,7 +22,8 @@ export class GetApiEndpointsFactory extends EdgeToolFactory {
 
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
-        return new GetApiEndpoints(edge, profile);
+        const restApi = this.restApiFactory.create(edge, profile);
+        return new GetApiEndpoints(edge, restApi);
     }
 }
 
@@ -29,7 +32,8 @@ export class GetApiEndpointDetailsFactory extends EdgeToolFactory {
 
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
-        return new GetApiEndpointDetails(edge, profile);
+        const restApi = this.restApiFactory.create(edge, profile);
+        return new GetApiEndpointDetails(edge, restApi);
     }
 }
 
@@ -38,6 +42,7 @@ export class ApiEndpointFactory extends EdgeToolFactory {
 
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
-        return new ApiEndpoint(edge, profile);
+        const restApi = this.restApiFactory.create(edge, profile);
+        return new ApiEndpoint(edge, restApi);
     }
 }

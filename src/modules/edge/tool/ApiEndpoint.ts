@@ -1,9 +1,7 @@
 import {z as zod} from "zod";
-import axios, {AxiosRequestConfig} from "axios";
-import https from "https";
 import {EdgeTool} from "./EdgeTool";
 import {apiEndpointSchema} from "./schemas";
-import {getApiEndpointDescription, getOpenApiEndpoints} from "./utils";
+import {RestApi} from "./RestApi";
 
 export class ApiEndpoint extends EdgeTool {
     readonly name = `${this.edge.name.toLowerCase()}-api`;
@@ -13,91 +11,15 @@ export class ApiEndpoint extends EdgeTool {
         const action = params.action;
 
         if (action.type === "list-endpoints") {
-            return await this.listEndpoints();
+            return await this.restApi.listEndpoints();
         }
 
         if (action.type === "get-endpoint-details") {
-            return await this.getEndpointDetails(action.endpoint);
+            return await this.restApi.getEndpointDetails(action.endpoint);
         }
 
         if (action.type === "call-endpoint") {
-            return await this.callEndpoint(action.endpoint, action.parameters, action.body);
+            return await this.restApi.callEndpoint(action.endpoint, action.parameters, action.body);
         }
     };
-
-    private async listEndpoints() {
-        return {
-            content: [{
-                type: "text",
-                text: (await getOpenApiEndpoints(this.edge.api.specification, this.profile.readonly))
-                    .map((openApiEndpoint) => getApiEndpointDescription(openApiEndpoint))
-                    .join("\n\n"),
-            }]
-        };
-    }
-
-    private async getEndpointDetails(endpoint: { method: string; path: string }) {
-        const target = (await getOpenApiEndpoints(this.edge.api.specification))
-            .filter(({method, path}) =>
-                path === endpoint.path && method === endpoint.method
-            ).shift();
-
-        if (!target) {
-            return {
-                content: [{
-                    type: "text",
-                    text: `Endpoint ${endpoint.method} ${endpoint.path} does not exists.`,
-                }],
-                isError: true,
-            };
-        }
-
-        return {
-            content: [{
-                type: "text",
-                text: `${target.method} ${target.path} - ${target.details.description}
-        ${target.details.parameters
-                    ? `\n\nParameters:\n\n${JSON.stringify(target.details.parameters, null, 2)}`
-                    : "\n\nNo parameters expected."}
-        ${target.details.requestBody
-                    ? `\n\nRequest body:\n\n${JSON.stringify(target.details.requestBody, null, 2)}`
-                    : "\n\nRequest body must be empty."}`,
-            }]
-        }
-    }
-
-    private async callEndpoint(endpoint: { method: string; path: string }, parameters?: string, body?: string) {
-        try {
-            const config: AxiosRequestConfig = {
-                headers: {
-                    "Content-Type": "application/json",
-                    ...this.edge.api.request.headers,
-                },
-                method: endpoint.method,
-                url: `${this.edge.api.request.url}${endpoint.path}?${parameters || ""}`,
-                data: body ? JSON.parse(body) : undefined,
-                maxRedirects: 0,
-                validateStatus: (status) => status < 500,
-                httpsAgent: new https.Agent({
-                    rejectUnauthorized: false
-                }),
-            };
-            const response = await axios(config);
-            return {
-                content: [{
-                    type: "text",
-                    text: `HTTP code ${response.status}, response body:\n\n${JSON.stringify(response.data, null, 2)}`,
-                }],
-                isError: response.status >= 400,
-            };
-        } catch (error) {
-            return {
-                content: [{
-                    type: "text",
-                    text: `Error: ${error instanceof Error ? error.message : String(error)}`,
-                }],
-                isError: true,
-            };
-        }
-    }
 }

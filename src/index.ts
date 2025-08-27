@@ -11,7 +11,8 @@ import {
     CallApiEndpointFactory,
     GetApiEndpointDetailsFactory,
     GetApiEndpointsFactory,
-    EdgeToolService
+    EdgeToolService,
+    RestApiFactory
 } from "@/modules/edge/tool";
 import {RatatouilleFactory} from "@/modules/assistant/ratatouille";
 import {AssistantService} from "@/modules/assistant";
@@ -40,11 +41,12 @@ const args = minimist(process.argv.slice(2));
     );
     const assistantFactories = await assistantService.getAssistantFactories();
     const serverService = new McpService();
+    const restApiFactory = new RestApiFactory();
     const edgeToolService = new EdgeToolService(profileService, [
-        new ApiEndpointFactory(profileService),
-        new GetApiEndpointsFactory(profileService),
-        new GetApiEndpointDetailsFactory(profileService),
-        new CallApiEndpointFactory(profileService),
+        new ApiEndpointFactory(restApiFactory, profileService),
+        new GetApiEndpointsFactory(restApiFactory, profileService),
+        new GetApiEndpointDetailsFactory(restApiFactory, profileService),
+        new CallApiEndpointFactory(restApiFactory, profileService),
     ]);
     const edgeToolFactories = await edgeToolService.getEdgeToolFactories();
     const server = await serverService.getMcpServer(edges, edgeToolFactories, assistantFactories);
