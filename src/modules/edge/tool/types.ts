@@ -1,15 +1,14 @@
 import {z as zod} from "zod";
-import {apiEndpointsSchema} from "@/modules/edge/tool/schemas";
-
-export type ApiEndpoint = zod.infer<typeof apiEndpointsSchema>;
+import {apiEndpointRouteSchema} from "@/modules/edge/tool/schemas";
 
 export type OpenApiEndpoint = {
-    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
-    path: string,
-    details: OpenApiEndpointDetails,
+    route: OpenApiEndpointRoute,
+    definition: OpenApiEndpointDefinition,
 }
 
-export type OpenApiEndpointDetails = {
+export type OpenApiEndpointRoute = zod.infer<typeof apiEndpointRouteSchema>;
+
+export type OpenApiEndpointDefinition = {
     summary: string,
     description: string,
     parameters?: [

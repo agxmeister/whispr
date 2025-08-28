@@ -12,10 +12,12 @@ export const getOpenApiEndpoints = async (specificationUrl: string, readonly?: b
                 ...Object.entries(pathData)
                     .filter(([_, methodData]: [string, any]) => !methodData.deprecated)
                     .filter(([method, _]: [string, any]) => !readonly || method.toUpperCase() === 'GET')
-                    .map(([method, methodData]: [string, any]) => ({
-                        method: method.toUpperCase(),
-                        path: path,
-                        details: methodData,
+                    .map(([method, methodData]: [string, any]): OpenApiEndpoint => ({
+                        route: {
+                            method: method.toUpperCase() as "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+                            path: path,
+                        },
+                        definition: methodData,
                     }))
             ],
             []
@@ -39,8 +41,8 @@ const getSpecification = async (specificationUrl: string): Promise<any> => {
     }
 };
 
-export const getApiEndpointDescription = ({method, path, details}: OpenApiEndpoint): string => {
+export const getApiEndpointDescription = ({route: {method, path}, definition}: OpenApiEndpoint): string => {
     const endpoint = `${method} ${path}`;
-    const explanation = details.summary ?? details.description;
+    const explanation = definition.summary ?? definition.description;
     return explanation ? `${endpoint} - ${explanation}` : endpoint;
 };

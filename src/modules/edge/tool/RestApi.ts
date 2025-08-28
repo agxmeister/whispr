@@ -3,6 +3,7 @@ import https from "https";
 import {Edge} from "@/modules/edge";
 import {Profile} from "@/modules/profile";
 import {getApiEndpointDescription, getOpenApiEndpoints} from "./utils";
+import {OpenApiEndpointRoute} from "@/modules/edge/tool/types";
 
 export class RestApi {
     constructor(private readonly edge: Edge, private readonly profile: Profile) {}
@@ -18,17 +19,17 @@ export class RestApi {
         };
     }
 
-    async getEndpointDetails(endpoint: { method: string; path: string }) {
+    async getEndpointDetails(route: OpenApiEndpointRoute) {
         const target = (await getOpenApiEndpoints(this.edge.api.specification))
-            .filter(({method, path}) =>
-                path === endpoint.path && method === endpoint.method
+            .filter((endpoint) =>
+                endpoint.route.path === route.path && endpoint.route.method === route.method
             ).shift();
 
         if (!target) {
             return {
                 content: [{
                     type: "text",
-                    text: `Endpoint ${endpoint.method} ${endpoint.path} does not exists.`,
+                    text: `Endpoint ${route.method} ${route.path} does not exists.`,
                 }],
                 isError: true,
             };
@@ -37,12 +38,12 @@ export class RestApi {
         return {
             content: [{
                 type: "text",
-                text: `${target.method} ${target.path} - ${target.details.description}
-        ${target.details.parameters
-                    ? `\n\nParameters:\n\n${JSON.stringify(target.details.parameters, null, 2)}`
+                text: `${target.route.method} ${target.route.path} - ${target.definition.description}
+        ${target.definition.parameters
+                    ? `\n\nParameters:\n\n${JSON.stringify(target.definition.parameters, null, 2)}`
                     : "\n\nNo parameters expected."}
-        ${target.details.requestBody
-                    ? `\n\nRequest body:\n\n${JSON.stringify(target.details.requestBody, null, 2)}`
+        ${target.definition.requestBody
+                    ? `\n\nRequest body:\n\n${JSON.stringify(target.definition.requestBody, null, 2)}`
                     : "\n\nRequest body must be empty."}`,
             }]
         }

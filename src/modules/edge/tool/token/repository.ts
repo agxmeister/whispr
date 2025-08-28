@@ -1,7 +1,7 @@
 import fs from "fs";
 import { AcknowledgmentToken } from "./types";
 import { Edge } from "@/modules/edge";
-import { ApiEndpoint } from "../types";
+import { OpenApiEndpointRoute } from "../types";
 
 export class AcknowledgmentTokenRepository {
     constructor(readonly filePath: string) {
@@ -19,13 +19,13 @@ export class AcknowledgmentTokenRepository {
         return [];
     }
 
-    find(edge: Edge, endpoint: ApiEndpoint): AcknowledgmentToken | null {
+    find(edge: Edge, endpoint: OpenApiEndpointRoute): AcknowledgmentToken | null {
         const tokens = this.getAll();
         const endpointKey = this.createEndpointKey(endpoint);
         return tokens.find(token => token.edge === edge.name.toLowerCase() && token.endpoint === endpointKey) || null;
     }
 
-    add(edge: Edge, endpoint: ApiEndpoint): AcknowledgmentToken {
+    add(edge: Edge, endpoint: OpenApiEndpointRoute): AcknowledgmentToken {
         const token: AcknowledgmentToken = {
             code: this.generateCode(),
             edge: edge.name.toLowerCase(),
@@ -44,7 +44,7 @@ export class AcknowledgmentTokenRepository {
         return token;
     }
 
-    private createEndpointKey(endpoint: ApiEndpoint): string {
+    private createEndpointKey(endpoint: OpenApiEndpointRoute): string {
         return `${endpoint.method.toLowerCase()}${endpoint.path.toLowerCase().split('/').join('-')}`;
     }
 
