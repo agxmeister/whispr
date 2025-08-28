@@ -10,7 +10,7 @@ export class ProfileService {
         return {
             readonly: false,
             edge: {
-                tools: ["api-endpoint"],
+                tools: ["acknowledged-api-endpoint"],
             },
             ...config.profile,
         };

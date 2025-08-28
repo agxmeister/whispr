@@ -2,7 +2,7 @@
     "name": "Slack",
     "description": "Slack is a messaging platform for teams that brings all communication together in one place.",
     "tasks": [
-        "read Slack threads,",
+        "read Slack threads",
         "send Slack messages"
     ],
     "api": {
