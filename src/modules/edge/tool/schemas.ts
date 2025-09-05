@@ -53,12 +53,22 @@ export const acknowledgedApiEndpointSchema = zod.object({
             .describe("Returns a list of available REST API endpoints."),
         zod.object({
             type: zod.literal("get-endpoint-details"),
-            endpoint: apiEndpointRouteSchema,
+            endpoint: zod.object({
+                method: zod.enum(["GET", "POST", "PUT", "PATCH", "DELETE"])
+                    .describe("HTTP method"),
+                path: zod.string()
+                    .describe("Path, e.g., /v1/installations"),
+            }).describe("REST API endpoint"),
         })
             .describe("Returns details on how to use a specific REST API endpoint and provides an acknowledgment token."),
         zod.object({
             type: zod.literal("call-endpoint"),
-            endpoint: apiEndpointRouteSchema,
+            endpoint: zod.object({
+                method: zod.enum(["GET", "POST", "PUT", "PATCH", "DELETE"])
+                    .describe("HTTP method"),
+                path: zod.string()
+                    .describe("Path, e.g., /v1/installations"),
+            }).describe("REST API endpoint"),
             acknowledgmentToken: zod.string()
                 .describe("The acknowledgment token obtained from get-endpoint-details action"),
             parameters: zod.string().optional()
