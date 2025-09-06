@@ -67,10 +67,12 @@ export const acknowledgedApiEndpointSchema = zod.object({
                 method: zod.enum(["GET", "POST", "PUT", "PATCH", "DELETE"])
                     .describe("HTTP method"),
                 path: zod.string()
-                    .describe("Path, e.g., /v1/installations"),
+                    .describe("Path with placeholders from OpenAPI spec, e.g., /rest/api/3/issue/{issueKey}"),
             }).describe("REST API endpoint"),
             acknowledgmentToken: zod.string()
                 .describe("The acknowledgment token obtained from get-endpoint-details action"),
+            placeholders: zod.record(zod.string(), zod.string()).optional()
+                .describe("Key-value pairs to replace placeholders in the path, e.g., {issueKey: 'PL-123'}"),
             parameters: zod.string().optional()
                 .describe("URL-encoded request parameters, if applicable"),
             body: zod.string().optional()

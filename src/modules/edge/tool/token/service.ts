@@ -7,7 +7,11 @@ export class AcknowledgmentTokenService {
     constructor(private readonly repository: AcknowledgmentTokenRepository) {
     }
 
-    getAcknowledgmentToken(edge: Edge, endpoint: OpenApiEndpointRoute): AcknowledgmentToken {
+    getAcknowledgmentToken(edge: Edge, endpoint: OpenApiEndpointRoute): AcknowledgmentToken | null {
+        return this.repository.find(edge, endpoint);
+    }
+
+    setAcknowledgmentToken(edge: Edge, endpoint: OpenApiEndpointRoute): AcknowledgmentToken {
         const token = this.repository.find(edge, endpoint);
         if (token) {
             return token;

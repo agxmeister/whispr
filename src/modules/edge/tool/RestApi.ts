@@ -49,15 +49,22 @@ export class RestApi {
         }
     }
 
-    async callEndpoint(endpoint: { method: string; path: string }, parameters?: string, body?: string) {
+    async callEndpoint(endpoint: { method: string; path: string }, placeholders?: Record<string, string>, parameters?: string, body?: string) {
         try {
+            const path = Object.entries(placeholders || {}).reduce(
+                (path, [key, value]) => path
+                    .split(`{${key}}`)
+                    .join(value),
+                endpoint.path,
+            );
+
             const config: AxiosRequestConfig = {
                 headers: {
                     "Content-Type": "application/json",
                     ...this.edge.api.request.headers,
                 },
                 method: endpoint.method,
-                url: `${this.edge.api.request.url}${endpoint.path}?${parameters || ""}`,
+                url: `${this.edge.api.request.url}${path}?${parameters || ""}`,
                 data: body ? JSON.parse(body) : undefined,
                 maxRedirects: 0,
                 validateStatus: (status) => status < 500,
@@ -65,7 +72,9 @@ export class RestApi {
                     rejectUnauthorized: false
                 }),
             };
+
             const response = await axios(config);
+
             return {
                 content: [{
                     type: "text",

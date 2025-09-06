@@ -26,7 +26,7 @@ export class AcknowledgedApiEndpoint extends EdgeTool {
         }
 
         if (action.type === "get-endpoint-details") {
-            const acknowledgmentToken = this.tokenService.getAcknowledgmentToken(this.edge, action.endpoint);
+            const acknowledgmentToken = this.tokenService.setAcknowledgmentToken(this.edge, action.endpoint);
             const details = await this.restApi.getEndpointDetails(action.endpoint);
             
             details.content.push({
@@ -38,10 +38,11 @@ export class AcknowledgedApiEndpoint extends EdgeTool {
         }
 
         if (action.type === "call-endpoint") {
-            if (action.acknowledgmentToken !== this.tokenService.getAcknowledgmentToken(this.edge, action.endpoint).code) {
+            const token = this.tokenService.getAcknowledgmentToken(this.edge, action.endpoint);
+            if (!token || action.acknowledgmentToken !== token.code) {
                 throw new Error("Invalid acknowledgment token. You must call get-endpoint-details first to obtain a valid token for this endpoint.");
             }
-            return await this.restApi.callEndpoint(action.endpoint, action.parameters, action.body);
+            return await this.restApi.callEndpoint(action.endpoint, action.placeholders, action.parameters, action.body);
         }
     };
 }

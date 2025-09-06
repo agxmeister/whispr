@@ -20,16 +20,21 @@ export class AcknowledgmentTokenRepository {
     }
 
     find(edge: Edge, endpoint: OpenApiEndpointRoute): AcknowledgmentToken | null {
-        const tokens = this.getAll();
-        const endpointKey = this.createEndpointKey(endpoint);
-        return tokens.find(token => token.edge === edge.name.toLowerCase() && token.endpoint === endpointKey) || null;
+        return this.getAll().find(token =>
+            token.edge === edge.name.toLowerCase()
+            && token.endpoint.method === endpoint.method.toLowerCase()
+            && token.endpoint.path === endpoint.path
+        ) || null;
     }
 
     add(edge: Edge, endpoint: OpenApiEndpointRoute): AcknowledgmentToken {
         const token: AcknowledgmentToken = {
             code: this.generateCode(),
             edge: edge.name.toLowerCase(),
-            endpoint: this.createEndpointKey(endpoint),
+            endpoint: {
+                method: endpoint.method.toLowerCase(),
+                path: endpoint.path
+            },
             created: new Date().toISOString()
         };
 
@@ -42,10 +47,6 @@ export class AcknowledgmentTokenRepository {
         }
 
         return token;
-    }
-
-    private createEndpointKey(endpoint: OpenApiEndpointRoute): string {
-        return `${endpoint.method.toLowerCase()}${endpoint.path.toLowerCase().split('/').join('-')}`;
     }
 
     private generateCode(): string {
