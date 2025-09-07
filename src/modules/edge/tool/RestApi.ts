@@ -3,7 +3,7 @@ import https from "https";
 import {Edge} from "@/modules/edge";
 import {Profile} from "@/modules/profile";
 import {getApiEndpointDescription, getOpenApiEndpoints} from "./utils";
-import {OpenApiEndpointRoute} from "@/modules/edge/tool/types";
+import {OpenApiEndpointRoute, Placeholder} from "@/modules/edge/tool/types";
 
 export class RestApi {
     constructor(private readonly edge: Edge, private readonly profile: Profile) {}
@@ -49,12 +49,12 @@ export class RestApi {
         }
     }
 
-    async callEndpoint(endpoint: { method: string; path: string }, placeholders?: Record<string, string>, parameters?: string, body?: string) {
+    async callEndpoint(endpoint: { method: string; path: string }, placeholders?: Placeholder[], parameters?: string, body?: string) {
         try {
-            const path = Object.entries(placeholders || {}).reduce(
-                (path, [key, value]) => path
-                    .split(`{${key}}`)
-                    .join(value),
+            const path = (placeholders || []).reduce(
+                (path, placeholder) => path
+                    .split(`{${placeholder.key}}`)
+                    .join(placeholder.value),
                 endpoint.path,
             );
 
