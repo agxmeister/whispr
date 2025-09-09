@@ -40,9 +40,3 @@ const getSpecification = async (specificationUrl: string): Promise<any> => {
         }
     }
 };
-
-export const getApiEndpointDescription = ({route: {method, path}, definition}: OpenApiEndpoint): string => {
-    const endpoint = `${method} ${path}`;
-    const explanation = definition.summary ?? definition.description;
-    return explanation ? `${endpoint} - ${explanation}` : endpoint;
-};

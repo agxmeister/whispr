@@ -2,19 +2,24 @@ import axios, {AxiosRequestConfig} from "axios";
 import https from "https";
 import {Edge} from "@/modules/edge";
 import {Profile} from "@/modules/profile";
-import {getApiEndpointDescription, getOpenApiEndpoints} from "./utils";
+import {getOpenApiEndpoints} from "./utils";
 import {OpenApiEndpointRoute, Placeholder} from "@/modules/edge/tool/types";
 
 export class RestApi {
     constructor(private readonly edge: Edge, private readonly profile: Profile) {}
 
     async listEndpoints() {
+        const endpoints = await getOpenApiEndpoints(this.edge.api.specification, this.profile.readonly);
+        
         return {
             content: [{
                 type: "text",
-                text: (await getOpenApiEndpoints(this.edge.api.specification, this.profile.readonly))
-                    .map((openApiEndpoint) => getApiEndpointDescription(openApiEndpoint))
-                    .join("\n\n"),
+                text: JSON.stringify(
+                    endpoints.map((openApiEndpoint) => ({
+                        route: openApiEndpoint.route,
+                        summary: openApiEndpoint.definition.summary ?? openApiEndpoint.definition.description,
+                    })), null, 2,
+                ),
             }]
         };
     }
