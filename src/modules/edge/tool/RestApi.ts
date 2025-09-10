@@ -34,7 +34,9 @@ export class RestApi {
             return {
                 content: [{
                     type: "text",
-                    text: `Endpoint ${route.method} ${route.path} does not exists.`,
+                    text: JSON.stringify({
+                        error: `Endpoint ${route.method} ${route.path} does not exist.`
+                    }, null, 2),
                 }],
                 isError: true,
             };
@@ -43,15 +45,16 @@ export class RestApi {
         return {
             content: [{
                 type: "text",
-                text: `${target.route.method} ${target.route.path} - ${target.definition.description}
-        ${target.definition.parameters
-                    ? `\n\nParameters:\n\n${JSON.stringify(target.definition.parameters, null, 2)}`
-                    : "\n\nNo parameters expected."}
-        ${target.definition.requestBody
-                    ? `\n\nRequest body:\n\n${JSON.stringify(target.definition.requestBody, null, 2)}`
-                    : "\n\nRequest body must be empty."}`,
+                text: JSON.stringify({
+                    route: target.route,
+                    summary: target.definition.summary || null,
+                    description: target.definition.description || null,
+                    parameters: target.definition.parameters
+                        ?.filter(parameter => ["query", "path"].includes(parameter.in)) || null,
+                    body: target.definition.requestBody || null,
+                }, null, 2),
             }]
-        }
+        };
     }
 
     async callEndpoint(endpoint: { method: string; path: string }, placeholders?: Placeholder[], parameters?: string, body?: string) {
