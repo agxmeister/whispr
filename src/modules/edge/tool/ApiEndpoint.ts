@@ -19,7 +19,7 @@ export class ApiEndpoint extends EdgeTool {
         }
 
         if (action.type === "call-endpoint") {
-            return await this.restApi.callEndpoint(action.endpoint, undefined, action.parameters, action.body);
+            return await this.restApi.callEndpoint(action.endpoint, action.pathParameters, action.queryParameters, action.body);
         }
     };
 }

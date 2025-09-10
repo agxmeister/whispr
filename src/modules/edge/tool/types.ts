@@ -17,7 +17,7 @@ export type OpenApiEndpointDefinition = {
     requestBody?: Record<string, any>
 }
 
-export type Placeholder = {
+export type Parameter = {
     key: string;
     value: string;
 };

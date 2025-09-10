@@ -3,7 +3,7 @@ import https from "https";
 import {Edge} from "@/modules/edge";
 import {Profile} from "@/modules/profile";
 import {getOpenApiEndpoints} from "./utils";
-import {OpenApiEndpointRoute, Placeholder} from "@/modules/edge/tool/types";
+import {OpenApiEndpointRoute, Parameter} from "@/modules/edge/tool/types";
 
 export class RestApi {
     constructor(private readonly edge: Edge, private readonly profile: Profile) {}
@@ -57,14 +57,18 @@ export class RestApi {
         };
     }
 
-    async callEndpoint(endpoint: { method: string; path: string }, placeholders?: Placeholder[], parameters?: string, body?: string) {
+    async callEndpoint(endpoint: { method: string; path: string }, pathParameters?: Parameter[], queryParameters?: Parameter[], body?: string) {
         try {
-            const path = (placeholders || []).reduce(
-                (path, placeholder) => path
-                    .split(`{${placeholder.key}}`)
-                    .join(placeholder.value),
+            const path = (pathParameters || []).reduce(
+                (path, pathParam) => path
+                    .split(`{${pathParam.key}}`)
+                    .join(pathParam.value),
                 endpoint.path,
             );
+
+            const query = (queryParameters || [])
+                .map(queryParam => `${encodeURIComponent(queryParam.key)}=${encodeURIComponent(queryParam.value)}`)
+                .join('&');
 
             const config: AxiosRequestConfig = {
                 headers: {
@@ -72,7 +76,7 @@ export class RestApi {
                     ...this.edge.api.request.headers,
                 },
                 method: endpoint.method,
-                url: `${this.edge.api.request.url}${path}?${parameters || ""}`,
+                url: `${this.edge.api.request.url}${path}${query ? `?${query}` : ''}`,
                 data: body ? JSON.parse(body) : undefined,
                 maxRedirects: 0,
                 validateStatus: (status) => status < 500,

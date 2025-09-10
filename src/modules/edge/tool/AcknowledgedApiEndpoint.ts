@@ -42,7 +42,7 @@ export class AcknowledgedApiEndpoint extends EdgeTool {
             if (!token || action.acknowledgmentToken !== token.code) {
                 throw new Error("Invalid acknowledgment token. You must call get-endpoint-details first to obtain a valid token for this endpoint.");
             }
-            return await this.restApi.callEndpoint(action.endpoint, action.placeholders, action.parameters, action.body);
+            return await this.restApi.callEndpoint(action.endpoint, action.pathParameters, action.queryParameters, action.body);
         }
     };
 }
