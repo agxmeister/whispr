@@ -1,7 +1,6 @@
 import {z as zod} from "zod";
 import {EdgeTool} from "./EdgeTool";
 import {apiEndpointToolSchema} from "./schemas";
-import {RestApi} from "./RestApi";
 
 export class ApiEndpoint extends EdgeTool {
     readonly name = `${this.edge.name.toLowerCase()}-api`;
