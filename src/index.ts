@@ -13,7 +13,7 @@ import {
     GetApiEndpointDetailsFactory,
     GetApiEndpointsFactory,
     EdgeToolService,
-    RestApiFactory
+    RestFactory
 } from "@/modules/edge/tool";
 import {AcknowledgmentTokenService} from "@/modules/edge/tool/token/service";
 import {AcknowledgmentTokenRepository} from "@/modules/edge/tool/token/repository";
@@ -44,7 +44,7 @@ const args = minimist(process.argv.slice(2));
     );
     const assistantFactories = await assistantService.getAssistantFactories();
     const serverService = new McpService();
-    const restApiFactory = new RestApiFactory();
+    const restApiFactory = new RestFactory();
     const tokenRepository = new AcknowledgmentTokenRepository(path.join(__dirname, '../data/acknowledgment-tokens.json'));
     const tokenService = new AcknowledgmentTokenService(tokenRepository);
     const edgeToolService = new EdgeToolService(profileService, [

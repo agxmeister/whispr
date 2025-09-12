@@ -7,5 +7,5 @@ export class GetApiEndpointDetails extends EdgeTool {
     readonly description = `Returns details on how to use a specific ${this.edge.name} REST API endpoint.`;
     readonly schema = getApiEndpointDetailsToolSchema.shape;
     readonly handler = async ({endpoint}: zod.infer<typeof getApiEndpointDetailsToolSchema>) =>
-        await this.restApi.getEndpointDetails(endpoint);
+        await this.rest.getEndpointDetails(endpoint);
 }

@@ -5,7 +5,7 @@ import {Profile} from "@/modules/profile";
 import {getOpenApiEndpoints} from "./utils";
 import {OpenApiEndpointRoute, Parameter} from "@/modules/edge/tool/types";
 
-export class RestApi {
+export class Rest {
     constructor(private readonly edge: Edge, private readonly profile: Profile) {}
 
     async listEndpoints() {

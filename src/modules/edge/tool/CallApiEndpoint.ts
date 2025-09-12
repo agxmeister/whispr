@@ -7,5 +7,5 @@ export class CallApiEndpoint extends EdgeTool {
     readonly description = `Calls a specific ${this.edge.name} REST API endpoint.`;
     readonly schema = callApiEndpointToolSchema.shape;
     readonly handler = async ({endpoint, pathParameters, queryParameters, body}: zod.infer<typeof callApiEndpointToolSchema>) =>
-        await this.restApi.callEndpoint(endpoint, pathParameters, queryParameters, body);
+        await this.rest.callEndpoint(endpoint, pathParameters, queryParameters, body);
 }

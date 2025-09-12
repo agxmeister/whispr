@@ -5,7 +5,8 @@ export const apiEndpointRouteSchema = zod.object({
         .describe("HTTP method"),
     path: zod.string()
         .describe("Path, e.g., /rest/api/3/issue/{issueKey}"),
-}).describe("REST API endpoint");
+})
+    .describe("REST API endpoint");
 
 export const getApiEndpointsToolSchema = zod.object({
 });
@@ -16,7 +17,8 @@ export const getApiEndpointDetailsToolSchema = zod.object({
             .describe("HTTP method"),
         path: zod.string()
             .describe("Path, e.g., /rest/api/3/issue/{issueKey}"),
-    }).describe("REST API endpoint"),
+    })
+        .describe("REST API endpoint"),
 });
 
 export const callApiEndpointToolSchema = zod.object({
@@ -25,7 +27,8 @@ export const callApiEndpointToolSchema = zod.object({
             .describe("HTTP method"),
         path: zod.string()
             .describe("Path, e.g., /rest/api/3/issue/{issueKey}"),
-    }).describe("REST API endpoint"),
+    })
+        .describe("REST API endpoint"),
     pathParameters: zod.array(zod.object({
         key: zod.string(),
         value: zod.string()

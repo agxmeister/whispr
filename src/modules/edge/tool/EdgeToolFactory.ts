@@ -1,12 +1,12 @@
 import {Edge} from "@/modules/edge";
 import {ProfileService} from "@/modules/profile";
 import {Tool} from "@/modules/mcp";
-import {RestApiFactory} from "./RestApiFactory";
+import {RestFactory} from "./RestFactory";
 
 export abstract class EdgeToolFactory {
     abstract readonly name: string;
 
-    constructor(protected readonly restApiFactory: RestApiFactory, protected readonly profileService: ProfileService) {
+    constructor(protected readonly restFactory: RestFactory, protected readonly profileService: ProfileService) {
     }
 
     abstract create(edge: Edge): Promise<Tool>;

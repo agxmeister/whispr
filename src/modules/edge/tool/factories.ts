@@ -4,12 +4,12 @@ import {EdgeToolFactory} from "./EdgeToolFactory";
 import {CallApiEndpoint} from "./CallApiEndpoint";
 import {GetApiEndpoints} from "./GetApiEndpoints";
 import {GetApiEndpointDetails} from "./GetApiEndpointDetails";
-import {ApiEndpoint} from "./ApiEndpoint";
-import {AcknowledgedApiEndpoint} from "./AcknowledgedApiEndpoint";
-import {RestApi} from "./RestApi";
+import {RawApi} from "./RawApi";
+import {GuidedApi} from "./GuidedApi";
+import {Rest} from "./Rest";
 import {AcknowledgmentTokenService} from "./token/service";
 import {AcknowledgmentTokenRepository} from "./token/repository";
-import {RestApiFactory} from "./RestApiFactory";
+import {RestFactory} from "./RestFactory";
 import {ProfileService} from "@/modules/profile";
 
 export class CallApiEndpointFactory extends EdgeToolFactory {
@@ -17,8 +17,8 @@ export class CallApiEndpointFactory extends EdgeToolFactory {
 
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
-        const restApi = this.restApiFactory.create(edge, profile);
-        return new CallApiEndpoint(edge, restApi);
+        const rest = this.restFactory.create(edge, profile);
+        return new CallApiEndpoint(edge, rest);
     }
 }
 
@@ -27,8 +27,8 @@ export class GetApiEndpointsFactory extends EdgeToolFactory {
 
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
-        const restApi = this.restApiFactory.create(edge, profile);
-        return new GetApiEndpoints(edge, restApi);
+        const rest = this.restFactory.create(edge, profile);
+        return new GetApiEndpoints(edge, rest);
     }
 }
 
@@ -37,35 +37,35 @@ export class GetApiEndpointDetailsFactory extends EdgeToolFactory {
 
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
-        const restApi = this.restApiFactory.create(edge, profile);
-        return new GetApiEndpointDetails(edge, restApi);
+        const rest = this.restFactory.create(edge, profile);
+        return new GetApiEndpointDetails(edge, rest);
     }
 }
 
 export class ApiEndpointFactory extends EdgeToolFactory {
-    readonly name = "api-endpoint";
+    readonly name = "raw-api";
 
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
-        const restApi = this.restApiFactory.create(edge, profile);
-        return new ApiEndpoint(edge, restApi);
+        const rest = this.restFactory.create(edge, profile);
+        return new RawApi(edge, rest);
     }
 }
 
 export class AcknowledgedApiEndpointFactory extends EdgeToolFactory {
-    readonly name = "acknowledged-api-endpoint";
+    readonly name = "guided-api";
 
     constructor(
-        restApiFactory: RestApiFactory,
+        restFactory: RestFactory,
         profileService: ProfileService,
         private readonly tokenService: AcknowledgmentTokenService
     ) {
-        super(restApiFactory, profileService);
+        super(restFactory, profileService);
     }
 
     async create(edge: Edge): Promise<Tool> {
         const profile = await this.profileService.getProfile();
-        const restApi = this.restApiFactory.create(edge, profile);
-        return new AcknowledgedApiEndpoint(edge, restApi, this.tokenService);
+        const rest = this.restFactory.create(edge, profile);
+        return new GuidedApi(edge, rest, this.tokenService);
     }
 }
