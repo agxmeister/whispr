@@ -90,7 +90,10 @@ export class Rest {
             return {
                 content: [{
                     type: "text",
-                    text: `HTTP code ${response.status}, response body:\n\n${JSON.stringify(response.data, null, 2)}`,
+                    text: JSON.stringify({
+                        status: response.status,
+                        body: response.data
+                    }, null, 2),
                 }],
                 isError: response.status >= 400,
             };
@@ -98,7 +101,9 @@ export class Rest {
             return {
                 content: [{
                     type: "text",
-                    text: `Error: ${error instanceof Error ? error.message : String(error)}`,
+                    text: JSON.stringify({
+                        error: error instanceof Error ? error.message : error
+                    }, null, 2),
                 }],
                 isError: true,
             };

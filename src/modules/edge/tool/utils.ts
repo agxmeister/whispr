@@ -14,7 +14,7 @@ export const getOpenApiEndpoints = async (specificationUrl: string, readonly?: b
                     .filter(([method, _]: [string, any]) => !readonly || method.toUpperCase() === 'GET')
                     .map(([method, methodData]: [string, any]): OpenApiEndpoint => ({
                         route: {
-                            method: method.toUpperCase() as "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+                            method: method.toLowerCase(),
                             path: path,
                         },
                         definition: methodData,
