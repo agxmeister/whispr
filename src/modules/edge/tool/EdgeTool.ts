@@ -1,6 +1,6 @@
 import {Edge} from "@/modules/edge";
 import {Tool} from "@/modules/mcp";
-import {Rest} from "./Rest";
+import {Rest} from "./rest/Rest";
 
 export abstract class EdgeTool implements Tool {
     constructor(readonly edge: Edge, protected readonly rest: Rest) {

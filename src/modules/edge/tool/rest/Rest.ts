@@ -2,7 +2,7 @@ import axios, {AxiosRequestConfig} from "axios";
 import https from "https";
 import {Edge} from "@/modules/edge";
 import {Profile} from "@/modules/profile";
-import {getOpenApiEndpoints} from "./utils";
+import {getOpenApiEndpoints} from "../utils";
 import {OpenApiEndpointRoute, Parameter} from "@/modules/edge/tool/types";
 
 export class Rest {

@@ -1,14 +1,14 @@
 import {z as zod} from "zod";
 import {EdgeTool} from "./EdgeTool";
-import {acknowledgedApiEndpointSchema} from "./schemas";
-import {Rest} from "./Rest";
+import {guidedApiToolSchema} from "./schemas";
+import {Rest} from "./rest/Rest";
 import {Edge} from "@/modules/edge";
 import {AcknowledgmentTokenService} from "./token/service";
 
 export class GuidedApi extends EdgeTool {
     readonly name = `${this.edge.name.toLowerCase()}-guided-api`;
     readonly description = `If you want to ${this.edge.tasks.join(", ")}, use this tool to interact with the ${this.edge.name} REST API. This tool requires getting endpoint details first to obtain an acknowledgment token before calling any endpoint. A typical workflow is to list available ${this.edge.name} endpoints, get endpoint details (which provides a token), and then call endpoints using the token. You MUST call get-endpoint-details before calling any endpoint to ensure you understand how to use it properly!`;
-    readonly schema = acknowledgedApiEndpointSchema.shape;
+    readonly schema = guidedApiToolSchema.shape;
 
     constructor(
         edge: Edge, 
@@ -18,7 +18,7 @@ export class GuidedApi extends EdgeTool {
         super(edge, rest);
     }
 
-    readonly handler = async (params: zod.infer<typeof acknowledgedApiEndpointSchema>) => {
+    readonly handler = async (params: zod.infer<typeof guidedApiToolSchema>) => {
         const action = params.action;
 
         if (action.type === "list-endpoints") {

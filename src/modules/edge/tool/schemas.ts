@@ -1,13 +1,5 @@
 import {z as zod} from "zod";
 
-export const apiEndpointRouteSchema = zod.object({
-    method: zod.string()
-        .describe("HTTP method"),
-    path: zod.string()
-        .describe("Path, e.g., /rest/api/3/issue/{issueKey}"),
-})
-    .describe("REST API endpoint");
-
 export const getApiEndpointsToolSchema = zod.object({
 });
 
@@ -43,7 +35,7 @@ export const callApiEndpointToolSchema = zod.object({
         .describe("JSON-encoded request body"),
 });
 
-export const apiEndpointToolSchema = zod.object({
+export const apiToolSchema = zod.object({
     action: zod.union([
         zod.object({
             type: zod.literal("list-endpoints"),
@@ -63,7 +55,7 @@ export const apiEndpointToolSchema = zod.object({
     ]),
 });
 
-export const acknowledgedApiEndpointSchema = zod.object({
+export const guidedApiToolSchema = zod.object({
     action: zod.union([
         zod.object({
             type: zod.literal("list-endpoints"),

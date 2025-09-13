@@ -1,12 +1,12 @@
-import {z as zod} from "zod";
-import {apiEndpointRouteSchema} from "@/modules/edge/tool/schemas";
-
 export type OpenApiEndpoint = {
     route: OpenApiEndpointRoute,
     definition: OpenApiEndpointDefinition,
 }
 
-export type OpenApiEndpointRoute = zod.infer<typeof apiEndpointRouteSchema>;
+export type OpenApiEndpointRoute = {
+    method: string,
+    path: string,
+};
 
 export type OpenApiEndpointDefinition = {
     summary: string,
