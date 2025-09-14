@@ -13,7 +13,7 @@ export class McpService {
         for (const edge of edges) {
             for (const factory of edgeToolFactories) {
                 const tool = await factory.create(edge);
-                server.tool(tool.name, tool.description, tool.schema, tool.handler);
+                server.tool(tool.name, tool.description, tool.schema, tool.handler.bind(tool));
             }
         }
 
@@ -21,7 +21,7 @@ export class McpService {
             const assistant = factory.create();
             const tools = assistant.getTools();
             for (const tool of tools) {
-                server.tool(tool.name, tool.description, tool.schema, tool.handler);
+                server.tool(tool.name, tool.description, tool.schema, tool.handler.bind(tool));
             }
         }
 

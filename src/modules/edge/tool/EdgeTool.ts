@@ -9,5 +9,5 @@ export abstract class EdgeTool implements Tool {
     abstract readonly name: string;
     abstract readonly description: string;
     abstract readonly schema: any;
-    abstract readonly handler: (...args: any[]) => Promise<any>;
+    abstract handler(...args: any[]): Promise<any>;
 }

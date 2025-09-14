@@ -4,24 +4,18 @@ import {Edge} from "@/modules/edge";
 import {Profile} from "@/modules/profile";
 import {getOpenApiEndpoints} from "../utils";
 import {OpenApiEndpointRoute, Parameter} from "@/modules/edge/tool/types";
+import {HttpError} from "./HttpError";
 
 export class Rest {
     constructor(private readonly edge: Edge, private readonly profile: Profile) {}
 
     async listEndpoints() {
         const endpoints = await getOpenApiEndpoints(this.edge.api.specification, this.profile.readonly);
-        
-        return {
-            content: [{
-                type: "text",
-                text: JSON.stringify(
-                    endpoints.map((openApiEndpoint) => ({
-                        route: openApiEndpoint.route,
-                        summary: openApiEndpoint.definition.summary ?? openApiEndpoint.definition.description,
-                    })), null, 2,
-                ),
-            }]
-        };
+
+        return endpoints.map((openApiEndpoint) => ({
+            route: openApiEndpoint.route,
+            summary: openApiEndpoint.definition.summary ?? openApiEndpoint.definition.description,
+        }));
     }
 
     async getEndpointDetails(route: OpenApiEndpointRoute) {
@@ -31,82 +25,55 @@ export class Rest {
             ).shift();
 
         if (!target) {
-            return {
-                content: [{
-                    type: "text",
-                    text: JSON.stringify({
-                        error: `Endpoint ${route.method} ${route.path} does not exist.`
-                    }, null, 2),
-                }],
-                isError: true,
-            };
+            throw new Error(`Endpoint ${route.method} ${route.path} does not exist.`);
         }
 
         return {
-            content: [{
-                type: "text",
-                text: JSON.stringify({
-                    route: target.route,
-                    summary: target.definition.summary || null,
-                    description: target.definition.description || null,
-                    parameters: target.definition.parameters
-                        ?.filter(parameter => ["query", "path"].includes(parameter.in)) || null,
-                    body: target.definition.requestBody || null,
-                }, null, 2),
-            }]
+            route: target.route,
+            summary: target.definition.summary || null,
+            description: target.definition.description || null,
+            parameters: target.definition.parameters
+                ?.filter(parameter => ["query", "path"].includes(parameter.in)) || null,
+            body: target.definition.requestBody || null,
         };
     }
 
     async callEndpoint(endpoint: { method: string; path: string }, pathParameters?: Parameter[], queryParameters?: Parameter[], body?: string) {
-        try {
-            const path = (pathParameters || []).reduce(
-                (path, pathParam) => path
-                    .split(`{${pathParam.key}}`)
-                    .join(pathParam.value),
-                endpoint.path,
-            );
+        const path = (pathParameters || []).reduce(
+            (path, pathParam) => path
+                .split(`{${pathParam.key}}`)
+                .join(pathParam.value),
+            endpoint.path,
+        );
 
-            const query = (queryParameters || [])
-                .map(queryParam => `${encodeURIComponent(queryParam.key)}=${encodeURIComponent(queryParam.value)}`)
-                .join('&');
+        const query = (queryParameters || [])
+            .map(queryParam => `${encodeURIComponent(queryParam.key)}=${encodeURIComponent(queryParam.value)}`)
+            .join('&');
 
-            const config: AxiosRequestConfig = {
-                headers: {
-                    "Content-Type": "application/json",
-                    ...this.edge.api.request.headers,
-                },
-                method: endpoint.method,
-                url: `${this.edge.api.request.url}${path}${query ? `?${query}` : ''}`,
-                data: body ? JSON.parse(body) : undefined,
-                maxRedirects: 0,
-                validateStatus: (status) => status < 500,
-                httpsAgent: new https.Agent({
-                    rejectUnauthorized: false
-                }),
-            };
+        const config: AxiosRequestConfig = {
+            headers: {
+                "Content-Type": "application/json",
+                ...this.edge.api.request.headers,
+            },
+            method: endpoint.method,
+            url: `${this.edge.api.request.url}${path}${query ? `?${query}` : ''}`,
+            data: body ? JSON.parse(body) : undefined,
+            maxRedirects: 0,
+            validateStatus: (status) => status < 500,
+            httpsAgent: new https.Agent({
+                rejectUnauthorized: false
+            }),
+        };
 
-            const response = await axios(config);
+        const response = await axios(config);
 
-            return {
-                content: [{
-                    type: "text",
-                    text: JSON.stringify({
-                        status: response.status,
-                        body: response.data
-                    }, null, 2),
-                }],
-                isError: response.status >= 400,
-            };
-        } catch (error) {
-            return {
-                content: [{
-                    type: "text",
-                    text: JSON.stringify({
-                        error: error instanceof Error ? error.message : error
-                    }, null, 2),
-                }],
-                isError: true,
-            };
+        if (response.status >= 400) {
+            throw new HttpError(response.status, response.data);
         }
+
+        return {
+            status: response.status,
+            body: response.data
+        };
     }
 }

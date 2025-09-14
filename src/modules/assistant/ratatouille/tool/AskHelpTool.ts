@@ -3,6 +3,7 @@ import {z as zod} from "zod";
 import {Tool} from "@/modules/mcp";
 import {RatatouilleOptions} from "../types";
 import {askHelpToolSchema} from "./schemas";
+import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 
 export class AskHelpTool implements Tool {
     constructor(readonly options: RatatouilleOptions) {
@@ -11,7 +12,7 @@ export class AskHelpTool implements Tool {
     readonly name = `${this.options.chiefName.toLowerCase()}-ask-help`;
     readonly description = `Use this tool if ${this.options.chiefName} was asked to do something. Typical workflow is getting the list of available guides, picking the guide that fits the most, and execute its steps until completion. This tool also allows to manage guides - use this ability only if you were explicitly asked to create a new guide or update an existing one.`;
     readonly schema = askHelpToolSchema.shape;
-    readonly handler = async (params: zod.infer<typeof askHelpToolSchema>) => {
+    readonly handler = async (params: zod.infer<typeof askHelpToolSchema>): Promise<CallToolResult> => {
         const action = params.action;
 
         if (action.type === "list-guides") {
@@ -34,9 +35,17 @@ export class AskHelpTool implements Tool {
         if (action.type === "delete-guide") {
             return await this.deleteGuide(action.guideId);
         }
+
+        return {
+            content: [{
+                type: "text",
+                text: JSON.stringify({ error: "Unknown action type" }, null, 2),
+            }],
+            isError: true,
+        };
     };
 
-    private async listGuides() {
+    private async listGuides(): Promise<CallToolResult> {
         try {
             const response = await axios.get(`${this.options.apiUrl}/chief/${this.options.chiefName}/recipe`);
             return {
@@ -58,7 +67,7 @@ export class AskHelpTool implements Tool {
         }
     }
 
-    private async getGuideDetails(recipeId: string) {
+    private async getGuideDetails(recipeId: string): Promise<CallToolResult> {
         try {
             const response = await axios.get(`${this.options.apiUrl}/chief/${this.options.chiefName}/recipe/${recipeId}`);
             return {
@@ -78,7 +87,7 @@ export class AskHelpTool implements Tool {
         }
     }
 
-    private async createGuide(guideData: any) {
+    private async createGuide(guideData: any): Promise<CallToolResult> {
         const response = await axios.post(
             `${this.options.apiUrl}/chief/${this.options.chiefName}/recipe`,
             guideData,
@@ -91,7 +100,7 @@ export class AskHelpTool implements Tool {
         };
     }
 
-    private async updateGuide(guideId: string, guideData: any) {
+    private async updateGuide(guideId: string, guideData: any): Promise<CallToolResult> {
         const response = await axios.put(
             `${this.options.apiUrl}/chief/${this.options.chiefName}/recipe/${guideId}`,
             guideData,
@@ -104,7 +113,7 @@ export class AskHelpTool implements Tool {
         };
     }
 
-    private async deleteGuide(guideId: string) {
+    private async deleteGuide(guideId: string): Promise<CallToolResult> {
         await axios.delete(`${this.options.apiUrl}/chief/${this.options.chiefName}/recipe/${guideId}`);
         return {
             content: [{
