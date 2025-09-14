@@ -46,12 +46,12 @@ export const apiToolSchema = zod.object({
             type: zod.literal("get-endpoint-details"),
         })
             .extend(getApiEndpointDetailsToolSchema.shape)
-            .describe("Returns details on how to use a specific REST API endpoint."),
+            .describe("Returns details on how to use a REST API endpoint."),
         zod.object({
             type: zod.literal("call-endpoint"),
         })
             .extend(callApiEndpointToolSchema.shape)
-            .describe("Calls a specific REST API endpoint."),
+            .describe("Calls a REST API endpoint. Attention: Do not call an endpoint before getting details of how to use it!"),
     ]),
 });
 
@@ -66,15 +66,15 @@ export const guidedApiToolSchema = zod.object({
             type: zod.literal("get-endpoint-details"),
         })
             .extend(getApiEndpointDetailsToolSchema.shape)
-            .describe("Returns details on how to use a specific REST API endpoint, and provides an acknowledgment token."),
+            .describe("Returns details on how to use a REST API endpoint and provides an acknowledgment token."),
         zod.object({
             type: zod.literal("call-endpoint"),
         })
             .extend(callApiEndpointToolSchema
                 .extend({
                     acknowledgmentToken: zod.string()
-                        .describe("The acknowledgment token obtained by the get-endpoint-details action"),
+                        .describe("An acknowledgment token that was obtained using the get-endpoint-details action."),
                 }).shape)
-            .describe("Calls a specific REST API endpoint."),
+            .describe("Calls a REST API endpoint."),
     ]),
 });

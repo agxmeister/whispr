@@ -8,7 +8,7 @@ import {formatted} from "./decorators";
 
 export class GuidedApi extends EdgeTool {
     readonly name = `${this.edge.name.toLowerCase()}-guided-api`;
-    readonly description = `If you want to ${this.edge.tasks.join(", ")}, use this tool to interact with the ${this.edge.name} REST API. This tool requires getting endpoint details first to obtain an acknowledgment token before calling any endpoint. A typical workflow is to list available ${this.edge.name} endpoints, get endpoint details (which provides a token), and then call endpoints using the token. You MUST call get-endpoint-details before calling any endpoint to ensure you understand how to use it properly!`;
+    readonly description = `If you want to ${this.edge.tasks.join(", ")}, use this tool to interact with the ${this.edge.name} REST API. A typical workflow involves getting a list of ${this.edge.name} endpoints, getting details on how to use an appropriate endpoint, and finally, calling an endpoint.`;
     readonly schema = guidedApiToolSchema.shape;
 
     constructor(edge: Edge, rest: Rest, private readonly tokenService: AcknowledgmentTokenService) {
@@ -16,29 +16,22 @@ export class GuidedApi extends EdgeTool {
     }
 
     @formatted
-    async handler(params: zod.infer<typeof guidedApiToolSchema>) {
-        const action = params.action;
-
-        if (action.type === "list-endpoints") {
-            return await this.rest.listEndpoints();
-        }
-
-        if (action.type === "get-endpoint-details") {
-            const acknowledgmentToken = this.tokenService.setAcknowledgmentToken(this.edge, action.endpoint);
-            const details = await this.rest.getEndpointDetails(action.endpoint);
-
-            return {
-                ...details,
-                acknowledgmentToken: acknowledgmentToken.code
-            };
-        }
-
-        if (action.type === "call-endpoint") {
-            const token = this.tokenService.getAcknowledgmentToken(this.edge, action.endpoint);
-            if (!token || action.acknowledgmentToken !== token.code) {
-                throw new Error("Invalid acknowledgment token. You must call get-endpoint-details first to obtain a valid token for this endpoint.");
-            }
-            return await this.rest.callEndpoint(action.endpoint, action.pathParameters, action.queryParameters, action.body);
+    async handler({action}: zod.infer<typeof guidedApiToolSchema>) {
+        switch (action.type) {
+            case 'list-endpoints':
+                return await this.rest.listEndpoints();
+            case 'get-endpoint-details':
+                const details = await this.rest.getEndpointDetails(action.endpoint);
+                return {
+                    ...details,
+                    acknowledgmentToken: this.tokenService.setAcknowledgmentToken(this.edge, action.endpoint).code
+                };
+            case 'call-endpoint':
+                const token = this.tokenService.getAcknowledgmentToken(this.edge, action.endpoint);
+                if (!token || action.acknowledgmentToken !== token.code) {
+                    throw new Error("Invalid acknowledgment token. You must obtain an acknowledgment token for this endpoint using the get-endpoint-details action.");
+                }
+                return await this.rest.callEndpoint(action.endpoint, action.pathParameters, action.queryParameters, action.body);
         }
     }
 }
