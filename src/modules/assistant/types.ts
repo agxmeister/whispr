@@ -10,3 +10,5 @@ export interface AssistantFactory {
     readonly name: string;
     create(options?: Record<string, string>): Assistant;
 }
+
+export type AssistantRegistry = Record<string, new (options: any) => AssistantFactory>;

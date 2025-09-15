@@ -17,7 +17,7 @@ import {
 } from "@/modules/edge/tool";
 import {AcknowledgmentTokenService} from "@/modules/edge/tool/token/service";
 import {AcknowledgmentTokenRepository} from "@/modules/edge/tool/token/repository";
-import {RatatouilleFactory} from "@/modules/assistant/ratatouille";
+import {assistantRegistry} from "@/modules/assistant/assistantRegistry";
 import {AssistantService} from "@/modules/assistant";
 
 dotenv.config();
@@ -33,15 +33,7 @@ const args = minimist(process.argv.slice(2));
     const edgeRepository = new EdgeRepository(configService);
     const edgeService = new EdgeService(edgeRepository);
     const edges = await edgeService.getEdges();
-    const assistantService = new AssistantService(
-        configService,
-        [
-            new RatatouilleFactory({
-                apiUrl: process.env.ASSISTANT_RATATOUILLE_API_URL || "",
-                chiefName: process.env.ASSISTANT_RATATOUILLE_CHIEF_NAME || "",
-            }),
-        ]
-    );
+    const assistantService = new AssistantService(assistantRegistry, configService);
     const assistantFactories = await assistantService.getAssistantFactories();
     const serverService = new McpService();
     const restApiFactory = new RestFactory();
