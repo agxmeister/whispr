@@ -13,8 +13,20 @@ export class AssistantService {
             return [];
         }
 
-        return config.assistants
-            .filter(assistant => assistant.name in this.registry)
-            .map(assistant => new this.registry[assistant.name](assistant.options));
+        const factories: AssistantFactory[] = [];
+
+        for (const assistant of config.assistants) {
+            if (!(assistant.name in this.registry)) {
+                continue;
+            }
+
+            try {
+                const factory = new this.registry[assistant.name](assistant.options);
+                factories.push(factory);
+            } catch {
+            }
+        }
+
+        return factories;
     }
 }

@@ -1,4 +1,4 @@
-export type RatatouilleOptions = {
-    apiUrl: string;
-    chiefName: string;
-}
+import { z as zod } from 'zod';
+import { RatatouilleOptionsSchema } from './schemas';
+
+export type RatatouilleOptions = zod.infer<typeof RatatouilleOptionsSchema>;
