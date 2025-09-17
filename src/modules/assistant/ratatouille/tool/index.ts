@@ -1,1 +1,1 @@
-export {AskHelpTool} from "./AskHelpTool";
+export {GetHelp} from "./GetHelp";

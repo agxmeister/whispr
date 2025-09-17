@@ -5,7 +5,7 @@ import {RatatouilleOptions} from "../types";
 import {askHelpToolSchema} from "./schemas";
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 
-export class AskHelpTool implements Tool {
+export class GetHelp implements Tool {
     constructor(readonly options: RatatouilleOptions) {
     }
 
