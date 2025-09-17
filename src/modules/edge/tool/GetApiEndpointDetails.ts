@@ -1,7 +1,7 @@
 import {z as zod} from "zod";
 import {EdgeTool} from "./EdgeTool";
 import {getApiEndpointDetailsToolSchema} from "./schemas";
-import {formatted} from "./decorators";
+import {formatted} from "../../mcp/decorators";
 
 export class GetApiEndpointDetails extends EdgeTool {
     readonly name = `${this.edge.name.toLowerCase()}-get-api-endpoint-details`;

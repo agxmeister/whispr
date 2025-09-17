@@ -1,6 +1,6 @@
 import {EdgeTool} from "./EdgeTool";
 import {getApiEndpointsToolSchema} from "./schemas";
-import {formatted} from "./decorators";
+import {formatted} from "../../mcp/decorators";
 
 export class GetApiEndpoints extends EdgeTool {
     readonly name = `${this.edge.name.toLowerCase()}-get-api-endpoints`;

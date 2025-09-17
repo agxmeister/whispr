@@ -1,7 +1,7 @@
 import {z as zod} from "zod";
 import {EdgeTool} from "./EdgeTool";
 import {apiToolSchema} from "./schemas";
-import {formatted} from "./decorators";
+import {formatted} from "../../mcp/decorators";
 
 export class RawApi extends EdgeTool {
     readonly name = `${this.edge.name.toLowerCase()}-raw-api`;

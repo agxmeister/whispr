@@ -4,7 +4,7 @@ import {guidedApiToolSchema} from "./schemas";
 import {Rest} from "./rest/Rest";
 import {Edge} from "@/modules/edge";
 import {AcknowledgmentTokenService} from "./token/service";
-import {formatted} from "./decorators";
+import {formatted} from "../../mcp/decorators";
 
 export class GuidedApi extends EdgeTool {
     readonly name = `${this.edge.name.toLowerCase()}-guided-api`;

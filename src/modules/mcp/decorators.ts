@@ -1,5 +1,5 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
-import {HttpError} from "./rest/HttpError";
+import {HttpError} from "../edge/tool/rest/HttpError";
 
 export function formatted(_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;

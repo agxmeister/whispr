@@ -1,7 +1,7 @@
 import {z as zod} from "zod";
 import {EdgeTool} from "./EdgeTool";
 import {callApiEndpointToolSchema} from "./schemas";
-import {formatted} from "./decorators";
+import {formatted} from "../../mcp/decorators";
 
 export class CallApiEndpoint extends EdgeTool {
     readonly name = `${this.edge.name.toLowerCase()}-call-api-endpoint`;
