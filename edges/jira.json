@@ -4,7 +4,9 @@
         "manage Jira work items"
     ],
     "api": {
-        "specification": "https://dac-static.atlassian.com/cloud/jira/platform/swagger-v3.v3.json",
+        "specification": {
+            "url": "https://dac-static.atlassian.com/cloud/jira/platform/swagger-v3.v3.json"
+        },
         "request": {
             "url": "https://{{DOMAIN}}.atlassian.net",
             "headers": {

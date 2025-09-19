@@ -1,11 +1,13 @@
 import axios from "axios";
 import * as https from "https";
 import * as yaml from "js-yaml";
+import * as fs from "fs";
 import {dereferenceSync} from "dereference-json-schema";
 import {OpenApiEndpoint} from "./types";
+import {Specification} from "../types";
 
-export const getOpenApiEndpoints = async (specificationUrl: string, readonly?: boolean): Promise<OpenApiEndpoint[]> =>
-    Object.entries(dereferenceSync(await getSpecification(specificationUrl)).paths)
+export const getOpenApiEndpoints = async (specification: Specification, readonly?: boolean): Promise<OpenApiEndpoint[]> =>
+    Object.entries(dereferenceSync(await getSpecification(specification)).paths)
         .reduce(
             (acc: any[], [path, pathData]: [string, any]) => [
                 ...acc,
@@ -23,13 +25,21 @@ export const getOpenApiEndpoints = async (specificationUrl: string, readonly?: b
             []
         );
 
-const getSpecification = async (specificationUrl: string): Promise<any> => {
-    const data = (await axios.get(specificationUrl, {
-        responseType: 'text',
-        httpsAgent: new https.Agent({
-            rejectUnauthorized: false
-        }),
-    })).data;
+const getSpecification = async (specification: Specification): Promise<any> => {
+    let data: string;
+
+    if (specification.url) {
+        data = (await axios.get(specification.url, {
+            responseType: 'text',
+            httpsAgent: new https.Agent({
+                rejectUnauthorized: false
+            }),
+        })).data;
+    } else if (specification.path) {
+        data = fs.readFileSync(specification.path, 'utf8');
+    } else {
+        return;
+    }
 
     try {
         return JSON.parse(data);
