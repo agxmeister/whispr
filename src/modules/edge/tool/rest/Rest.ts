@@ -21,11 +21,11 @@ export class Rest {
     async getEndpointDetails(route: OpenApiEndpointRoute) {
         const target = (await getOpenApiEndpoints(this.edge.api.specification))
             .filter((endpoint) =>
-                endpoint.route.path === route.path && endpoint.route.method === route.method
+                endpoint.route.path === route.path && endpoint.route.method === route.method.toLowerCase()
             ).shift();
 
         if (!target) {
-            throw new Error(`Endpoint ${route.method} ${route.path} does not exist.`);
+            throw new Error(`Endpoint ${route.method.toLowerCase()} ${route.path} does not exist.`);
         }
 
         return {
@@ -38,12 +38,12 @@ export class Rest {
         };
     }
 
-    async callEndpoint(endpoint: { method: string; path: string }, pathParameters?: Parameter[], queryParameters?: Parameter[], body?: string) {
+    async callEndpoint(route: OpenApiEndpointRoute, pathParameters?: Parameter[], queryParameters?: Parameter[], body?: string) {
         const path = (pathParameters || []).reduce(
             (path, pathParam) => path
                 .split(`{${pathParam.key}}`)
                 .join(pathParam.value),
-            endpoint.path,
+            route.path,
         );
 
         const query = (queryParameters || [])
@@ -55,7 +55,7 @@ export class Rest {
                 "Content-Type": "application/json",
                 ...this.edge.api.request.headers,
             },
-            method: endpoint.method,
+            method: route.method.toLowerCase(),
             url: `${this.edge.api.request.url}${path}${query ? `?${query}` : ''}`,
             data: body ? JSON.parse(body) : undefined,
             maxRedirects: 0,
