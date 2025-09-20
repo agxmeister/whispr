@@ -2,6 +2,7 @@ import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {Edge} from "@/modules/edge";
 import {EdgeToolFactory} from "@/modules/edge/tool";
 import {AssistantFactory} from "@/modules/assistant";
+import {Processor} from "./Processor";
 
 export class McpService {
     public async getMcpServer(edges: Edge[], edgeToolFactories: EdgeToolFactory[], assistantFactories: AssistantFactory[] = []): Promise<McpServer> {
@@ -13,7 +14,8 @@ export class McpService {
         for (const edge of edges) {
             for (const factory of edgeToolFactories) {
                 const tool = await factory.create(edge);
-                server.tool(tool.name, tool.description, tool.schema, tool.handler.bind(tool));
+                const processor = new Processor(tool);
+                server.tool(processor.name, processor.description, processor.schema, processor.handler.bind(processor));
             }
         }
 
