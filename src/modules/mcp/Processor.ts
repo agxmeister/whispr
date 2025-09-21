@@ -1,8 +1,8 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
-import {Tool} from "./types";
+import {Tool, Middleware, MiddlewareContext} from "./types";
 
 export class Processor implements Tool {
-    constructor(private readonly tool: Tool) {}
+    constructor(private readonly tool: Tool, private readonly middlewares: Middleware[] = []) {}
 
     get name(): string {
         return this.tool.name;
@@ -17,6 +17,30 @@ export class Processor implements Tool {
     }
 
     async handler(...args: any[]): Promise<CallToolResult> {
-        return await this.tool.handler(...args);
+        let context: MiddlewareContext = {
+            toolName: this.tool.name,
+            args,
+            metadata: {}
+        };
+
+        const processedMiddlewares: Middleware[] = [];
+
+        for (const middleware of this.middlewares) {
+            if (middleware.processInput) {
+                context = await middleware.processInput(context);
+                processedMiddlewares.push(middleware);
+            }
+        }
+
+        let result = await this.tool.handler(...context.args);
+
+        while (processedMiddlewares.length > 0) {
+            const middleware = processedMiddlewares.pop()!;
+            if (middleware.processOutput) {
+                result = await middleware.processOutput(context, result);
+            }
+        }
+
+        return result;
     }
 }
