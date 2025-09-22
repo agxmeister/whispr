@@ -1,5 +1,5 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
-import {Tool, Middleware, MiddlewareContext} from "./types";
+import {Tool, Middleware, MiddlewareContext, MiddlewareNext} from "./types";
 
 export class Processor implements Tool {
     constructor(private readonly tool: Tool, private readonly middlewares: Middleware[] = []) {}
@@ -17,7 +17,7 @@ export class Processor implements Tool {
     }
 
     async handler(...args: any[]): Promise<CallToolResult> {
-        let context: MiddlewareContext = {
+        const context: MiddlewareContext = {
             toolName: this.tool.name,
             args,
             metadata: {}
@@ -25,22 +25,31 @@ export class Processor implements Tool {
 
         const processedMiddlewares: Middleware[] = [];
 
-        for (const middleware of this.middlewares) {
-            if (middleware.processInput) {
-                context = await middleware.processInput(context);
-                processedMiddlewares.push(middleware);
-            }
-        }
+        const getNext = (index: number): MiddlewareNext => {
+            return async (): Promise<CallToolResult> => {
+                if (index < this.middlewares.length) {
+                    const middleware = this.middlewares[index];
+                    if (middleware.processInput) {
+                        processedMiddlewares.push(middleware);
+                        return await middleware.processInput(context, getNext(index + 1));
+                    } else {
+                        return await getNext(index + 1)();
+                    }
+                } else {
+                    let result = await this.tool.handler(...context.args);
 
-        let result = await this.tool.handler(...context.args);
+                    while (processedMiddlewares.length > 0) {
+                        const middleware = processedMiddlewares.pop()!;
+                        if (middleware.processOutput) {
+                            result = await middleware.processOutput(context, result);
+                        }
+                    }
 
-        while (processedMiddlewares.length > 0) {
-            const middleware = processedMiddlewares.pop()!;
-            if (middleware.processOutput) {
-                result = await middleware.processOutput(context, result);
-            }
-        }
+                    return result;
+                }
+            };
+        };
 
-        return result;
+        return await getNext(0)();
     }
 }

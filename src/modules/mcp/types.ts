@@ -13,7 +13,11 @@ export interface MiddlewareContext {
     metadata?: Record<string, any>;
 }
 
+export interface MiddlewareNext {
+    (): Promise<CallToolResult>;
+}
+
 export interface Middleware {
-    processInput?(context: MiddlewareContext): Promise<MiddlewareContext>;
+    processInput?(context: MiddlewareContext, next: MiddlewareNext): Promise<CallToolResult>;
     processOutput?(context: MiddlewareContext, result: CallToolResult): Promise<CallToolResult>;
 }
