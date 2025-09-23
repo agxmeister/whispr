@@ -21,3 +21,7 @@ export interface Middleware {
     processInput?(context: MiddlewareContext, next: MiddlewareNext): Promise<CallToolResult>;
     processOutput?(context: MiddlewareContext, result: CallToolResult): Promise<CallToolResult>;
 }
+
+export interface ProcessorFactory {
+    create(tool: Tool, middlewares?: Middleware[]): import("./Processor").Processor;
+}

@@ -5,7 +5,7 @@ import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import {EdgeService, EdgeRepository} from "@/modules/edge";
 import {ConfigService, ConfigRepository} from "@/modules/config";
 import {ProfileService} from "@/modules/profile";
-import {McpService} from "@/modules/mcp";
+import {McpService, ProcessorFactory} from "@/modules/mcp";
 import {
     ApiEndpointFactory,
     AcknowledgedApiEndpointFactory,
@@ -35,7 +35,7 @@ const args = minimist(process.argv.slice(2));
     const edges = await edgeService.getEdges();
     const assistantService = new AssistantService(assistantRegistry, configService);
     const assistantFactories = await assistantService.getAssistantFactories();
-    const serverService = new McpService();
+    const serverService = new McpService(new ProcessorFactory());
     const restApiFactory = new RestFactory();
     const tokenRepository = new AcknowledgmentTokenRepository(path.join(__dirname, '../data/acknowledgment-tokens.json'));
     const tokenService = new AcknowledgmentTokenService(tokenRepository);
