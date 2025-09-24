@@ -23,5 +23,9 @@ export interface Middleware {
 }
 
 export interface ProcessorFactory {
-    create(tool: Tool, middlewares?: Middleware[]): import("./Processor").Processor;
+    create(tool: Tool, middlewares?: Middleware[]): Processor;
+}
+
+export interface Processor {
+    readonly handler: (...args: any[]) => Promise<CallToolResult>;
 }

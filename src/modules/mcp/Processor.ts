@@ -1,22 +1,10 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
-import {Tool, Middleware, MiddlewareContext, MiddlewareNext} from "./types";
+import {Tool, Middleware, MiddlewareContext, MiddlewareNext, Processor as ProcessorInterface} from "./types";
 
-export class Processor implements Tool {
+export class Processor implements ProcessorInterface {
     constructor(private readonly tool: Tool, private readonly middlewares: Middleware[] = []) {}
 
-    get name(): string {
-        return this.tool.name;
-    }
-
-    get description(): string {
-        return this.tool.description;
-    }
-
-    get schema(): any {
-        return this.tool.schema;
-    }
-
-    async handler(...args: any[]): Promise<CallToolResult> {
+    readonly handler = async (...args: any[]): Promise<CallToolResult> => {
         const context: MiddlewareContext = {
             toolName: this.tool.name,
             args,

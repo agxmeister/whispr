@@ -17,7 +17,7 @@ export class McpService {
             for (const factory of edgeToolFactories) {
                 const tool = await factory.create(edge);
                 const processor = this.processorFactory.create(tool);
-                server.tool(processor.name, processor.description, processor.schema, processor.handler.bind(processor));
+                server.tool(tool.name, tool.description, tool.schema, processor.handler);
             }
         }
 
