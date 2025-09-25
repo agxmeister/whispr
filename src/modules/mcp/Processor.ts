@@ -1,8 +1,14 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import {Tool, Middleware, MiddlewareContext, MiddlewareNext, Processor as ProcessorInterface} from "./types";
+import {formatted} from "./decorators";
 
 export class Processor implements ProcessorInterface {
     constructor(private readonly tool: Tool, private readonly middlewares: Middleware[] = []) {}
+
+    @formatted
+    private async callToolHandler(...args: any[]): Promise<any> {
+        return await this.tool.handler(...args);
+    }
 
     readonly handler = async (...args: any[]): Promise<CallToolResult> => {
         const context: MiddlewareContext = {
@@ -24,7 +30,7 @@ export class Processor implements ProcessorInterface {
                         return await getNext(index + 1)();
                     }
                 } else {
-                    let result = await this.tool.handler(...context.args);
+                    let result = await this.callToolHandler(...context.args);
 
                     while (processedMiddlewares.length > 0) {
                         const middleware = processedMiddlewares.pop()!;

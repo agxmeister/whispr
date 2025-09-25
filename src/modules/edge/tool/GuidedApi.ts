@@ -4,19 +4,17 @@ import {guidedApiToolSchema} from "./schemas";
 import {Rest} from "./rest/Rest";
 import {Edge} from "@/modules/edge";
 import {AcknowledgmentTokenService} from "./token/service";
-import {formatted} from "../../mcp/decorators";
 
 export class GuidedApi extends EdgeTool {
-    readonly name = `${this.edge.name.toLowerCase()}-guided-api`;
-    readonly description = `If you want to ${this.edge.tasks.join(", ")}, use this tool to interact with the ${this.edge.name} REST API. A typical workflow involves getting a list of ${this.edge.name} endpoints, getting details on how to use an appropriate endpoint, and finally, calling an endpoint.`;
-    readonly schema = guidedApiToolSchema.shape;
-
     constructor(edge: Edge, rest: Rest, private readonly tokenService: AcknowledgmentTokenService) {
         super(edge, rest);
     }
 
-    @formatted
-    async handler({action}: zod.infer<typeof guidedApiToolSchema>) {
+    readonly name = `${this.edge.name.toLowerCase()}-guided-api`;
+    readonly description = `If you want to ${this.edge.tasks.join(", ")}, use this tool to interact with the ${this.edge.name} REST API. A typical workflow involves getting a list of ${this.edge.name} endpoints, getting details on how to use an appropriate endpoint, and finally, calling an endpoint.`;
+    readonly schema = guidedApiToolSchema.shape;
+
+    readonly handler = async ({action}: zod.infer<typeof guidedApiToolSchema>) => {
         switch (action.type) {
             case 'list-endpoints':
                 return await this.rest.listEndpoints();
