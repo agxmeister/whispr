@@ -7,7 +7,9 @@
 /manifest.json
 /whispr.dxt
 
-/data
+/data/*
+/logs/*
+!.gitkeep
 
 .DS_Store
 .idea

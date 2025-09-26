@@ -19,6 +19,8 @@ import {AcknowledgmentTokenService} from "@/modules/edge/tool/token/service";
 import {AcknowledgmentTokenRepository} from "@/modules/edge/tool/token/repository";
 import {assistantRegistry} from "@/modules/assistant/assistantRegistry";
 import {AssistantService} from "@/modules/assistant";
+import {LoggerService} from "@/modules/logger";
+import {LoggingMiddleware} from "@/modules/mcp/middleware/Logging";
 
 dotenv.config();
 const args = minimist(process.argv.slice(2));
@@ -47,7 +49,10 @@ const args = minimist(process.argv.slice(2));
         new CallApiEndpointFactory(restApiFactory, profileService),
     ]);
     const edgeToolFactories = await edgeToolService.getEdgeToolFactories();
-    const server = await serverService.getMcpServer(edges, edgeToolFactories, assistantFactories);
+    const loggerService = new LoggerService(path.join(__dirname, '../logs/app.log'));
+    const logger = loggerService.getLogger();
+    const loggingMiddleware = new LoggingMiddleware(logger);
+    const server = await serverService.getMcpServer(edges, edgeToolFactories, assistantFactories, [loggingMiddleware]);
     const transport = new StdioServerTransport();
     await server.connect(transport);
 })();

@@ -7,6 +7,7 @@ export class LoggerService {
     getLogger(): Logger {
         return pino({
             level: 'info',
+            base: null,
             transport: {
                 target: 'pino/file',
                 options: {
