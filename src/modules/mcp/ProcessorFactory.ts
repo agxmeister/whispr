@@ -1,4 +1,5 @@
-import {Tool, Middleware, ProcessorFactory as ProcessorFactoryInterface} from "./types";
+import {Tool, ProcessorFactory as ProcessorFactoryInterface} from "./types";
+import {Middleware} from "./middleware";
 import {Processor} from "./Processor";
 
 export class ProcessorFactory implements ProcessorFactoryInterface {

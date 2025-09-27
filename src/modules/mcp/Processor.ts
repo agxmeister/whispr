@@ -1,5 +1,6 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
-import {Tool, Middleware, MiddlewareContext, MiddlewareNext, Processor as ProcessorInterface} from "./types";
+import {Tool, Processor as ProcessorInterface} from "./types";
+import {Middleware, MiddlewareContext, MiddlewareNext} from "./middleware";
 import {formatted} from "./decorators";
 
 export class Processor implements ProcessorInterface {

@@ -1,6 +1,6 @@
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { Middleware, MiddlewareContext, MiddlewareNext } from "../types";
-import { Logger } from "../../logger/types";
+import { Logger } from "@/modules/logger";
+import { Middleware, MiddlewareContext, MiddlewareNext } from "./types";
 
 export class LoggingMiddleware implements Middleware {
     constructor(private logger: Logger) {}
