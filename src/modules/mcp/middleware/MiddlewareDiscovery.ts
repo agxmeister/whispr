@@ -1,3 +1,4 @@
+import "@/container";
 import { readdirSync, statSync } from "fs";
 import { join } from "path";
 

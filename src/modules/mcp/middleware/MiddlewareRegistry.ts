@@ -1,10 +1,9 @@
-import { MiddlewareConstructor } from "./types";
-
 export class MiddlewareRegistry {
     private static instance: MiddlewareRegistry;
-    private middlewares = new Map<string, MiddlewareConstructor>();
+    private middlewares = new Map<string, symbol>();
 
-    private constructor() {}
+    private constructor() {
+    }
 
     static getInstance(): MiddlewareRegistry {
         if (!MiddlewareRegistry.instance) {
@@ -13,23 +12,15 @@ export class MiddlewareRegistry {
         return MiddlewareRegistry.instance;
     }
 
-    register(name: string, middlewareClass: MiddlewareConstructor): void {
-        this.middlewares.set(name, middlewareClass);
+    register(name: string, symbol: symbol): void {
+        this.middlewares.set(name, symbol);
     }
 
-    get(name: string): MiddlewareConstructor | undefined {
+    get(name: string): symbol | undefined {
         return this.middlewares.get(name);
-    }
-
-    getAll(): Map<string, MiddlewareConstructor> {
-        return new Map(this.middlewares);
     }
 
     has(name: string): boolean {
         return this.middlewares.has(name);
-    }
-
-    getRegisteredNames(): string[] {
-        return Array.from(this.middlewares.keys());
     }
 }

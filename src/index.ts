@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import dotenv from 'dotenv';
 import minimist from 'minimist';
 import path from 'path';
@@ -19,7 +20,6 @@ import {AcknowledgmentTokenService} from "@/modules/edge/tool/token/service";
 import {AcknowledgmentTokenRepository} from "@/modules/edge/tool/token/repository";
 import {assistantRegistry} from "@/modules/assistant/assistantRegistry";
 import {AssistantService} from "@/modules/assistant";
-import {LoggerService} from "@/modules/logger";
 import {MiddlewareDiscovery} from "@/modules/mcp/middleware";
 
 dotenv.config();
@@ -52,8 +52,7 @@ const args = minimist(process.argv.slice(2));
         new CallApiEndpointFactory(restApiFactory, profileService),
     ]);
     const edgeToolFactories = await edgeToolService.getEdgeToolFactories();
-    const loggerService = new LoggerService(path.join(__dirname, '../logs/app.log'));
-    const edgeToolMiddlewaresFactory = new EdgeToolMiddlewaresFactory(loggerService);
+    const edgeToolMiddlewaresFactory = new EdgeToolMiddlewaresFactory();
     const server = await serverService.getMcpServer(
         edges,
         edgeToolFactories,

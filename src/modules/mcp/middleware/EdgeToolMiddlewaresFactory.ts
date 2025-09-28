@@ -2,20 +2,18 @@ import {EdgeToolMiddlewaresFactory as EdgeToolMiddlewaresFactoryInterface, Middl
 import {Tool} from "../types";
 import {Edge} from "@/modules/edge";
 import {MiddlewareRegistry} from "./MiddlewareRegistry";
-import {LoggerService} from "@/modules/logger";
+import {container} from "@/container";
 
 export class EdgeToolMiddlewaresFactory implements EdgeToolMiddlewaresFactoryInterface {
-    constructor(private readonly loggerService: LoggerService) {}
-
     create(edge: Edge, tool: Tool): Middleware[] {
         const registry = MiddlewareRegistry.getInstance();
-        const LoggingMiddlewareClass = registry.get("logging");
+        const loggingSymbol = registry.get("logging");
 
-        if (!LoggingMiddlewareClass) {
+        if (!loggingSymbol) {
             return [];
         }
 
-        const loggingMiddleware = new LoggingMiddlewareClass(this.loggerService);
+        const loggingMiddleware = container.get<Middleware>(loggingSymbol);
         return [loggingMiddleware];
     }
 }
