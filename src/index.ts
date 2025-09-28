@@ -20,12 +20,15 @@ import {AcknowledgmentTokenRepository} from "@/modules/edge/tool/token/repositor
 import {assistantRegistry} from "@/modules/assistant/assistantRegistry";
 import {AssistantService} from "@/modules/assistant";
 import {LoggerService} from "@/modules/logger";
-import {LoggingMiddleware} from "@/modules/mcp/middleware";
+import {MiddlewareDiscovery} from "@/modules/mcp/middleware";
 
 dotenv.config();
 const args = minimist(process.argv.slice(2));
 
 (async () => {
+    const middlewareDiscovery = new MiddlewareDiscovery();
+    await middlewareDiscovery.discover(path.join(__dirname, 'middlewares'));
+
     const configRepository = new ConfigRepository(args.config
         ? path.resolve(args.config)
         : path.join(__dirname, '../config.json')

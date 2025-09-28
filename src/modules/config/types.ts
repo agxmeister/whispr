@@ -8,6 +8,12 @@ export interface Assistant {
 
 export interface Config {
     edges: Edge[];
+    middlewares?: {
+        filter?: {
+            edges?: string[];
+            tools?: string[];
+        }
+    };
     assistants?: Assistant[];
     profile?: Profile;
 }

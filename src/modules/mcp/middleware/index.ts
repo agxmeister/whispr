@@ -1,3 +1,5 @@
 export * from "./types";
-export {LoggingMiddleware} from "./Logging";
 export {EdgeToolMiddlewaresFactory} from "./EdgeToolMiddlewaresFactory";
+export {MiddlewareRegistry} from "./MiddlewareRegistry";
+export {MiddlewareDiscovery} from "./MiddlewareDiscovery";
+export {RegisterMiddleware} from "./decorators";
