@@ -1,10 +1,14 @@
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { Logger } from "@/modules/logger";
+import { LoggerService } from "@/modules/logger";
 import { Middleware, MiddlewareContext, MiddlewareNext, RegisterMiddleware } from "@/modules/mcp/middleware";
 
 @RegisterMiddleware("logging")
 export class LoggingMiddleware implements Middleware {
-    constructor(private logger: Logger) {}
+    private logger;
+
+    constructor(private loggerService: LoggerService) {
+        this.logger = this.loggerService.getLogger();
+    }
 
     async processInput(context: MiddlewareContext, next: MiddlewareNext): Promise<CallToolResult> {
         this.logger.info({

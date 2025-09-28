@@ -15,8 +15,7 @@ export class EdgeToolMiddlewaresFactory implements EdgeToolMiddlewaresFactoryInt
             return [];
         }
 
-        const logger = this.loggerService.getLogger();
-        const loggingMiddleware = new LoggingMiddlewareClass(logger);
+        const loggingMiddleware = new LoggingMiddlewareClass(this.loggerService);
         return [loggingMiddleware];
     }
 }
