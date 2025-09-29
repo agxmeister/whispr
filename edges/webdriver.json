@@ -1,0 +1,21 @@
+{
+    "name": "WebDriver",
+    "description": "Selenium WebDriver API specification for automating web browsers and performing web testing tasks.",
+    "tasks": [
+        "interact with web browser",
+        "surf the web pages",
+        "capture website screenshots"
+    ],
+    "api": {
+        "specification": {
+            "path": "webdriver.yaml"
+        },
+        "request": {
+            "url": "{{URL}}"
+        }
+    },
+    "environment": [{
+        "name": "URL",
+        "description": "WebDriver server URL (e.g., http://localhost:9515 for ChromeDriver)."
+    }]
+}

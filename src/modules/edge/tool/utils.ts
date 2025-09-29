@@ -2,6 +2,7 @@ import axios from "axios";
 import * as https from "https";
 import * as yaml from "js-yaml";
 import * as fs from "fs";
+import * as path from "path";
 import {dereferenceSync} from "dereference-json-schema";
 import {OpenApiEndpoint} from "./types";
 import {Specification} from "../types";
@@ -36,7 +37,8 @@ const getSpecification = async (specification: Specification): Promise<any> => {
             }),
         })).data;
     } else if (specification.path) {
-        data = fs.readFileSync(specification.path, 'utf8');
+        const resolvedPath = path.resolve(__dirname, '../../../../resources/specifications', specification.path);
+        data = fs.readFileSync(resolvedPath, 'utf8');
     } else {
         return;
     }
