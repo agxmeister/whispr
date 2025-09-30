@@ -18,7 +18,7 @@ export interface Middleware {
 }
 
 export interface EdgeToolMiddlewaresFactory {
-    create(edge: Edge, tool: Tool): Middleware[];
+    create(edge: Edge, tool: Tool): Promise<Middleware[]>;
 }
 
 export interface MiddlewareConstructor {

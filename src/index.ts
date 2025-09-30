@@ -52,7 +52,7 @@ const args = minimist(process.argv.slice(2));
         new CallApiEndpointFactory(restApiFactory, profileService),
     ]);
     const edgeToolFactories = await edgeToolService.getEdgeToolFactories();
-    const edgeToolMiddlewaresFactory = new EdgeToolMiddlewaresFactory();
+    const edgeToolMiddlewaresFactory = new EdgeToolMiddlewaresFactory(configService);
     const server = await serverService.getMcpServer(
         edges,
         edgeToolFactories,

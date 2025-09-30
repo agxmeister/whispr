@@ -22,7 +22,7 @@ export class McpService {
         for (const edge of edges) {
             for (const factory of toolFactories) {
                 const tool = await factory.create(edge);
-                const middlewares = middlewaresFactory.create(edge, tool);
+                const middlewares = await middlewaresFactory.create(edge, tool);
                 const processor = this.processorFactory.create(tool, middlewares);
                 server.tool(tool.name, tool.description, tool.schema, processor.handler);
             }
