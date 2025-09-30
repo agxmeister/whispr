@@ -19,30 +19,20 @@ export class LoggingMiddleware implements Middleware {
             args: context.args,
         }, `Tool ${context.toolName} started`);
 
-        const startTime = Date.now();
+        context.metadata!.startTime = Date.now();
 
-        try {
-            const result = await next();
-            const duration = Date.now() - startTime;
+        return await next();
+    }
 
-            this.logger.info({
-                tool: context.toolName,
-                duration: duration,
-                success: true
-            }, `Tool ${context.toolName} completed`);
+    async processOutput(context: MiddlewareContext, result: CallToolResult): Promise<CallToolResult> {
+        const duration = context.metadata?.startTime ? Date.now() - context.metadata.startTime : 0;
 
-            return result;
-        } catch (error) {
-            const duration = Date.now() - startTime;
+        this.logger.info({
+            tool: context.toolName,
+            duration: duration,
+            success: true
+        }, `Tool ${context.toolName} completed`);
 
-            this.logger.error({
-                tool: context.toolName,
-                duration: duration,
-                error: error instanceof Error ? error.message : String(error),
-                success: false
-            }, `Tool ${context.toolName} failed`);
-
-            throw error;
-        }
+        return result;
     }
 }
