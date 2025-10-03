@@ -3,9 +3,9 @@ import {Edge} from "@/modules/edge";
 import {Tool} from "../types";
 
 export interface MiddlewareContext {
-    toolName: string;
-    args: any[];
-    metadata?: Record<string, any>;
+    tool: string;
+    input: Record<string, any>;
+    metadata: Record<string, any>;
 }
 
 export interface MiddlewareNext {
@@ -23,4 +23,9 @@ export interface EdgeToolMiddlewaresFactory {
 
 export interface MiddlewareConstructor {
     new (...args: any[]): Middleware;
+}
+
+export interface MiddlewareMetadata {
+    name: string;
+    constructor: MiddlewareConstructor;
 }

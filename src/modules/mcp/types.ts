@@ -5,7 +5,7 @@ export interface Tool {
     readonly name: string;
     readonly description: string;
     readonly schema: any;
-    readonly handler: (...args: any[]) => Promise<CallToolResult>;
+    readonly handler: (input: any) => Promise<CallToolResult>;
 }
 
 export interface ProcessorFactory {
@@ -13,5 +13,5 @@ export interface ProcessorFactory {
 }
 
 export interface Processor {
-    readonly handler: (...args: any[]) => Promise<CallToolResult>;
+    readonly handler: (input: any) => Promise<CallToolResult>;
 }

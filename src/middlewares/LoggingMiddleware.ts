@@ -15,9 +15,9 @@ export class LoggingMiddleware implements Middleware {
 
     async processInput(context: MiddlewareContext, next: MiddlewareNext): Promise<CallToolResult> {
         this.logger.info({
-            tool: context.toolName,
-            args: context.args,
-        }, `Tool ${context.toolName} started`);
+            tool: context.tool,
+            input: context.input,
+        }, `Tool ${context.tool} started`);
 
         context.metadata!.startTime = Date.now();
 
@@ -28,10 +28,10 @@ export class LoggingMiddleware implements Middleware {
         const duration = context.metadata?.startTime ? Date.now() - context.metadata.startTime : 0;
 
         this.logger.info({
-            tool: context.toolName,
+            tool: context.tool,
             duration: duration,
             success: true
-        }, `Tool ${context.toolName} completed`);
+        }, `Tool ${context.tool} completed`);
 
         return result;
     }

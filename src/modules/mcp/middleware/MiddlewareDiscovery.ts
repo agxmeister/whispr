@@ -3,6 +3,7 @@ import { container } from "@/container";
 import { readdirSync, statSync } from "fs";
 import { join } from "path";
 import { MiddlewareRegistry } from "./MiddlewareRegistry";
+import {MiddlewareMetadata} from "@/modules/mcp/middleware/types";
 
 export class MiddlewareDiscovery {
     async discover(basePath: string): Promise<void> {
@@ -19,8 +20,8 @@ export class MiddlewareDiscovery {
                     try {
                         const module = await import(filePath);
 
-                        if (module.middleware) {
-                            const { name, constructor } = module.middleware;
+                        if (module.metadata) {
+                            const { name, constructor } = module.metadata as MiddlewareMetadata;
                             const middlewareSymbol = Symbol.for(`Middleware.${name}`);
 
                             const registry = MiddlewareRegistry.getInstance();

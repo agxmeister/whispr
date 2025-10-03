@@ -7,14 +7,14 @@ export class Processor implements ProcessorInterface {
     constructor(private readonly tool: Tool, private readonly middlewares: Middleware[] = []) {}
 
     @formatted
-    private async callToolHandler(...args: any[]): Promise<any> {
-        return await this.tool.handler(...args);
+    private async callToolHandler(input: any): Promise<any> {
+        return await this.tool.handler(input);
     }
 
-    readonly handler = async (...args: any[]): Promise<CallToolResult> => {
+    readonly handler = async (input: any): Promise<CallToolResult> => {
         const context: MiddlewareContext = {
-            toolName: this.tool.name,
-            args,
+            tool: this.tool.name,
+            input,
             metadata: {}
         };
 
@@ -31,7 +31,7 @@ export class Processor implements ProcessorInterface {
                         return await getNext(index + 1)();
                     }
                 } else {
-                    let result = await this.callToolHandler(...context.args);
+                    let result = await this.callToolHandler(context.input);
 
                     while (processedMiddlewares.length > 0) {
                         const middleware = processedMiddlewares.pop()!;
