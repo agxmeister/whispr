@@ -9,7 +9,6 @@ import {
     updateGuideToolSchema,
     deleteGuideToolSchema
 } from "./schemas";
-import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 
 export class GetHelp implements Tool {
     constructor(readonly options: RatatouilleOptions) {

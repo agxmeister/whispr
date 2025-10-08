@@ -1,10 +1,9 @@
 import "reflect-metadata";
 import dotenv from 'dotenv';
-import minimist from 'minimist';
 import path from 'path';
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import {EdgeService, EdgeRepository} from "@/modules/edge";
-import {ConfigService, ConfigRepository} from "@/modules/config";
+import {ConfigService} from "@/modules/config";
 import {ProfileService} from "@/modules/profile";
 import {McpService, ProcessorFactory, EdgeToolMiddlewaresFactory} from "@/modules/mcp";
 import {
@@ -21,20 +20,16 @@ import {AcknowledgmentTokenRepository} from "@/modules/edge/tool/token/repositor
 import {assistantRegistry} from "@/modules/assistant/assistantRegistry";
 import {AssistantService} from "@/modules/assistant";
 import {MiddlewareDiscovery} from "@/modules/mcp/middleware";
+import {container, dependencies} from "@/container";
 
 dotenv.config();
-const args = minimist(process.argv.slice(2));
 
 (async () => {
     const middlewareDiscovery = new MiddlewareDiscovery();
     await middlewareDiscovery.discover(path.join(__dirname, 'middlewares'));
 
-    const configRepository = new ConfigRepository(args.config
-        ? path.resolve(args.config)
-        : path.join(__dirname, '../config.json')
-    );
-    const configService = new ConfigService(configRepository);
-    const profileService = new ProfileService(configService);
+    const configService = container.get<ConfigService>(dependencies.ConfigService);
+    const profileService = container.get<ProfileService>(dependencies.ProfileService);
     const edgeRepository = new EdgeRepository(configService);
     const edgeService = new EdgeService(edgeRepository);
     const edges = await edgeService.getEdges();
