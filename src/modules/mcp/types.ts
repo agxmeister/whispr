@@ -9,7 +9,7 @@ export interface Tool {
 }
 
 export interface ProcessorFactory {
-    create(tool: Tool, middlewares?: Middleware[]): Processor;
+    create(tool: Tool, middlewares?: Middleware[]): Promise<Processor>;
 }
 
 export interface Processor {
