@@ -17,6 +17,7 @@ export class LoggingMiddleware implements Middleware {
         this.logger.info({
             tool: context.tool,
             input: context.input,
+            metadata: context.metadata,
         }, `Tool ${context.tool} started`);
 
         context.metadata!.startTime = Date.now();
@@ -30,7 +31,8 @@ export class LoggingMiddleware implements Middleware {
         this.logger.info({
             tool: context.tool,
             duration: duration,
-            success: true
+            success: true,
+            metadata: context.metadata,
         }, `Tool ${context.tool} completed`);
 
         return result;
