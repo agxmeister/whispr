@@ -2,7 +2,7 @@ import "reflect-metadata";
 import dotenv from 'dotenv';
 import path from 'path';
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
-import {EdgeService, EdgeRepository} from "@/modules/edge";
+import {EdgeService} from "@/modules/edge";
 import {ConfigService} from "@/modules/config";
 import {ProfileService} from "@/modules/profile";
 import {McpService, ProcessorFactory, EdgeToolMiddlewaresFactory} from "@/modules/mcp";
@@ -30,13 +30,11 @@ dotenv.config();
 
     const configService = container.get<ConfigService>(dependencies.ConfigService);
     const profileService = container.get<ProfileService>(dependencies.ProfileService);
-    const edgeRepository = new EdgeRepository(configService);
-    const edgeService = new EdgeService(edgeRepository);
-    const edges = await edgeService.getEdges();
+    const edgeService = container.get<EdgeService>(dependencies.EdgeService);
     const assistantService = new AssistantService(assistantRegistry, configService);
     const assistantFactories = await assistantService.getAssistantFactories();
     const processorFactory = new ProcessorFactory(profileService);
-    const serverService = new McpService(processorFactory);
+    const serverService = new McpService(edgeService, processorFactory);
     const restApiFactory = new RestFactory();
     const tokenRepository = new AcknowledgmentTokenRepository(path.join(__dirname, '../data/acknowledgment-tokens.json'));
     const tokenService = new AcknowledgmentTokenService(tokenRepository);
@@ -50,7 +48,6 @@ dotenv.config();
     const edgeToolFactories = await edgeToolService.getEdgeToolFactories();
     const edgeToolMiddlewaresFactory = new EdgeToolMiddlewaresFactory(configService);
     const server = await serverService.getMcpServer(
-        edges,
         edgeToolFactories,
         edgeToolMiddlewaresFactory,
         assistantFactories,

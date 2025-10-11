@@ -1,15 +1,17 @@
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
-import {Edge} from "@/modules/edge";
+import {EdgeService} from "@/modules/edge";
 import {EdgeToolFactory} from "@/modules/edge/tool";
 import {AssistantFactory} from "@/modules/assistant";
 import {ProcessorFactory} from "./types";
 import {EdgeToolMiddlewaresFactory} from "./middleware";
 
 export class McpService {
-    constructor(private readonly processorFactory: ProcessorFactory) {}
+    constructor(
+        private readonly edgeService: EdgeService,
+        private readonly processorFactory: ProcessorFactory
+    ) {}
 
     public async getMcpServer(
-        edges: Edge[],
         toolFactories: EdgeToolFactory[],
         middlewaresFactory: EdgeToolMiddlewaresFactory,
         assistantFactories: AssistantFactory[] = []
@@ -18,6 +20,8 @@ export class McpService {
             name: "whispr",
             version: "1.0.0",
         });
+
+        const edges = await this.edgeService.getEdges();
 
         for (const edge of edges) {
             for (const factory of toolFactories) {

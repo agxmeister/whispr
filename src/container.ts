@@ -3,6 +3,7 @@ import { LoggerService } from "@/modules/logger";
 import { ConfigRepository } from "@/modules/config/repository";
 import { ConfigService } from "@/modules/config/service";
 import { ProfileService } from "@/modules/profile/service";
+import { EdgeRepository, EdgeService } from "@/modules/edge";
 import { join, resolve } from "path";
 import minimist from "minimist";
 
@@ -11,6 +12,8 @@ export const dependencies = {
     ConfigRepository: Symbol.for("ConfigRepository"),
     ConfigService: Symbol.for("ConfigService"),
     ProfileService: Symbol.for("ProfileService"),
+    EdgeRepository: Symbol.for("EdgeRepository"),
+    EdgeService: Symbol.for("EdgeService"),
 } as const;
 
 const args = minimist(process.argv.slice(2));
@@ -34,6 +37,16 @@ container.bind(dependencies.ConfigService).toDynamicValue(() => {
 container.bind(dependencies.ProfileService).toDynamicValue(() => {
     const configService = container.get<ConfigService>(dependencies.ConfigService);
     return new ProfileService(configService);
+});
+
+container.bind(dependencies.EdgeRepository).toDynamicValue(() => {
+    const configService = container.get<ConfigService>(dependencies.ConfigService);
+    return new EdgeRepository(configService);
+});
+
+container.bind(dependencies.EdgeService).toDynamicValue(() => {
+    const edgeRepository = container.get<EdgeRepository>(dependencies.EdgeRepository);
+    return new EdgeService(edgeRepository);
 });
 
 export {container}
