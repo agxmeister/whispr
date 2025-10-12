@@ -2,7 +2,7 @@ import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { LoggerService } from "@/modules/logger";
 import { Middleware, MiddlewareContext, MiddlewareNext, RegisterMiddleware } from "@/modules/mcp/middleware";
 import { injectable, inject } from "inversify";
-import { dependencies } from "@/container";
+import { dependencies } from "@/dependencies";
 
 @injectable()
 @RegisterMiddleware("logging")

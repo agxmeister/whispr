@@ -1,8 +1,11 @@
+import { injectable, inject } from "inversify";
 import { Profile } from "./types";
 import { ConfigService } from "@/modules/config";
+import { dependencies } from "@/dependencies";
 
+@injectable()
 export class ProfileService {
-    constructor(private readonly configService: ConfigService) {
+    constructor(@inject(dependencies.ConfigService) private readonly configService: ConfigService) {
     }
 
     async getProfile(): Promise<Profile> {

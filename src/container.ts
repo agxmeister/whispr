@@ -6,15 +6,7 @@ import { ProfileService } from "@/modules/profile/service";
 import { EdgeRepository, EdgeService } from "@/modules/edge";
 import { join, resolve } from "path";
 import minimist from "minimist";
-
-export const dependencies = {
-    LoggerService: Symbol.for("LoggerService"),
-    ConfigRepository: Symbol.for("ConfigRepository"),
-    ConfigService: Symbol.for("ConfigService"),
-    ProfileService: Symbol.for("ProfileService"),
-    EdgeRepository: Symbol.for("EdgeRepository"),
-    EdgeService: Symbol.for("EdgeService"),
-} as const;
+import { dependencies } from "@/dependencies";
 
 const args = minimist(process.argv.slice(2));
 const configPath = args.config ? resolve(args.config) : join(__dirname, '../config.json');
@@ -34,10 +26,7 @@ container.bind(dependencies.ConfigService).toDynamicValue(() => {
     return new ConfigService(configRepository);
 });
 
-container.bind(dependencies.ProfileService).toDynamicValue(() => {
-    const configService = container.get<ConfigService>(dependencies.ConfigService);
-    return new ProfileService(configService);
-});
+container.bind(dependencies.ProfileService).to(ProfileService);
 
 container.bind(dependencies.EdgeRepository).toDynamicValue(() => {
     const configService = container.get<ConfigService>(dependencies.ConfigService);

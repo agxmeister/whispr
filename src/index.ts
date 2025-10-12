@@ -20,7 +20,8 @@ import {AcknowledgmentTokenRepository} from "@/modules/edge/tool/token/repositor
 import {assistantRegistry} from "@/modules/assistant/assistantRegistry";
 import {AssistantService} from "@/modules/assistant";
 import {MiddlewareDiscovery} from "@/modules/mcp/middleware";
-import {container, dependencies} from "@/container";
+import { container } from "@/container";
+import { dependencies } from "@/dependencies";
 
 dotenv.config();
 
