@@ -17,7 +17,6 @@ import {
 } from "@/modules/edge/tool";
 import {AcknowledgmentTokenService} from "@/modules/edge/tool/token/service";
 import {AcknowledgmentTokenRepository} from "@/modules/edge/tool/token/repository";
-import {assistantRegistry} from "@/modules/assistant/assistantRegistry";
 import {AssistantService} from "@/modules/assistant";
 import {MiddlewareDiscovery} from "@/modules/mcp/middleware";
 import { container } from "@/container";
@@ -32,7 +31,7 @@ dotenv.config();
     const configService = container.get<ConfigService>(dependencies.ConfigService);
     const profileService = container.get<ProfileService>(dependencies.ProfileService);
     const edgeService = container.get<EdgeService>(dependencies.EdgeService);
-    const assistantService = new AssistantService(assistantRegistry, configService);
+    const assistantService = container.get<AssistantService>(dependencies.AssistantService);
     const assistantFactories = await assistantService.getAssistantFactories();
     const processorFactory = new ProcessorFactory(profileService);
     const serverService = new McpService(edgeService, processorFactory);

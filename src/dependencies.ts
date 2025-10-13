@@ -5,4 +5,6 @@ export const dependencies = {
     ProfileService: Symbol.for("ProfileService"),
     EdgeRepository: Symbol.for("EdgeRepository"),
     EdgeService: Symbol.for("EdgeService"),
+    AssistantRegistry: Symbol.for("AssistantRegistry"),
+    AssistantService: Symbol.for("AssistantService"),
 } as const;

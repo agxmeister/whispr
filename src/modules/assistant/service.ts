@@ -5,7 +5,7 @@ import { dependencies } from "@/dependencies";
 
 @injectable()
 export class AssistantService {
-    constructor(readonly registry: AssistantRegistry, @inject(dependencies.ConfigService) readonly configService: ConfigService)
+    constructor(@inject(dependencies.AssistantRegistry) readonly registry: AssistantRegistry, @inject(dependencies.ConfigService) readonly configService: ConfigService)
     {
     }
 

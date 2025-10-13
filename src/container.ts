@@ -4,6 +4,8 @@ import { ConfigRepository } from "@/modules/config/repository";
 import { ConfigService } from "@/modules/config/service";
 import { ProfileService } from "@/modules/profile/service";
 import { EdgeRepository, EdgeService } from "@/modules/edge";
+import { AssistantService } from "@/modules/assistant";
+import { assistantRegistry } from "@/modules/assistant/assistantRegistry";
 import { join, resolve } from "path";
 import minimist from "minimist";
 import { dependencies } from "@/dependencies";
@@ -28,5 +30,9 @@ container.bind(dependencies.ProfileService).to(ProfileService);
 container.bind(dependencies.EdgeRepository).to(EdgeRepository);
 
 container.bind(dependencies.EdgeService).to(EdgeService);
+
+container.bind(dependencies.AssistantRegistry).toConstantValue(assistantRegistry);
+
+container.bind(dependencies.AssistantService).to(AssistantService);
 
 export {container}
