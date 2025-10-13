@@ -1,8 +1,11 @@
+import { injectable, inject } from "inversify";
 import { AssistantFactory, AssistantRegistry } from "./types";
 import { ConfigService } from "@/modules/config";
+import { dependencies } from "@/dependencies";
 
+@injectable()
 export class AssistantService {
-    constructor(readonly registry: AssistantRegistry, readonly configService: ConfigService)
+    constructor(readonly registry: AssistantRegistry, @inject(dependencies.ConfigService) readonly configService: ConfigService)
     {
     }
 

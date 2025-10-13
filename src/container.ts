@@ -21,21 +21,12 @@ container.bind(dependencies.ConfigRepository).toDynamicValue(() => {
     return new ConfigRepository(configPath);
 });
 
-container.bind(dependencies.ConfigService).toDynamicValue(() => {
-    const configRepository = container.get<ConfigRepository>(dependencies.ConfigRepository);
-    return new ConfigService(configRepository);
-});
+container.bind(dependencies.ConfigService).to(ConfigService);
 
 container.bind(dependencies.ProfileService).to(ProfileService);
 
-container.bind(dependencies.EdgeRepository).toDynamicValue(() => {
-    const configService = container.get<ConfigService>(dependencies.ConfigService);
-    return new EdgeRepository(configService);
-});
+container.bind(dependencies.EdgeRepository).to(EdgeRepository);
 
-container.bind(dependencies.EdgeService).toDynamicValue(() => {
-    const edgeRepository = container.get<EdgeRepository>(dependencies.EdgeRepository);
-    return new EdgeService(edgeRepository);
-});
+container.bind(dependencies.EdgeService).to(EdgeService);
 
 export {container}
