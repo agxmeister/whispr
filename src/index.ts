@@ -2,22 +2,7 @@ import "reflect-metadata";
 import dotenv from 'dotenv';
 import path from 'path';
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
-import {EdgeService} from "@/modules/edge";
-import {ConfigService} from "@/modules/config";
-import {ProfileService} from "@/modules/profile";
-import {McpService, ProcessorFactory, EdgeToolMiddlewaresFactory} from "@/modules/mcp";
-import {
-    ApiEndpointFactory,
-    AcknowledgedApiEndpointFactory,
-    CallApiEndpointFactory,
-    GetApiEndpointDetailsFactory,
-    GetApiEndpointsFactory,
-    EdgeToolService,
-    RestFactory
-} from "@/modules/edge/tool";
-import {AcknowledgmentTokenService} from "@/modules/edge/tool/token/service";
-import {AcknowledgmentTokenRepository} from "@/modules/edge/tool/token/repository";
-import {AssistantService} from "@/modules/assistant";
+import {McpService} from "@/modules/mcp";
 import {MiddlewareDiscovery} from "@/modules/mcp/middleware";
 import { container } from "@/container";
 import { dependencies } from "@/dependencies";
@@ -28,30 +13,8 @@ dotenv.config();
     const middlewareDiscovery = new MiddlewareDiscovery();
     await middlewareDiscovery.discover(path.join(__dirname, 'middlewares'));
 
-    const configService = container.get<ConfigService>(dependencies.ConfigService);
-    const profileService = container.get<ProfileService>(dependencies.ProfileService);
-    const edgeService = container.get<EdgeService>(dependencies.EdgeService);
-    const assistantService = container.get<AssistantService>(dependencies.AssistantService);
-    const assistantFactories = await assistantService.getAssistantFactories();
-    const processorFactory = new ProcessorFactory(profileService);
-    const serverService = new McpService(edgeService, processorFactory);
-    const restApiFactory = new RestFactory();
-    const tokenRepository = new AcknowledgmentTokenRepository(path.join(__dirname, '../data/acknowledgment-tokens.json'));
-    const tokenService = new AcknowledgmentTokenService(tokenRepository);
-    const edgeToolService = new EdgeToolService(profileService, [
-        new ApiEndpointFactory(restApiFactory, profileService),
-        new AcknowledgedApiEndpointFactory(restApiFactory, profileService, tokenService),
-        new GetApiEndpointsFactory(restApiFactory, profileService),
-        new GetApiEndpointDetailsFactory(restApiFactory, profileService),
-        new CallApiEndpointFactory(restApiFactory, profileService),
-    ]);
-    const edgeToolFactories = await edgeToolService.getEdgeToolFactories();
-    const edgeToolMiddlewaresFactory = new EdgeToolMiddlewaresFactory(configService);
-    const server = await serverService.getMcpServer(
-        edgeToolFactories,
-        edgeToolMiddlewaresFactory,
-        assistantFactories,
-    );
+    const mcpService = container.get<McpService>(dependencies.McpService);
+    const server = await mcpService.getMcpServer();
     const transport = new StdioServerTransport();
     await server.connect(transport);
 })();

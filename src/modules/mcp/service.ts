@@ -1,32 +1,36 @@
+import {injectable, inject} from "inversify";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {EdgeService} from "@/modules/edge";
-import {EdgeToolFactory} from "@/modules/edge/tool";
-import {AssistantFactory} from "@/modules/assistant";
+import {EdgeToolService} from "@/modules/edge/tool";
+import {AssistantService} from "@/modules/assistant";
 import {ProcessorFactory} from "./types";
 import {EdgeToolMiddlewaresFactory} from "./middleware";
+import {dependencies} from "@/dependencies";
 
+@injectable()
 export class McpService {
     constructor(
-        private readonly edgeService: EdgeService,
-        private readonly processorFactory: ProcessorFactory
+        @inject(dependencies.EdgeService) private readonly edgeService: EdgeService,
+        @inject(dependencies.EdgeToolService) private readonly edgeToolService: EdgeToolService,
+        @inject(dependencies.AssistantService) private readonly assistantService: AssistantService,
+        @inject(dependencies.EdgeToolMiddlewaresFactory) private readonly middlewaresFactory: EdgeToolMiddlewaresFactory,
+        @inject(dependencies.ProcessorFactory) private readonly processorFactory: ProcessorFactory
     ) {}
 
-    public async getMcpServer(
-        toolFactories: EdgeToolFactory[],
-        middlewaresFactory: EdgeToolMiddlewaresFactory,
-        assistantFactories: AssistantFactory[] = []
-    ): Promise<McpServer> {
+    public async getMcpServer(): Promise<McpServer> {
         const server = new McpServer({
             name: "whispr",
             version: "1.0.0",
         });
 
         const edges = await this.edgeService.getEdges();
+        const toolFactories = await this.edgeToolService.getEdgeToolFactories();
+        const assistantFactories = await this.assistantService.getAssistantFactories();
 
         for (const edge of edges) {
             for (const factory of toolFactories) {
                 const tool = await factory.create(edge);
-                const middlewares = await middlewaresFactory.create(edge, tool);
+                const middlewares = await this.middlewaresFactory.create(edge, tool);
                 const processor = await this.processorFactory.create(tool, middlewares);
                 server.tool(tool.name, tool.description, tool.schema, processor.handler);
             }
