@@ -1,10 +1,14 @@
+import { injectable, inject } from "inversify";
 import { EdgeToolFactory } from "./EdgeToolFactory";
 import { ProfileService } from "@/modules/profile";
+import { dependencies } from "@/dependencies";
 
+@injectable()
 export class EdgeToolService {
-    constructor(readonly profileService: ProfileService, readonly factories: EdgeToolFactory[])
-    {
-    }
+    constructor(
+        @inject(dependencies.ProfileService) readonly profileService: ProfileService,
+        @inject(dependencies.EdgeToolFactories) readonly factories: EdgeToolFactory[]
+    ) {}
 
     async getEdgeToolFactories(): Promise<EdgeToolFactory[]> {
         const profile = await this.profileService.getProfile();

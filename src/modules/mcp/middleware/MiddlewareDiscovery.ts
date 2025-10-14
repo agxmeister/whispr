@@ -1,11 +1,15 @@
 import "@/container";
-import { container } from "@/container";
+import { Container, inject, injectable } from "inversify";
 import { readdirSync, statSync } from "fs";
 import { join } from "path";
 import { MiddlewareRegistry } from "./MiddlewareRegistry";
 import {MiddlewareMetadata} from "@/modules/mcp/middleware/types";
 
+@injectable()
 export class MiddlewareDiscovery {
+    constructor(@inject(Container) private readonly container: Container) {
+    }
+
     async discover(basePath: string): Promise<void> {
         try {
             for (const file of readdirSync(basePath)) {
@@ -27,7 +31,7 @@ export class MiddlewareDiscovery {
                             const registry = MiddlewareRegistry.getInstance();
                             registry.register(name, middlewareSymbol);
 
-                            container.bind(middlewareSymbol).to(constructor);
+                            this.container.bind(middlewareSymbol).to(constructor);
                         }
                     } catch (error) {
                     }

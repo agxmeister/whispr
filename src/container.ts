@@ -6,7 +6,7 @@ import { ProfileService } from "@/modules/profile/service";
 import { EdgeRepository, EdgeService } from "@/modules/edge";
 import { AssistantService } from "@/modules/assistant";
 import { assistantRegistry } from "@/modules/assistant/assistantRegistry";
-import { EdgeToolMiddlewaresFactory } from "@/modules/mcp/middleware";
+import { EdgeToolMiddlewaresFactory, MiddlewareDiscovery } from "@/modules/mcp/middleware";
 import { McpService, ProcessorFactory } from "@/modules/mcp";
 import {
     EdgeToolService,
@@ -53,22 +53,26 @@ container.bind(dependencies.AssistantService).to(AssistantService);
 
 container.bind(dependencies.EdgeToolMiddlewaresFactory).to(EdgeToolMiddlewaresFactory);
 
-container.bind(dependencies.EdgeToolService).toDynamicValue((context) => {
+container.bind(dependencies.EdgeToolFactories).toDynamicValue(() => {
     const profileService = container.get<ProfileService>(dependencies.ProfileService);
     const restApiFactory = new RestFactory();
     const tokenRepository = new AcknowledgmentTokenRepository(join(__dirname, '../data/acknowledgment-tokens.json'));
     const tokenService = new AcknowledgmentTokenService(tokenRepository);
-    return new EdgeToolService(profileService, [
+    return [
         new ApiEndpointFactory(restApiFactory, profileService),
         new AcknowledgedApiEndpointFactory(restApiFactory, profileService, tokenService),
         new GetApiEndpointsFactory(restApiFactory, profileService),
         new GetApiEndpointDetailsFactory(restApiFactory, profileService),
         new CallApiEndpointFactory(restApiFactory, profileService),
-    ]);
+    ];
 });
+
+container.bind(dependencies.EdgeToolService).to(EdgeToolService);
 
 container.bind(dependencies.ProcessorFactory).to(ProcessorFactory);
 
 container.bind(dependencies.McpService).to(McpService);
+
+container.bind(dependencies.MiddlewareDiscovery).to(MiddlewareDiscovery);
 
 export {container}
