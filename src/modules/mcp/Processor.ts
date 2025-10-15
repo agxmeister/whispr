@@ -1,8 +1,8 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import {Tool, Processor as ProcessorInterface} from "./types";
 import {Middleware, MiddlewareContext, MiddlewareNext} from "./middleware";
-import {formatted} from "./decorators";
 import {Profile} from "@/modules/profile";
+import {HttpError} from "../edge/tool/rest/HttpError";
 
 export class Processor implements ProcessorInterface {
     constructor(
@@ -11,9 +11,47 @@ export class Processor implements ProcessorInterface {
         private readonly profile?: Profile
     ) {}
 
-    @formatted
-    private async callToolHandler(input: any): Promise<any> {
-        return await this.tool.handler(input);
+    private async callToolHandler(input: any): Promise<CallToolResult> {
+        try {
+            const payload = await this.tool.handler(input);
+            return this.formatToolResponse(payload);
+        } catch (error) {
+            return this.formatToolError(error instanceof Error ? error : new Error(String(error)));
+        }
+    }
+
+    private formatToolResponse(payload: any): CallToolResult {
+        return {
+            content: [{
+                type: "text",
+                text: JSON.stringify(payload, null, 2),
+            }]
+        };
+    }
+
+    private formatToolError(error: Error): CallToolResult {
+        if (error instanceof HttpError) {
+            return {
+                content: [{
+                    type: "text",
+                    text: JSON.stringify({
+                        status: error.status,
+                        body: error.body
+                    }, null, 2),
+                }],
+                isError: true,
+            };
+        }
+
+        return {
+            content: [{
+                type: "text",
+                text: JSON.stringify({
+                    error: error.message
+                }, null, 2),
+            }],
+            isError: true,
+        };
     }
 
     readonly handler = async (input: any): Promise<CallToolResult> => {
