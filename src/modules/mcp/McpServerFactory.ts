@@ -3,12 +3,12 @@ import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {EdgeService} from "@/modules/edge";
 import {EdgeToolService} from "@/modules/edge/tool";
 import {AssistantService} from "@/modules/assistant";
-import {ProcessorFactory} from "./types";
+import {ProcessorFactory, McpServerFactory as McpServerFactoryInterface} from "./types";
 import {EdgeToolMiddlewaresFactory} from "./middleware";
 import {dependencies} from "@/dependencies";
 
 @injectable()
-export class McpService {
+export class McpServerFactory implements McpServerFactoryInterface {
     constructor(
         @inject(dependencies.EdgeService) private readonly edgeService: EdgeService,
         @inject(dependencies.EdgeToolService) private readonly edgeToolService: EdgeToolService,
@@ -17,7 +17,7 @@ export class McpService {
         @inject(dependencies.ProcessorFactory) private readonly processorFactory: ProcessorFactory
     ) {}
 
-    public async getMcpServer(): Promise<McpServer> {
+    public async create(): Promise<McpServer> {
         const server = new McpServer({
             name: "whispr",
             version: "1.0.0",

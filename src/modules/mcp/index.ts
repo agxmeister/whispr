@@ -1,5 +1,5 @@
-export {McpService} from "./service";
+export {EdgeToolMiddlewaresFactory} from "./middleware";
+export {McpServerFactory} from "./McpServerFactory";
 export {Tool} from "./types";
-export {EdgeToolMiddlewaresFactory as EdgeToolMiddlewaresFactoryInterface, EdgeToolMiddlewaresFactory} from "./middleware";
 export {Processor} from "./Processor";
 export {ProcessorFactory} from "./ProcessorFactory";

@@ -1,4 +1,5 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
+import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {Middleware} from "./middleware/types";
 
 export interface Tool {
@@ -14,4 +15,8 @@ export interface ProcessorFactory {
 
 export interface Processor {
     readonly handler: (input: any) => Promise<CallToolResult>;
+}
+
+export interface McpServerFactory {
+    create(): Promise<McpServer>;
 }

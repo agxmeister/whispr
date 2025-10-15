@@ -7,7 +7,7 @@ import { EdgeRepository, EdgeService } from "@/modules/edge";
 import { AssistantService } from "@/modules/assistant";
 import { assistantRegistry } from "@/modules/assistant/assistantRegistry";
 import { EdgeToolMiddlewaresFactory, MiddlewareDiscovery } from "@/modules/mcp/middleware";
-import { McpService, ProcessorFactory } from "@/modules/mcp";
+import { McpServerFactory, ProcessorFactory } from "@/modules/mcp";
 import {
     EdgeToolService,
     RestFactory,
@@ -71,7 +71,7 @@ container.bind(dependencies.EdgeToolService).to(EdgeToolService);
 
 container.bind(dependencies.ProcessorFactory).to(ProcessorFactory);
 
-container.bind(dependencies.McpService).to(McpService);
+container.bind(dependencies.McpServerFactory).to(McpServerFactory);
 
 container.bind(dependencies.MiddlewareDiscovery).to(MiddlewareDiscovery);
 
