@@ -1,10 +1,13 @@
+import {injectable, inject} from "inversify";
 import { AcknowledgmentToken } from "./types";
 import { AcknowledgmentTokenRepository } from "./repository";
 import { Edge } from "@/modules/edge";
 import { OpenApiEndpointRoute } from "../types";
+import {dependencies} from "@/dependencies";
 
+@injectable()
 export class AcknowledgmentTokenService {
-    constructor(private readonly repository: AcknowledgmentTokenRepository) {
+    constructor(@inject(dependencies.AcknowledgmentTokenRepository) private readonly repository: AcknowledgmentTokenRepository) {
     }
 
     getAcknowledgmentToken(edge: Edge, endpoint: OpenApiEndpointRoute): AcknowledgmentToken | null {

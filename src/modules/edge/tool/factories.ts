@@ -1,3 +1,4 @@
+import {injectable, inject} from "inversify";
 import {Edge} from "@/modules/edge";
 import {EdgeTool} from "./EdgeTool";
 import {EdgeToolFactory} from "./EdgeToolFactory";
@@ -9,6 +10,7 @@ import {GuidedApi} from "./GuidedApi";
 import {AcknowledgmentTokenService} from "./token/service";
 import {RestFactory} from "./rest/RestFactory";
 import {ProfileService} from "@/modules/profile";
+import {dependencies} from "@/dependencies";
 
 export class CallApiEndpointFactory extends EdgeToolFactory {
     readonly name = "call-api-endpoint";
@@ -50,13 +52,14 @@ export class ApiEndpointFactory extends EdgeToolFactory {
     }
 }
 
+@injectable()
 export class AcknowledgedApiEndpointFactory extends EdgeToolFactory {
     readonly name = "guided-api";
 
     constructor(
-        restFactory: RestFactory,
-        profileService: ProfileService,
-        private readonly tokenService: AcknowledgmentTokenService
+        @inject(dependencies.RestFactory) restFactory: RestFactory,
+        @inject(dependencies.ProfileService) profileService: ProfileService,
+        @inject(dependencies.AcknowledgmentTokenService) private readonly tokenService: AcknowledgmentTokenService
     ) {
         super(restFactory, profileService);
     }
