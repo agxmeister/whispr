@@ -1,5 +1,5 @@
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { LoggerService } from "@/modules/logger";
+import { LoggerFactory } from "@/modules/logger";
 import { Middleware, MiddlewareContext, MiddlewareNext, RegisterMiddleware } from "@/modules/mcp/middleware";
 import { injectable, inject } from "inversify";
 import { dependencies } from "@/dependencies";
@@ -9,8 +9,8 @@ import { dependencies } from "@/dependencies";
 export class LoggingMiddleware implements Middleware {
     private logger;
 
-    constructor(@inject(dependencies.LoggerService) private loggerService: LoggerService) {
-        this.logger = this.loggerService.getLogger();
+    constructor(@inject(dependencies.LoggerFactory) private loggerFactory: LoggerFactory) {
+        this.logger = this.loggerFactory.create();
     }
 
     async processInput(context: MiddlewareContext, next: MiddlewareNext): Promise<CallToolResult> {

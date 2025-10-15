@@ -6,3 +6,7 @@ export interface Logger {
     warn: LogFn;
     debug: LogFn;
 }
+
+export interface LoggerFactory {
+    create(): Logger;
+}

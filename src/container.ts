@@ -1,5 +1,5 @@
 import { Container } from "inversify";
-import { LoggerService } from "@/modules/logger";
+import { LoggerFactory } from "@/modules/logger";
 import { ConfigRepository } from "@/modules/config/repository";
 import { ConfigService } from "@/modules/config/service";
 import { ProfileService } from "@/modules/profile/service";
@@ -33,8 +33,8 @@ const container = new Container();
 
 container.bind(Container).toConstantValue(container);
 
-container.bind(dependencies.LoggerService).toDynamicValue(() => {
-    return new LoggerService(logPath);
+container.bind(dependencies.LoggerFactory).toDynamicValue(() => {
+    return new LoggerFactory(logPath);
 });
 
 container.bind(dependencies.ConfigRepository).toDynamicValue(() => {

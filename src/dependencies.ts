@@ -1,5 +1,5 @@
 export const dependencies = {
-    LoggerService: Symbol.for("LoggerService"),
+    LoggerFactory: Symbol.for("LoggerFactory"),
     ConfigRepository: Symbol.for("ConfigRepository"),
     ConfigService: Symbol.for("ConfigService"),
     ProfileService: Symbol.for("ProfileService"),

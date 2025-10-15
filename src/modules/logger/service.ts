@@ -1,10 +1,10 @@
 import pino from 'pino';
-import { Logger } from './types';
+import { Logger, LoggerFactory as LoggerFactoryInterface } from './types';
 
-export class LoggerService {
+export class LoggerFactory implements LoggerFactoryInterface {
     constructor(private logFilePath: string) {}
 
-    getLogger(): Logger {
+    create(): Logger {
         return pino({
             level: 'info',
             base: null,
