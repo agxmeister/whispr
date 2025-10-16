@@ -2,7 +2,7 @@ import { Container } from "inversify";
 import { LoggerFactory } from "@/modules/logger";
 import { ConfigRepository } from "@/modules/config/repository";
 import { ConfigService } from "@/modules/config/service";
-import { ProfileService } from "@/modules/profile/service";
+import { ProfileFactory } from "@/modules/profile";
 import { EdgeRepository, EdgeService } from "@/modules/edge";
 import { AssistantService } from "@/modules/assistant";
 import { assistantRegistry } from "@/modules/assistant/assistantRegistry";
@@ -49,7 +49,7 @@ container.bind(dependencies.AssistantRegistry).toConstantValue(assistantRegistry
 
 container.bind(dependencies.ConfigService).to(ConfigService);
 
-container.bind(dependencies.ProfileService).to(ProfileService);
+container.bind(dependencies.ProfileFactory).to(ProfileFactory);
 
 container.bind(dependencies.EdgeRepository).to(EdgeRepository);
 

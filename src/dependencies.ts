@@ -2,7 +2,7 @@ export const dependencies = {
     LoggerFactory: Symbol.for("LoggerFactory"),
     ConfigRepository: Symbol.for("ConfigRepository"),
     ConfigService: Symbol.for("ConfigService"),
-    ProfileService: Symbol.for("ProfileService"),
+    ProfileFactory: Symbol.for("ProfileFactory"),
     EdgeRepository: Symbol.for("EdgeRepository"),
     EdgeService: Symbol.for("EdgeService"),
     AssistantRegistry: Symbol.for("AssistantRegistry"),

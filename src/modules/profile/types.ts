@@ -5,3 +5,7 @@ export type Profile = {
     };
     metadata?: Record<string, any>;
 };
+
+export interface ProfileFactory {
+    create(): Promise<Profile>;
+}

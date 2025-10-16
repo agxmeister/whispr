@@ -1,6 +1,6 @@
 import {injectable, inject} from "inversify";
 import {Edge} from "@/modules/edge";
-import {ProfileService} from "@/modules/profile";
+import {ProfileFactory} from "@/modules/profile";
 import {RestFactory} from "./rest/RestFactory";
 import {EdgeTool} from "@/modules/edge/tool/EdgeTool";
 import {dependencies} from "@/dependencies";
@@ -11,7 +11,7 @@ export abstract class EdgeToolFactory {
 
     constructor(
         @inject(dependencies.RestFactory) protected readonly restFactory: RestFactory,
-        @inject(dependencies.ProfileService) protected readonly profileService: ProfileService
+        @inject(dependencies.ProfileFactory) protected readonly profileFactory: ProfileFactory
     ) {
     }
 

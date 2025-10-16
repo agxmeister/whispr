@@ -1,2 +1,2 @@
-export type { Profile } from './types';
-export { ProfileService } from './service';
+export { ProfileFactory } from './ProfileFactory';
+export type { Profile, ProfileFactory as ProfileFactoryInterface } from './types';
