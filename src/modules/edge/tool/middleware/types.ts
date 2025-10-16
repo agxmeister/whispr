@@ -1,6 +1,6 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import {Edge} from "@/modules/edge";
-import {Tool} from "../types";
+import {Tool} from "@/modules/mcp";
 
 export interface MiddlewareContext {
     tool: string;

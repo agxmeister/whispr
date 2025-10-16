@@ -1,11 +1,11 @@
 import { injectable, inject } from "inversify";
 import { Container } from "inversify";
 import {EdgeToolMiddlewaresFactory as EdgeToolMiddlewaresFactoryInterface, Middleware} from "./types";
-import {Tool} from "../types";
 import {Edge} from "@/modules/edge";
 import {ConfigService} from "@/modules/config";
 import { dependencies } from "@/dependencies";
 import {MiddlewareRegistry} from "./MiddlewareRegistry";
+import {Tool} from "@/modules/mcp";
 
 @injectable()
 export class EdgeToolMiddlewaresFactory implements EdgeToolMiddlewaresFactoryInterface {

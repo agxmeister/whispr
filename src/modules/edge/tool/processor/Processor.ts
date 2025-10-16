@@ -1,8 +1,9 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
-import {Tool, Processor as ProcessorInterface} from "./types";
-import {Middleware, MiddlewareContext, MiddlewareNext} from "./middleware";
+import {Tool} from "@/modules/mcp/types";
+import {Processor as ProcessorInterface} from "./types";
+import {Middleware, MiddlewareContext, MiddlewareNext} from "../middleware";
 import {Profile} from "@/modules/profile";
-import {HttpError} from "../edge/tool/rest/HttpError";
+import {HttpError} from "../rest/HttpError";
 
 export class Processor implements ProcessorInterface {
     constructor(

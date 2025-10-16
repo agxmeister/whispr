@@ -3,7 +3,7 @@ import { Container, inject, injectable } from "inversify";
 import { readdirSync, statSync } from "fs";
 import { join } from "path";
 import { MiddlewareRegistry } from "./MiddlewareRegistry";
-import {MiddlewareMetadata} from "@/modules/mcp/middleware/types";
+import {MiddlewareMetadata} from "./types";
 
 @injectable()
 export class MiddlewareDiscovery {

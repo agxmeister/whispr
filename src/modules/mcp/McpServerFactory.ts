@@ -3,8 +3,9 @@ import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {EdgeService} from "@/modules/edge";
 import {EdgeToolService} from "@/modules/edge/tool";
 import {AssistantService} from "@/modules/assistant";
-import {ProcessorFactory, McpServerFactory as McpServerFactoryInterface} from "./types";
-import {EdgeToolMiddlewaresFactory} from "./middleware";
+import {McpServerFactory as McpServerFactoryInterface} from "./types";
+import {ProcessorFactory} from "@/modules/edge/tool/processor/types";
+import {EdgeToolMiddlewaresFactory} from "@/modules/edge/tool/middleware";
 import {dependencies} from "@/dependencies";
 
 @injectable()

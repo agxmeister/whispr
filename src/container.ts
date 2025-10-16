@@ -6,8 +6,9 @@ import { ProfileFactory } from "@/modules/profile";
 import { EdgeRepository, EdgeService } from "@/modules/edge";
 import { AssistantService } from "@/modules/assistant";
 import { assistantRegistry } from "@/modules/assistant/assistantRegistry";
-import { EdgeToolMiddlewaresFactory, MiddlewareDiscovery } from "@/modules/mcp/middleware";
-import { McpServerFactory, ProcessorFactory } from "@/modules/mcp";
+import { EdgeToolMiddlewaresFactory, MiddlewareDiscovery } from "@/modules/edge/tool/middleware";
+import { ProcessorFactory } from "@/modules/edge/tool/processor";
+import { McpServerFactory } from "@/modules/mcp";
 import {
     EdgeToolService,
     RestFactory,

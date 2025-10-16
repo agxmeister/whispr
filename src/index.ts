@@ -5,7 +5,7 @@ import { container } from "@/container";
 import { dependencies } from "@/dependencies";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { McpServerFactory } from "@/modules/mcp";
-import { MiddlewareDiscovery } from "@/modules/mcp/middleware";
+import { MiddlewareDiscovery } from "@/modules/edge/tool/middleware";
 
 dotenv.config();
 

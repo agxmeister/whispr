@@ -1,6 +1,6 @@
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { LoggerFactory } from "@/modules/logger";
-import { Middleware, MiddlewareContext, MiddlewareNext, RegisterMiddleware } from "@/modules/mcp/middleware";
+import { Middleware, MiddlewareContext, MiddlewareNext, RegisterMiddleware } from "@/modules/edge/tool/middleware";
 import { injectable, inject } from "inversify";
 import { dependencies } from "@/dependencies";
 
