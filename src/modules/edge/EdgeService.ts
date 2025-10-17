@@ -1,6 +1,6 @@
 import { injectable, inject } from "inversify";
 import { Edge } from "./types";
-import { EdgeRepository } from "./repository";
+import { EdgeRepository } from "./EdgeRepository";
 import { dependencies } from "@/dependencies";
 
 @injectable()

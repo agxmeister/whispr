@@ -1,3 +1,3 @@
-export { ConfigService } from "./service";
-export { ConfigRepository } from "./repository";
+export { ConfigService } from "./ConfigService";
+export { ConfigRepository } from "./ConfigRepository";
 export { Config } from "./types";

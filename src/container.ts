@@ -1,7 +1,7 @@
 import { Container } from "inversify";
 import { LoggerFactory } from "@/modules/logger";
-import { ConfigRepository } from "@/modules/config/repository";
-import { ConfigService } from "@/modules/config/service";
+import { ConfigRepository } from "@/modules/config/ConfigRepository";
+import { ConfigService } from "@/modules/config/ConfigService";
 import { ProfileFactory } from "@/modules/profile";
 import { EdgeRepository, EdgeService } from "@/modules/edge";
 import { AssistantService } from "@/modules/assistant";
@@ -19,8 +19,8 @@ import {
     CallApiEndpointFactory,
     EdgeToolFactory
 } from "@/modules/edge/tool";
-import { AcknowledgmentTokenService } from "@/modules/edge/tool/token/service";
-import { AcknowledgmentTokenRepository } from "@/modules/edge/tool/token/repository";
+import { AcknowledgmentTokenService } from "@/modules/edge/tool/token/TokenService";
+import { AcknowledgmentTokenRepository } from "@/modules/edge/tool/token/TokenRepository";
 import { join, resolve } from "path";
 import minimist from "minimist";
 import { dependencies } from "@/dependencies";

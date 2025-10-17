@@ -3,7 +3,7 @@ import {EdgeTool} from "./EdgeTool";
 import {guidedApiToolSchema} from "./schemas";
 import {Rest} from "./rest/Rest";
 import {Edge} from "@/modules/edge";
-import {AcknowledgmentTokenService} from "./token/service";
+import {AcknowledgmentTokenService} from "./token/TokenService";
 
 export class GuidedApi extends EdgeTool {
     constructor(edge: Edge, rest: Rest, private readonly tokenService: AcknowledgmentTokenService) {

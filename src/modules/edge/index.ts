@@ -1,3 +1,3 @@
-export { EdgeService } from "./service";
-export { EdgeRepository } from "./repository";
+export { EdgeService } from "./EdgeService";
+export { EdgeRepository } from "./EdgeRepository";
 export * from "./types";

@@ -1,6 +1,6 @@
 import { injectable, inject } from "inversify";
 import { Config } from "./types";
-import { ConfigRepository } from "./repository";
+import { ConfigRepository } from "./ConfigRepository";
 import { dependencies } from "@/dependencies";
 
 @injectable()

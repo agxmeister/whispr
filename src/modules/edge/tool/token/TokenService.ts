@@ -1,6 +1,6 @@
 import {injectable, inject} from "inversify";
 import { AcknowledgmentToken } from "./types";
-import { AcknowledgmentTokenRepository } from "./repository";
+import { AcknowledgmentTokenRepository } from "./TokenRepository";
 import { Edge } from "@/modules/edge";
 import { OpenApiEndpointRoute } from "../types";
 import {dependencies} from "@/dependencies";
