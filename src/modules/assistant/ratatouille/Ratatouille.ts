@@ -1,5 +1,5 @@
 import {Assistant} from "../types";
-import {Tool} from "@/modules/mcp";
+import {Tool} from "@/modules/tool";
 
 export class Ratatouille implements Assistant {
     constructor(readonly tools: Tool[]) {

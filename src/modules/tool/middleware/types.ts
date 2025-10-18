@@ -1,6 +1,6 @@
-import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
-import {Edge} from "@/modules/edge";
-import {Tool} from "@/modules/mcp";
+import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import { Edge } from "@/modules/edge";
+import { Tool } from "@/modules/tool";
 
 export interface MiddlewareContext {
     tool: string;
@@ -17,7 +17,7 @@ export interface Middleware {
     processOutput?(context: MiddlewareContext, result: CallToolResult): Promise<CallToolResult>;
 }
 
-export interface EdgeToolMiddlewaresFactory {
+export interface MiddlewaresFactory {
     create(edge: Edge, tool: Tool): Promise<Middleware[]>;
 }
 

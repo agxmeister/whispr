@@ -4,8 +4,8 @@ import {EdgeService} from "@/modules/edge";
 import {EdgeToolService} from "@/modules/edge/tool";
 import {AssistantService} from "@/modules/assistant";
 import {McpServerFactory as McpServerFactoryInterface} from "./types";
-import {ProcessorFactory} from "@/modules/edge/tool/processor/types";
-import {EdgeToolMiddlewaresFactory} from "@/modules/edge/tool/middleware";
+import {ProcessorFactory} from "@/modules/tool/processor/types";
+import {MiddlewaresFactory} from "@/modules/tool/middleware";
 import {dependencies} from "@/dependencies";
 
 @injectable()
@@ -14,7 +14,7 @@ export class McpServerFactory implements McpServerFactoryInterface {
         @inject(dependencies.EdgeService) private readonly edgeService: EdgeService,
         @inject(dependencies.EdgeToolService) private readonly edgeToolService: EdgeToolService,
         @inject(dependencies.AssistantService) private readonly assistantService: AssistantService,
-        @inject(dependencies.EdgeToolMiddlewaresFactory) private readonly middlewaresFactory: EdgeToolMiddlewaresFactory,
+        @inject(dependencies.EdgeToolMiddlewaresFactory) private readonly middlewaresFactory: MiddlewaresFactory,
         @inject(dependencies.ProcessorFactory) private readonly processorFactory: ProcessorFactory
     ) {}
 

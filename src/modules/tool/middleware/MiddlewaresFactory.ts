@@ -1,14 +1,14 @@
 import { injectable, inject } from "inversify";
 import { Container } from "inversify";
-import {EdgeToolMiddlewaresFactory as EdgeToolMiddlewaresFactoryInterface, Middleware} from "./types";
-import {Edge} from "@/modules/edge";
-import {ConfigService} from "@/modules/config";
 import { dependencies } from "@/dependencies";
-import {MiddlewareRegistry} from "./MiddlewareRegistry";
-import {Tool} from "@/modules/mcp";
+import { ConfigService } from "@/modules/config";
+import { Edge } from "@/modules/edge";
+import { Tool } from "@/modules/tool";
+import { MiddlewaresFactory as MiddlewaresFactoryInterface, Middleware } from "./types";
+import { MiddlewareRegistry } from "./MiddlewareRegistry";
 
 @injectable()
-export class EdgeToolMiddlewaresFactory implements EdgeToolMiddlewaresFactoryInterface {
+export class MiddlewaresFactory implements MiddlewaresFactoryInterface {
     constructor(
         @inject(dependencies.ConfigService) private readonly configService: ConfigService,
         @inject(Container) private readonly container: Container

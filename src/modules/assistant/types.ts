@@ -1,4 +1,4 @@
-import {Tool} from "@/modules/mcp";
+import {Tool} from "@/modules/tool";
 
 export interface Assistant {
     getName(): string;

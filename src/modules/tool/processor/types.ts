@@ -1,6 +1,6 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
-import {Tool} from "@/modules/mcp/types";
-import {Middleware} from "../middleware/types";
+import {Tool} from "@/modules/tool";
+import {Middleware} from "@/modules/tool/middleware/types";
 
 export interface ProcessorFactory {
     create(tool: Tool, middlewares?: Middleware[]): Promise<Processor>;

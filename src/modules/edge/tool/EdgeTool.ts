@@ -1,5 +1,5 @@
 import {Edge} from "@/modules/edge";
-import {Tool} from "@/modules/mcp";
+import {Tool} from "@/modules/tool";
 import {Rest} from "./rest/Rest";
 
 export abstract class EdgeTool implements Tool {

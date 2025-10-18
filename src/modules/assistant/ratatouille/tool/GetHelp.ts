@@ -1,6 +1,6 @@
 import axios from "axios";
 import {z as zod} from "zod";
-import {Tool} from "@/modules/mcp";
+import {Tool} from "@/modules/tool";
 import {RatatouilleOptions} from "../types";
 import {
     getHelpToolSchema,

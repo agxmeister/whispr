@@ -1,10 +1,10 @@
 import {injectable, inject} from "inversify";
-import {Tool} from "@/modules/mcp/types";
+import {dependencies} from "@/dependencies";
+import {ProfileFactory} from "@/modules/profile";
+import {Tool} from "@/modules/tool";
 import {ProcessorFactory as ProcessorFactoryInterface} from "./types";
 import {Middleware} from "../middleware";
 import {Processor} from "./Processor";
-import {ProfileFactory} from "@/modules/profile";
-import {dependencies} from "@/dependencies";
 
 @injectable()
 export class ProcessorFactory implements ProcessorFactoryInterface {
