@@ -4,8 +4,7 @@ import * as yaml from "js-yaml";
 import * as fs from "fs";
 import * as path from "path";
 import {dereferenceSync} from "dereference-json-schema";
-import {OpenApiEndpoint} from "./types";
-import {Specification} from "../types";
+import {OpenApiEndpoint, Specification} from "./types";
 
 export const getOpenApiEndpoints = async (specification: Specification, readonly?: boolean): Promise<OpenApiEndpoint[]> =>
     Object.entries(dereferenceSync(await getSpecification(specification)).paths)

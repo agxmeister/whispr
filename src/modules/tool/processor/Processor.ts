@@ -3,7 +3,7 @@ import {Profile} from "@/modules/profile";
 import {Tool} from "@/modules/tool";
 import {Processor as ProcessorInterface} from "./types";
 import {Middleware, MiddlewareContext, MiddlewareNext} from "../middleware";
-import {HttpError} from "../../edge/tool/rest/HttpError";
+import {HttpError} from "@/modules/rest";
 
 export class Processor implements ProcessorInterface {
     constructor(

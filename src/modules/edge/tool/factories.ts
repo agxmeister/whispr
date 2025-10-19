@@ -8,7 +8,7 @@ import {GetApiEndpointDetails} from "./GetApiEndpointDetails";
 import {RawApi} from "./RawApi";
 import {GuidedApi} from "./GuidedApi";
 import {AcknowledgmentTokenService} from "./token/TokenService";
-import {RestFactory} from "./rest/RestFactory";
+import {RestFactory} from "@/modules/rest";
 import {ProfileFactory} from "@/modules/profile";
 import {dependencies} from "@/dependencies";
 

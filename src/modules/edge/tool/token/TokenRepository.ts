@@ -1,7 +1,7 @@
 import fs from "fs";
 import { AcknowledgmentToken } from "./types";
 import { Edge } from "@/modules/edge";
-import { OpenApiEndpointRoute } from "../types";
+import { OpenApiEndpointRoute } from "@/modules/rest";
 
 export class AcknowledgmentTokenRepository {
     constructor(readonly filePath: string) {

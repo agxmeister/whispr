@@ -17,7 +17,7 @@ const configPath = args.config
     const configService = new ConfigService(configRepository);
     const edgeRepository = new EdgeRepository(configService);
     const edgeService = new EdgeService(edgeRepository);
-    const edges = await edgeService.getEdges();
+    const edges = await edgeService.getAll();
 
     const args = [indexPath];
     if (configPath) {

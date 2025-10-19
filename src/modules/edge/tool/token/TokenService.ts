@@ -2,7 +2,7 @@ import {injectable, inject} from "inversify";
 import { AcknowledgmentToken } from "./types";
 import { AcknowledgmentTokenRepository } from "./TokenRepository";
 import { Edge } from "@/modules/edge";
-import { OpenApiEndpointRoute } from "../types";
+import { OpenApiEndpointRoute } from "@/modules/rest";
 import {dependencies} from "@/dependencies";
 
 @injectable()

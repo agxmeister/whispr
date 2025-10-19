@@ -1,7 +1,7 @@
 import {z as zod} from "zod";
 import {EdgeTool} from "./EdgeTool";
 import {guidedApiToolSchema} from "./schemas";
-import {Rest} from "./rest/Rest";
+import {Rest} from "@/modules/rest";
 import {Edge} from "@/modules/edge";
 import {AcknowledgmentTokenService} from "./token/TokenService";
 

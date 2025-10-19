@@ -24,7 +24,7 @@ export class McpServerFactory implements McpServerFactoryInterface {
             version: "1.0.0",
         });
 
-        const edges = await this.edgeService.getEdges();
+        const edges = await this.edgeService.getAll();
         const toolFactories = await this.edgeToolService.getEdgeToolFactories();
         const assistantFactories = await this.assistantService.getAssistantFactories();
 

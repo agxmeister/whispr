@@ -1,3 +1,8 @@
+export type Specification = {
+    url?: string,
+    path?: string,
+}
+
 export type OpenApiEndpoint = {
     route: OpenApiEndpointRoute,
     definition: OpenApiEndpointDefinition,

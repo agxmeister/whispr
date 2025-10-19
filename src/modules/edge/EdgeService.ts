@@ -7,7 +7,7 @@ import { dependencies } from "@/dependencies";
 export class EdgeService {
     constructor(@inject(dependencies.EdgeRepository) private readonly repository: EdgeRepository) {}
 
-    async getEdges(): Promise<Edge[]> {
+    async getAll(): Promise<Edge[]> {
         return this.repository.getAll();
     }
 }

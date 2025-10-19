@@ -1,7 +1,7 @@
 import {injectable, inject} from "inversify";
 import {Edge} from "@/modules/edge";
 import {ProfileFactory} from "@/modules/profile";
-import {RestFactory} from "./rest/RestFactory";
+import {RestFactory} from "@/modules/rest";
 import {EdgeTool} from "@/modules/edge/tool/EdgeTool";
 import {dependencies} from "@/dependencies";
 

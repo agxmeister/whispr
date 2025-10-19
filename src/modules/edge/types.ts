@@ -1,7 +1,4 @@
-export type Specification = {
-    url?: string,
-    path?: string,
-}
+import {Specification} from "@/modules/rest";
 
 export type Edge = {
     name: string,
