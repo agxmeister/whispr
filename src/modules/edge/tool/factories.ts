@@ -7,7 +7,7 @@ import {GetApiEndpoints} from "./GetApiEndpoints";
 import {GetApiEndpointDetails} from "./GetApiEndpointDetails";
 import {RawApi} from "./RawApi";
 import {GuidedApi} from "./GuidedApi";
-import {AcknowledgmentTokenService} from "./token/TokenService";
+import {TokenService} from "@/modules/token";
 import {RestFactory} from "@/modules/rest";
 import {ProfileFactory} from "@/modules/profile";
 import {dependencies} from "@/dependencies";
@@ -59,7 +59,7 @@ export class AcknowledgedApiEndpointFactory extends EdgeToolFactory {
     constructor(
         @inject(dependencies.RestFactory) restFactory: RestFactory,
         @inject(dependencies.ProfileFactory) profileFactory: ProfileFactory,
-        @inject(dependencies.AcknowledgmentTokenService) private readonly tokenService: AcknowledgmentTokenService
+        @inject(dependencies.TokenService) private readonly tokenService: TokenService
     ) {
         super(restFactory, profileFactory);
     }

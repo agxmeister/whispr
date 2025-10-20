@@ -3,10 +3,10 @@ import {EdgeTool} from "./EdgeTool";
 import {guidedApiToolSchema} from "./schemas";
 import {Rest} from "@/modules/rest";
 import {Edge} from "@/modules/edge";
-import {AcknowledgmentTokenService} from "./token/TokenService";
+import {TokenService} from "@/modules/token";
 
 export class GuidedApi extends EdgeTool {
-    constructor(edge: Edge, rest: Rest, private readonly tokenService: AcknowledgmentTokenService) {
+    constructor(edge: Edge, rest: Rest, private readonly tokenService: TokenService) {
         super(edge, rest);
     }
 
@@ -22,10 +22,10 @@ export class GuidedApi extends EdgeTool {
                 const details = await this.rest.getEndpointDetails(action.endpoint);
                 return {
                     ...details,
-                    acknowledgmentToken: this.tokenService.setAcknowledgmentToken(this.edge, action.endpoint).code
+                    acknowledgmentToken: this.tokenService.setToken(this.edge, action.endpoint).code
                 };
             case 'call-endpoint':
-                const token = this.tokenService.getAcknowledgmentToken(this.edge, action.endpoint);
+                const token = this.tokenService.getToken(this.edge, action.endpoint);
                 if (!token || action.acknowledgmentToken !== token.code) {
                     throw new Error("Invalid acknowledgment token. You must obtain an acknowledgment token for this endpoint using the get-endpoint-details action.");
                 }

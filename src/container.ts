@@ -19,8 +19,7 @@ import {
     CallApiEndpointFactory,
     EdgeToolFactory
 } from "@/modules/edge/tool";
-import { AcknowledgmentTokenService } from "@/modules/edge/tool/token/TokenService";
-import { AcknowledgmentTokenRepository } from "@/modules/edge/tool/token/TokenRepository";
+import { TokenService, TokenRepository } from "@/modules/token";
 import { join, resolve } from "path";
 import minimist from "minimist";
 import { dependencies } from "@/dependencies";
@@ -28,7 +27,7 @@ import { dependencies } from "@/dependencies";
 const args = minimist(process.argv.slice(2));
 const logPath = join(__dirname, '../logs/app.log');
 const configPath = args.config ? resolve(args.config) : join(__dirname, '../config.json');
-const acknowledgmentTokensPath = join(__dirname, '../data/acknowledgment-tokens.json');
+const tokensPath = join(__dirname, '../data/tokens.json');
 
 const container = new Container();
 
@@ -42,8 +41,8 @@ container.bind(dependencies.ConfigRepository).toDynamicValue(() => {
     return new ConfigRepository(configPath);
 });
 
-container.bind(dependencies.AcknowledgmentTokenRepository).toDynamicValue(() => {
-    return new AcknowledgmentTokenRepository(acknowledgmentTokensPath);
+container.bind(dependencies.TokenRepository).toDynamicValue(() => {
+    return new TokenRepository(tokensPath);
 });
 
 container.bind(dependencies.AssistantRegistry).toConstantValue(assistantRegistry);
@@ -62,7 +61,7 @@ container.bind(dependencies.EdgeToolMiddlewaresFactory).to(MiddlewaresFactory);
 
 container.bind(dependencies.RestFactory).to(RestFactory);
 
-container.bind(dependencies.AcknowledgmentTokenService).to(AcknowledgmentTokenService);
+container.bind(dependencies.TokenService).to(TokenService);
 
 container.bind<EdgeToolFactory>(dependencies.EdgeToolFactories).to(ApiEndpointFactory);
 container.bind<EdgeToolFactory>(dependencies.EdgeToolFactories).to(AcknowledgedApiEndpointFactory);

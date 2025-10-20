@@ -1,4 +1,4 @@
-export interface AcknowledgmentToken {
+export interface Token {
     code: string;
     edge: string;
     endpoint: {

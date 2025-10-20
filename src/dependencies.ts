@@ -14,6 +14,6 @@ export const dependencies = {
     McpServerFactory: Symbol.for("McpServerFactory"),
     MiddlewareDiscovery: Symbol.for("MiddlewareDiscovery"),
     RestFactory: Symbol.for("RestFactory"),
-    AcknowledgmentTokenRepository: Symbol.for("AcknowledgmentTokenRepository"),
-    AcknowledgmentTokenService: Symbol.for("AcknowledgmentTokenService"),
+    TokenRepository: Symbol.for("TokenRepository"),
+    TokenService: Symbol.for("TokenService"),
 } as const;
