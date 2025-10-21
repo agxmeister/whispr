@@ -1,13 +1,11 @@
 import fs from "fs";
 import { Token } from "./types";
-import { Edge } from "@/modules/edge";
-import { OpenApiEndpointRoute } from "@/modules/rest";
 
-export class TokenRepository {
+export class TokenRepository<T = unknown> {
     constructor(readonly filePath: string) {
     }
 
-    getAll(): Token[] {
+    getAll(): Token<T>[] {
         try {
             if (fs.existsSync(this.filePath)) {
                 const content = fs.readFileSync(this.filePath, 'utf8');
@@ -19,22 +17,17 @@ export class TokenRepository {
         return [];
     }
 
-    find(edge: Edge, endpoint: OpenApiEndpointRoute): Token | null {
+    find(scope: string, matcher: (payload: T) => boolean): Token<T> | null {
         return this.getAll().find(token =>
-            token.edge === edge.name.toLowerCase()
-            && token.endpoint.method === endpoint.method.toLowerCase()
-            && token.endpoint.path === endpoint.path
+            token.scope === scope && matcher(token.payload)
         ) || null;
     }
 
-    add(edge: Edge, endpoint: OpenApiEndpointRoute): Token {
-        const token: Token = {
+    add(scope: string, payload: T): Token<T> {
+        const token: Token<T> = {
             code: this.generateCode(),
-            edge: edge.name.toLowerCase(),
-            endpoint: {
-                method: endpoint.method.toLowerCase(),
-                path: endpoint.path
-            },
+            scope: scope,
+            payload: payload,
             created: new Date().toISOString()
         };
 
@@ -54,7 +47,7 @@ export class TokenRepository {
         return `${Math.floor(Math.random() * 100).toString().padStart(2, '0')}-${randomDigits()}-${Math.floor(Math.random() * 100).toString().padStart(2, '0')}`;
     }
 
-    private save(tokens: Token[]): void {
+    private save(tokens: Token<T>[]): void {
         try {
             const dir = this.filePath.substring(0, this.filePath.lastIndexOf('/'));
             if (!fs.existsSync(dir)) {

@@ -1,24 +1,18 @@
 import {injectable, inject} from "inversify";
 import { Token } from "./types";
 import { TokenRepository } from "./TokenRepository";
-import { Edge } from "@/modules/edge";
-import { OpenApiEndpointRoute } from "@/modules/rest";
 import {dependencies} from "@/dependencies";
 
 @injectable()
-export class TokenService {
-    constructor(@inject(dependencies.TokenRepository) private readonly repository: TokenRepository) {
+export class TokenService<T = unknown> {
+    constructor(@inject(dependencies.TokenRepository) private readonly repository: TokenRepository<T>) {
     }
 
-    getToken(edge: Edge, endpoint: OpenApiEndpointRoute): Token | null {
-        return this.repository.find(edge, endpoint);
+    getToken(scope: string, matcher: (payload: T) => boolean): Token<T> | null {
+        return this.repository.find(scope, matcher);
     }
 
-    setToken(edge: Edge, endpoint: OpenApiEndpointRoute): Token {
-        const token = this.repository.find(edge, endpoint);
-        if (token) {
-            return token;
-        }
-        return this.repository.add(edge, endpoint);
+    setToken(scope: string, payload: T): Token<T> {
+        return this.repository.add(scope, payload);
     }
 }

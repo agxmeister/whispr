@@ -1,9 +1,6 @@
-export interface Token {
+export interface Token<T = unknown> {
     code: string;
-    edge: string;
-    endpoint: {
-        method: string;
-        path: string;
-    };
+    scope: string;
+    payload: T;
     created: string;
 }
