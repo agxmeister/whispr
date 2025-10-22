@@ -1,9 +1,9 @@
 import {Tool} from "@/modules/tool";
 
 export interface Assistant {
-    getName(): string;
-    getDescription(): string;
-    getTools(): Tool[];
+    readonly name: string;
+    readonly description: string;
+    readonly tools: Tool[];
 }
 
 export type AssistantConstructor<Options = unknown> = new (options: Options) => Assistant;

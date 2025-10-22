@@ -38,8 +38,7 @@ export class McpServerFactory implements McpServerFactoryInterface {
         }
 
         for (const assistant of assistants) {
-            const tools = assistant.getTools();
-            for (const tool of tools) {
+            for (const tool of assistant.tools) {
                 server.tool(tool.name, tool.description, tool.schema, tool.handler.bind(tool));
             }
         }
