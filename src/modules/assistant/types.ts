@@ -6,9 +6,4 @@ export interface Assistant {
     getTools(): Tool[];
 }
 
-export interface AssistantFactory {
-    readonly name: string;
-    create(options?: Record<string, string>): Assistant;
-}
-
-export type AssistantFactoryConstructor = new (options: any) => AssistantFactory;
+export type AssistantConstructor<Options = unknown> = new (options: Options) => Assistant;

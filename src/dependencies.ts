@@ -5,7 +5,7 @@ export const dependencies = {
     ProfileFactory: Symbol.for("ProfileFactory"),
     EdgeRepository: Symbol.for("EdgeRepository"),
     EdgeService: Symbol.for("EdgeService"),
-    AssistantService: Symbol.for("AssistantService"),
+    AssistantsFactory: Symbol.for("AssistantsFactory"),
     AssistantDiscovery: Symbol.for("AssistantDiscovery"),
     EdgeToolMiddlewaresFactory: Symbol.for("EdgeToolMiddlewaresFactory"),
     EdgeToolFactories: Symbol.for("EdgeToolFactories"),
