@@ -1,6 +1,26 @@
-import { AssistantRegistry } from "./types";
-import { RatatouilleFactory } from "@/modules/assistant/ratatouille";
+export class AssistantRegistry {
+    private static instance: AssistantRegistry;
+    private assistants = new Map<string, symbol>();
 
-export const assistantRegistry: AssistantRegistry = {
-    'ratatouille': RatatouilleFactory
-};
+    private constructor() {
+    }
+
+    static getInstance(): AssistantRegistry {
+        if (!AssistantRegistry.instance) {
+            AssistantRegistry.instance = new AssistantRegistry();
+        }
+        return AssistantRegistry.instance;
+    }
+
+    register(name: string, symbol: symbol): void {
+        this.assistants.set(name, symbol);
+    }
+
+    get(name: string): symbol | undefined {
+        return this.assistants.get(name);
+    }
+
+    has(name: string): boolean {
+        return this.assistants.has(name);
+    }
+}

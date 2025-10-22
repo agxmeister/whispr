@@ -4,8 +4,7 @@ import { ConfigRepository } from "@/modules/config/ConfigRepository";
 import { ConfigService } from "@/modules/config/ConfigService";
 import { ProfileFactory } from "@/modules/profile";
 import { EdgeRepository, EdgeService } from "@/modules/edge";
-import { AssistantService } from "@/modules/assistant";
-import { assistantRegistry } from "@/modules/assistant/assistantRegistry";
+import { AssistantService, AssistantDiscovery } from "@/modules/assistant";
 import { MiddlewaresFactory, MiddlewareDiscovery } from "@/modules/tool/middleware";
 import { ProcessorFactory } from "@/modules/tool/processor";
 import { McpServerFactory } from "@/modules/mcp";
@@ -45,8 +44,6 @@ container.bind(dependencies.TokenRepository).toDynamicValue(() => {
     return new TokenRepository(tokensPath);
 });
 
-container.bind(dependencies.AssistantRegistry).toConstantValue(assistantRegistry);
-
 container.bind(dependencies.ConfigService).to(ConfigService);
 
 container.bind(dependencies.ProfileFactory).to(ProfileFactory);
@@ -76,5 +73,7 @@ container.bind(dependencies.ProcessorFactory).to(ProcessorFactory);
 container.bind(dependencies.McpServerFactory).to(McpServerFactory);
 
 container.bind(dependencies.MiddlewareDiscovery).to(MiddlewareDiscovery);
+
+container.bind(dependencies.AssistantDiscovery).to(AssistantDiscovery);
 
 export {container}

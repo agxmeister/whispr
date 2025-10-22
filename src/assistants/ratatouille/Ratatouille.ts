@@ -1,4 +1,4 @@
-import {Assistant} from "../types";
+import {Assistant} from "@/modules/assistant";
 import {Tool} from "@/modules/tool";
 
 export class Ratatouille implements Assistant {

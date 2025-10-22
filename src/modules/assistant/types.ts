@@ -11,4 +11,4 @@ export interface AssistantFactory {
     create(options?: Record<string, string>): Assistant;
 }
 
-export type AssistantRegistry = Record<string, new (options: any) => AssistantFactory>;
+export type AssistantFactoryConstructor = new (options: any) => AssistantFactory;

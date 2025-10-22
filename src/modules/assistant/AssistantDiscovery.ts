@@ -4,7 +4,7 @@ import { readdirSync, statSync } from "fs";
 import { join } from "path";
 
 @injectable()
-export class MiddlewareDiscovery {
+export class AssistantDiscovery {
     constructor(@inject(Container) private readonly container: Container) {
     }
 
