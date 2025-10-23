@@ -9,7 +9,7 @@ export function RegisterAssistant(name: string) {
         const registry = AssistantRegistry.getInstance();
         registry.register(name, assistantSymbol);
 
-        container.bind(assistantSymbol).toConstantValue(constructor);
+        container.bind(assistantSymbol).to(constructor);
 
         return constructor;
     };

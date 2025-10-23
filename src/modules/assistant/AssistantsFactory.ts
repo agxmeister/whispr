@@ -1,5 +1,5 @@
 import { injectable, inject, Container } from "inversify";
-import { Assistant, AssistantConstructor } from "./types";
+import { Assistant } from "./types";
 import { ConfigService } from "@/modules/config";
 import { dependencies } from "@/dependencies";
 import { AssistantRegistry } from "./AssistantRegistry";
@@ -27,8 +27,8 @@ export class AssistantsFactory {
             }
 
             try {
-                const AssistantConstructor = this.container.get<AssistantConstructor>(assistantSymbol);
-                const instance = new AssistantConstructor(assistant.options);
+                const instance = this.container.get<Assistant>(assistantSymbol);
+                await instance.initialize();
                 assistants.push(instance);
             } catch {
             }

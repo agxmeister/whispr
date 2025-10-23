@@ -4,6 +4,7 @@ export interface Assistant {
     readonly name: string;
     readonly description: string;
     readonly tools: Tool[];
+    initialize(): Promise<void>;
 }
 
-export type AssistantConstructor<Options = unknown> = new (options: Options) => Assistant;
+export type AssistantConstructor = new (...args: any[]) => Assistant;
