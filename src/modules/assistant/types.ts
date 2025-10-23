@@ -4,7 +4,10 @@ export interface Assistant {
     readonly name: string;
     readonly description: string;
     readonly tools: Tool[];
-    initialize(): Promise<void>;
 }
 
-export type AssistantConstructor = new (...args: any[]) => Assistant;
+export interface AssistantFactory {
+    create(): Promise<Assistant>;
+}
+
+export type AssistantFactoryConstructor = new (...args: any[]) => AssistantFactory;

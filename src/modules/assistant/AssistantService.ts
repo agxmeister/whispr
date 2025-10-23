@@ -1,11 +1,11 @@
 import { injectable, inject, Container } from "inversify";
-import { Assistant } from "./types";
+import { Assistant, AssistantFactory } from "./types";
 import { ConfigService } from "@/modules/config";
 import { dependencies } from "@/dependencies";
 import { AssistantRegistry } from "./AssistantRegistry";
 
 @injectable()
-export class AssistantsFactory {
+export class AssistantService {
     constructor(@inject(dependencies.ConfigService) readonly configService: ConfigService, @inject(Container) private readonly container: Container)
     {
     }
@@ -21,14 +21,14 @@ export class AssistantsFactory {
         const assistants: Assistant[] = [];
 
         for (const assistant of config.assistants) {
-            const assistantSymbol = registry.get(assistant.name);
-            if (!assistantSymbol) {
+            const factorySymbol = registry.get(assistant.name);
+            if (!factorySymbol) {
                 continue;
             }
 
             try {
-                const instance = this.container.get<Assistant>(assistantSymbol);
-                await instance.initialize();
+                const factory = this.container.get<AssistantFactory>(factorySymbol);
+                const instance = await factory.create();
                 assistants.push(instance);
             } catch {
             }

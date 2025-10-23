@@ -1,5 +1,5 @@
-export * from "./types";
-export * from "./AssistantsFactory";
-export * from "./AssistantRegistry";
-export * from "./AssistantDiscovery";
-export * from "./decorators";
+export { AssistantService } from "./AssistantService";
+export { AssistantRegistry } from "./AssistantRegistry";
+export { AssistantDiscovery } from "./AssistantDiscovery";
+export { RegisterAssistantFactory } from "./decorators";
+export type { Assistant, AssistantFactory, AssistantFactoryConstructor } from "./types";

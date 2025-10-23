@@ -1,6 +1,6 @@
 export class AssistantRegistry {
     private static instance: AssistantRegistry;
-    private assistants = new Map<string, symbol>();
+    private factories = new Map<string, symbol>();
 
     private constructor() {
     }
@@ -13,14 +13,14 @@ export class AssistantRegistry {
     }
 
     register(name: string, symbol: symbol): void {
-        this.assistants.set(name, symbol);
+        this.factories.set(name, symbol);
     }
 
     get(name: string): symbol | undefined {
-        return this.assistants.get(name);
+        return this.factories.get(name);
     }
 
     has(name: string): boolean {
-        return this.assistants.has(name);
+        return this.factories.has(name);
     }
 }

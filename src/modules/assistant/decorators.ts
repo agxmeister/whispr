@@ -1,15 +1,15 @@
 import { container } from "@/container";
 import { AssistantRegistry } from "./AssistantRegistry";
-import { AssistantConstructor } from "./types";
+import { AssistantFactoryConstructor } from "./types";
 
-export function RegisterAssistant(name: string) {
-    return function <T extends AssistantConstructor>(constructor: T) {
-        const assistantSymbol = Symbol.for(`Assistant.${name}`);
+export function RegisterAssistantFactory(name: string) {
+    return function <T extends AssistantFactoryConstructor>(constructor: T) {
+        const factorySymbol = Symbol.for(`AssistantFactory.${name}`);
 
         const registry = AssistantRegistry.getInstance();
-        registry.register(name, assistantSymbol);
+        registry.register(name, factorySymbol);
 
-        container.bind(assistantSymbol).to(constructor);
+        container.bind(factorySymbol).to(constructor);
 
         return constructor;
     };

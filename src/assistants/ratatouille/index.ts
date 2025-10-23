@@ -1,2 +1,3 @@
 export { Ratatouille } from "./Ratatouille";
-export type {RatatouilleOptions } from "./types";
+export { RatatouilleFactory } from "./RatatouilleFactory";
+export type { RatatouilleOptions } from "./types";

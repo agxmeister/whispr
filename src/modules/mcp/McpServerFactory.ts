@@ -2,7 +2,7 @@ import {injectable, inject} from "inversify";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {EdgeService} from "@/modules/edge";
 import {EdgeToolService} from "@/modules/edge/tool";
-import {AssistantsFactory} from "@/modules/assistant";
+import {AssistantService} from "@/modules/assistant";
 import {McpServerFactory as McpServerFactoryInterface} from "./types";
 import {ProcessorFactory} from "@/modules/tool/processor/types";
 import {MiddlewaresFactory} from "@/modules/tool/middleware";
@@ -13,7 +13,7 @@ export class McpServerFactory implements McpServerFactoryInterface {
     constructor(
         @inject(dependencies.EdgeService) private readonly edgeService: EdgeService,
         @inject(dependencies.EdgeToolService) private readonly edgeToolService: EdgeToolService,
-        @inject(dependencies.AssistantsFactory) private readonly assistantsFactory: AssistantsFactory,
+        @inject(dependencies.AssistantService) private readonly assistantService: AssistantService,
         @inject(dependencies.EdgeToolMiddlewaresFactory) private readonly middlewaresFactory: MiddlewaresFactory,
         @inject(dependencies.ProcessorFactory) private readonly processorFactory: ProcessorFactory
     ) {}
@@ -26,7 +26,7 @@ export class McpServerFactory implements McpServerFactoryInterface {
 
         const edges = await this.edgeService.getAll();
         const toolFactories = await this.edgeToolService.getEdgeToolFactories();
-        const assistants = await this.assistantsFactory.getAssistants();
+        const assistants = await this.assistantService.getAssistants();
 
         for (const edge of edges) {
             for (const factory of toolFactories) {
