@@ -5,17 +5,14 @@ import { container } from "@/container";
 import { dependencies } from "@/dependencies";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { McpServerFactory } from "@/modules/mcp";
-import { MiddlewareDiscovery } from "@/modules/tool/middleware";
-import { AssistantDiscovery } from "@/modules/assistant";
+import { DiscoveryService } from "@/modules/discovery";
 
 dotenv.config();
 
 (async () => {
-    const middlewareDiscovery = container.get<MiddlewareDiscovery>(dependencies.MiddlewareDiscovery);
-    await middlewareDiscovery.discover(path.join(__dirname, 'middlewares'));
-
-    const assistantDiscovery = container.get<AssistantDiscovery>(dependencies.AssistantDiscovery);
-    await assistantDiscovery.discover(path.join(__dirname, 'assistants'));
+    const discoveryService = container.get<DiscoveryService>(dependencies.DiscoveryService);
+    await discoveryService.discover(path.join(__dirname, 'middlewares'));
+    await discoveryService.discover(path.join(__dirname, 'assistants'));
 
     const mcpServerFactory = container.get<McpServerFactory>(dependencies.McpServerFactory);
     const server = await mcpServerFactory.create();

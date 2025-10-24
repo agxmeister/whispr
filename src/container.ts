@@ -4,8 +4,8 @@ import { ConfigRepository } from "@/modules/config/ConfigRepository";
 import { ConfigService } from "@/modules/config/ConfigService";
 import { ProfileFactory } from "@/modules/profile";
 import { EdgeRepository, EdgeService } from "@/modules/edge";
-import { AssistantService, AssistantDiscovery } from "@/modules/assistant";
-import { MiddlewareService, MiddlewareDiscovery } from "@/modules/tool/middleware";
+import { AssistantService } from "@/modules/assistant";
+import { MiddlewareService } from "@/modules/tool/middleware";
 import { ProcessorFactory } from "@/modules/tool/processor";
 import { McpServerFactory } from "@/modules/mcp";
 import {
@@ -19,6 +19,7 @@ import {
     EdgeToolFactory
 } from "@/modules/edge/tool";
 import { TokenService, TokenRepository } from "@/modules/token";
+import { DiscoveryService } from "@/modules/discovery";
 import { join, resolve } from "path";
 import minimist from "minimist";
 import { dependencies } from "@/dependencies";
@@ -72,8 +73,6 @@ container.bind(dependencies.ProcessorFactory).to(ProcessorFactory);
 
 container.bind(dependencies.McpServerFactory).to(McpServerFactory);
 
-container.bind(dependencies.MiddlewareDiscovery).to(MiddlewareDiscovery);
-
-container.bind(dependencies.AssistantDiscovery).to(AssistantDiscovery);
+container.bind(dependencies.DiscoveryService).to(DiscoveryService);
 
 export {container}
