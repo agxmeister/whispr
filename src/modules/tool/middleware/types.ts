@@ -17,8 +17,8 @@ export interface Middleware {
     processOutput?(context: MiddlewareContext, result: CallToolResult): Promise<CallToolResult>;
 }
 
-export interface MiddlewaresFactory {
-    create(edge: Edge, tool: Tool): Promise<Middleware[]>;
+export interface MiddlewareService {
+    getMiddlewares(edge: Edge, tool: Tool): Promise<Middleware[]>;
 }
 
 export interface MiddlewareConstructor {

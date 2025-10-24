@@ -7,7 +7,7 @@ export const dependencies = {
     EdgeService: Symbol.for("EdgeService"),
     AssistantService: Symbol.for("AssistantService"),
     AssistantDiscovery: Symbol.for("AssistantDiscovery"),
-    EdgeToolMiddlewaresFactory: Symbol.for("EdgeToolMiddlewaresFactory"),
+    MiddlewareService: Symbol.for("MiddlewareService"),
     EdgeToolFactories: Symbol.for("EdgeToolFactories"),
     EdgeToolService: Symbol.for("EdgeToolService"),
     ProcessorFactory: Symbol.for("ProcessorFactory"),

@@ -5,7 +5,7 @@ import {EdgeToolService} from "@/modules/edge/tool";
 import {AssistantService} from "@/modules/assistant";
 import {McpServerFactory as McpServerFactoryInterface} from "./types";
 import {ProcessorFactory} from "@/modules/tool/processor/types";
-import {MiddlewaresFactory} from "@/modules/tool/middleware";
+import {MiddlewareService} from "@/modules/tool/middleware";
 import {dependencies} from "@/dependencies";
 
 @injectable()
@@ -14,7 +14,7 @@ export class McpServerFactory implements McpServerFactoryInterface {
         @inject(dependencies.EdgeService) private readonly edgeService: EdgeService,
         @inject(dependencies.EdgeToolService) private readonly edgeToolService: EdgeToolService,
         @inject(dependencies.AssistantService) private readonly assistantService: AssistantService,
-        @inject(dependencies.EdgeToolMiddlewaresFactory) private readonly middlewaresFactory: MiddlewaresFactory,
+        @inject(dependencies.MiddlewareService) private readonly middlewareService: MiddlewareService,
         @inject(dependencies.ProcessorFactory) private readonly processorFactory: ProcessorFactory
     ) {}
 
@@ -31,7 +31,7 @@ export class McpServerFactory implements McpServerFactoryInterface {
         for (const edge of edges) {
             for (const factory of toolFactories) {
                 const tool = await factory.create(edge);
-                const middlewares = await this.middlewaresFactory.create(edge, tool);
+                const middlewares = await this.middlewareService.getMiddlewares(edge, tool);
                 const processor = await this.processorFactory.create(tool, middlewares);
                 server.tool(tool.name, tool.description, tool.schema, processor.handler);
             }

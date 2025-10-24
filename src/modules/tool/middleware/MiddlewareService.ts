@@ -4,17 +4,17 @@ import { dependencies } from "@/dependencies";
 import { ConfigService } from "@/modules/config";
 import { Edge } from "@/modules/edge";
 import { Tool } from "@/modules/tool";
-import { MiddlewaresFactory as MiddlewaresFactoryInterface, Middleware } from "./types";
+import { MiddlewareService as MiddlewareServiceInterface, Middleware } from "./types";
 import { MiddlewareRegistry } from "./MiddlewareRegistry";
 
 @injectable()
-export class MiddlewaresFactory implements MiddlewaresFactoryInterface {
+export class MiddlewareService implements MiddlewareServiceInterface {
     constructor(
         @inject(dependencies.ConfigService) private readonly configService: ConfigService,
         @inject(Container) private readonly container: Container
     ) {}
 
-    async create(edge: Edge, tool: Tool): Promise<Middleware[]> {
+    async getMiddlewares(edge: Edge, tool: Tool): Promise<Middleware[]> {
         const config = await this.configService.getConfig();
         const registry = MiddlewareRegistry.getInstance();
         const middlewares: Middleware[] = [];
