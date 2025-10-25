@@ -6,7 +6,7 @@ import { dependencies } from "@/dependencies";
 
 @injectable()
 @RegisterMiddleware("logging")
-export class LoggingMiddleware implements Middleware {
+export class Logging implements Middleware {
     private logger;
 
     constructor(@inject(dependencies.LoggerFactory) private loggerFactory: LoggerFactory) {
