@@ -17,15 +17,12 @@ export interface Middleware {
     processOutput?(context: MiddlewareContext, result: CallToolResult): Promise<CallToolResult>;
 }
 
+export interface MiddlewareFactory {
+    create(): Promise<Middleware>;
+}
+
 export interface MiddlewareService {
     getMiddlewares(edge: Edge, tool: Tool): Promise<Middleware[]>;
 }
 
-export interface MiddlewareConstructor {
-    new (...args: any[]): Middleware;
-}
-
-export interface MiddlewareMetadata {
-    name: string;
-    constructor: MiddlewareConstructor;
-}
+export type MiddlewareFactoryConstructor = new (...args: any[]) => MiddlewareFactory;

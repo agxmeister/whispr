@@ -1,4 +1,4 @@
 export {MiddlewareService} from "./MiddlewareService";
 export {MiddlewareRegistry} from "./MiddlewareRegistry";
-export {RegisterMiddleware} from "./decorators";
-export type { Middleware, MiddlewareContext, MiddlewareNext } from "./types";
+export {RegisterMiddlewareFactory} from "./decorators";
+export type { Middleware, MiddlewareFactory, MiddlewareContext, MiddlewareNext } from "./types";

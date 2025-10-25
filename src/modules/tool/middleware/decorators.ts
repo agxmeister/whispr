@@ -1,15 +1,15 @@
 import { container } from "@/container";
 import { MiddlewareRegistry } from "./MiddlewareRegistry";
-import { MiddlewareConstructor } from "./types";
+import { MiddlewareFactoryConstructor } from "./types";
 
-export function RegisterMiddleware(name: string) {
-    return function <T extends MiddlewareConstructor>(constructor: T) {
-        const middlewareSymbol = Symbol.for(`Middleware.${name}`);
+export function RegisterMiddlewareFactory(name: string) {
+    return function <T extends MiddlewareFactoryConstructor>(constructor: T) {
+        const factorySymbol = Symbol.for(`MiddlewareFactory.${name}`);
 
         const registry = MiddlewareRegistry.getInstance();
-        registry.register(name, middlewareSymbol);
+        registry.register(name, factorySymbol);
 
-        container.bind(middlewareSymbol).to(constructor);
+        container.bind(factorySymbol).to(constructor);
 
         return constructor;
     };

@@ -4,7 +4,7 @@ import { dependencies } from "@/dependencies";
 import { ConfigService } from "@/modules/config";
 import { Edge } from "@/modules/edge";
 import { Tool } from "@/modules/tool";
-import { MiddlewareService as MiddlewareServiceInterface, Middleware } from "./types";
+import { MiddlewareService as MiddlewareServiceInterface, Middleware, MiddlewareFactory } from "./types";
 import { MiddlewareRegistry } from "./MiddlewareRegistry";
 
 @injectable()
@@ -30,10 +30,16 @@ export class MiddlewareService implements MiddlewareServiceInterface {
                 continue;
             }
 
-            const middlewareSymbol = registry.get(middlewareConfig.name);
-            if (middlewareSymbol) {
-                const middleware = this.container.get<Middleware>(middlewareSymbol);
-                middlewares.push(middleware);
+            const factorySymbol = registry.get(middlewareConfig.name);
+            if (!factorySymbol) {
+                continue;
+            }
+
+            try {
+                const factory = this.container.get<MiddlewareFactory>(factorySymbol);
+                const instance = await factory.create();
+                middlewares.push(instance);
+            } catch {
             }
         }
 

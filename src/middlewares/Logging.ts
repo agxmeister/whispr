@@ -1,15 +1,23 @@
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { LoggerFactory } from "@/modules/logger";
-import { Middleware, MiddlewareContext, MiddlewareNext, RegisterMiddleware } from "@/modules/tool/middleware";
+import { Middleware, MiddlewareContext, MiddlewareNext, MiddlewareFactory, RegisterMiddlewareFactory } from "@/modules/tool/middleware";
 import { injectable, inject } from "inversify";
 import { dependencies } from "@/dependencies";
 
 @injectable()
-@RegisterMiddleware("logging")
+@RegisterMiddlewareFactory("logging")
+export class LoggingFactory implements MiddlewareFactory {
+    constructor(@inject(dependencies.LoggerFactory) private loggerFactory: LoggerFactory) {}
+
+    async create(): Promise<Middleware> {
+        return new Logging(this.loggerFactory);
+    }
+}
+
 export class Logging implements Middleware {
     private logger;
 
-    constructor(@inject(dependencies.LoggerFactory) private loggerFactory: LoggerFactory) {
+    constructor(private loggerFactory: LoggerFactory) {
         this.logger = this.loggerFactory.create();
     }
 
