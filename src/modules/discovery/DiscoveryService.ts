@@ -1,13 +1,9 @@
-import "@/container";
-import { Container, inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import { readdirSync, statSync } from "fs";
 import { join } from "path";
 
 @injectable()
 export class DiscoveryService {
-    constructor(@inject(Container) private readonly container: Container) {
-    }
-
     async discover(basePath: string): Promise<void> {
         try {
             for (const file of readdirSync(basePath)) {

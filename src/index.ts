@@ -3,9 +3,9 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { container } from "@/container";
 import { dependencies } from "@/dependencies";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { McpServerFactory } from "@/modules/mcp";
 import { DiscoveryService } from "@/modules/discovery";
+import { McpServerFactory } from "@/modules/mcp";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
 dotenv.config();
 
