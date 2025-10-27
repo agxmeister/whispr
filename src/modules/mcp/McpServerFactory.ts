@@ -26,8 +26,6 @@ export class McpServerFactory implements McpServerFactoryInterface {
 
         const edges = await this.edgeService.getAll();
         const toolFactories = await this.edgeToolService.getEdgeToolFactories();
-        const assistants = await this.assistantService.getAssistants();
-
         for (const edge of edges) {
             for (const factory of toolFactories) {
                 const tool = await factory.create(edge);
@@ -37,9 +35,11 @@ export class McpServerFactory implements McpServerFactoryInterface {
             }
         }
 
+        const assistants = await this.assistantService.getAssistants();
         for (const assistant of assistants) {
             for (const tool of assistant.tools) {
-                server.tool(tool.name, tool.description, tool.schema, tool.handler.bind(tool));
+                const processor = await this.processorFactory.create(tool);
+                server.tool(tool.name, tool.description, tool.schema, processor.handler);
             }
         }
 
