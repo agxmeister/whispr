@@ -4,8 +4,6 @@ import {Edge} from "@/modules/edge";
 import {Profile} from "@/modules/profile";
 import {getOpenApiEndpoints} from "./utils";
 import {OpenApiEndpointRoute, Parameter} from "./types";
-import {HttpError} from "./HttpError";
-
 export class Rest {
     constructor(private readonly edge: Edge, private readonly profile: Profile) {}
 
@@ -66,10 +64,6 @@ export class Rest {
         };
 
         const response = await axios(config);
-
-        if (response.status >= 400) {
-            throw new HttpError(response.status, response.data);
-        }
 
         return {
             status: response.status,

@@ -3,7 +3,6 @@ import {Profile} from "@/modules/profile";
 import {Tool} from "@/modules/tool";
 import {Processor as ProcessorInterface} from "./types";
 import {Middleware, MiddlewareContext, MiddlewareNext} from "../middleware";
-import {HttpError} from "@/modules/rest";
 
 export class Processor implements ProcessorInterface {
     constructor(
@@ -31,19 +30,6 @@ export class Processor implements ProcessorInterface {
     }
 
     private formatToolError(error: Error): CallToolResult {
-        if (error instanceof HttpError) {
-            return {
-                content: [{
-                    type: "text",
-                    text: JSON.stringify({
-                        status: error.status,
-                        body: error.body
-                    }, null, 2),
-                }],
-                isError: true,
-            };
-        }
-
         return {
             content: [{
                 type: "text",
