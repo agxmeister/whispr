@@ -6,9 +6,10 @@ import { AssistantRegistry } from "./AssistantRegistry";
 
 @injectable()
 export class AssistantService {
-    constructor(@inject(dependencies.ConfigService) readonly configService: ConfigService, @inject(Container) private readonly container: Container)
-    {
-    }
+    constructor(
+        @inject(dependencies.ConfigService) readonly configService: ConfigService,
+        @inject(Container) private readonly container: Container
+    ) {}
 
     async getAssistants(): Promise<Assistant[]> {
         const config = await this.configService.getConfig();

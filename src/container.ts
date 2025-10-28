@@ -5,6 +5,7 @@ import { ConfigService } from "@/modules/config/ConfigService";
 import { ProfileFactory } from "@/modules/profile";
 import { EdgeRepository, EdgeService } from "@/modules/edge";
 import { AssistantService } from "@/modules/assistant";
+import { AssistantToolFormatterFactory } from "@/modules/assistant/AssistantToolFormatterFactory";
 import { MiddlewareService } from "@/modules/tool/middleware";
 import { ProcessorFactory } from "@/modules/tool/processor";
 import { McpServerFactory } from "@/modules/mcp";
@@ -18,6 +19,7 @@ import {
     CallApiEndpointFactory,
     EdgeToolFactory
 } from "@/modules/edge/tool";
+import { EdgeToolFormatterFactory } from "@/modules/edge/tool/EdgeToolFormatterFactory";
 import { TokenService, TokenRepository } from "@/modules/token";
 import { DiscoveryService } from "@/modules/discovery";
 import { join, resolve } from "path";
@@ -68,6 +70,10 @@ container.bind<EdgeToolFactory>(dependencies.EdgeToolFactories).to(GetApiEndpoin
 container.bind<EdgeToolFactory>(dependencies.EdgeToolFactories).to(CallApiEndpointFactory);
 
 container.bind(dependencies.EdgeToolService).to(EdgeToolService);
+
+container.bind(dependencies.EdgeToolFormatterFactory).to(EdgeToolFormatterFactory);
+
+container.bind(dependencies.AssistantToolFormatterFactory).to(AssistantToolFormatterFactory);
 
 container.bind(dependencies.ProcessorFactory).to(ProcessorFactory);
 

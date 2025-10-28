@@ -1,12 +1,14 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import {Profile} from "@/modules/profile";
 import {Tool} from "@/modules/tool";
+import {Formatter} from "@/modules/tool/formatter";
 import {Processor as ProcessorInterface} from "./types";
 import {Middleware, MiddlewareContext, MiddlewareNext} from "../middleware";
 
 export class Processor implements ProcessorInterface {
     constructor(
         private readonly tool: Tool,
+        private readonly formatter: Formatter,
         private readonly middlewares?: Middleware[],
         private readonly profile?: Profile
     ) {}
@@ -14,31 +16,10 @@ export class Processor implements ProcessorInterface {
     private async callToolHandler(input: any): Promise<CallToolResult> {
         try {
             const payload = await this.tool.handler(input);
-            return this.formatToolResponse(payload);
+            return this.formatter.formatSuccess(payload);
         } catch (error) {
-            return this.formatToolError(error instanceof Error ? error : new Error(String(error)));
+            return this.formatter.formatFailure(error instanceof Error ? error : new Error(String(error)));
         }
-    }
-
-    private formatToolResponse(payload: any): CallToolResult {
-        return {
-            content: [{
-                type: "text",
-                text: JSON.stringify(payload, null, 2),
-            }]
-        };
-    }
-
-    private formatToolError(error: Error): CallToolResult {
-        return {
-            content: [{
-                type: "text",
-                text: JSON.stringify({
-                    error: error.message
-                }, null, 2),
-            }],
-            isError: true,
-        };
     }
 
     readonly handler = async (input: any): Promise<CallToolResult> => {
