@@ -4,6 +4,7 @@ import {Edge} from "@/modules/edge";
 import {Profile} from "@/modules/profile";
 import {getOpenApiEndpoints} from "./utils";
 import {OpenApiEndpointRoute, Parameter} from "./types";
+import {CallEndpointResult} from "@/modules/edge/tool/types";
 export class Rest {
     constructor(private readonly edge: Edge, private readonly profile: Profile) {}
 
@@ -36,7 +37,7 @@ export class Rest {
         };
     }
 
-    async callEndpoint(route: OpenApiEndpointRoute, pathParameters?: Parameter[], queryParameters?: Parameter[], body?: string) {
+    async callEndpoint(route: OpenApiEndpointRoute, pathParameters?: Parameter[], queryParameters?: Parameter[], body?: string): Promise<CallEndpointResult> {
         const path = (pathParameters || []).reduce(
             (path, pathParam) => path
                 .split(`{${pathParam.key}}`)
