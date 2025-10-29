@@ -1,25 +1,15 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import {Formatter} from "@/modules/tool/formatter";
+import {Result} from "@/modules/tool";
 
 export class AssistantToolFormatter implements Formatter {
-    formatSuccess(result: any): CallToolResult {
+    format(result: Result<any>): CallToolResult {
         return {
             content: [{
                 type: "text",
-                text: JSON.stringify(result, null, 2),
-            }]
-        };
-    }
-
-    formatFailure(error: Error): CallToolResult {
-        return {
-            content: [{
-                type: "text",
-                text: JSON.stringify({
-                    error: error.message
-                }, null, 2),
+                text: JSON.stringify(result.value, null, 2),
             }],
-            isError: true,
+            ...(!result.success && { isError: true })
         };
     }
 }

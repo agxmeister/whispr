@@ -14,12 +14,8 @@ export class Processor implements ProcessorInterface {
     ) {}
 
     private async callToolHandler(input: any): Promise<CallToolResult> {
-        try {
-            const payload = await this.tool.handler(input);
-            return this.formatter.formatSuccess(payload);
-        } catch (error) {
-            return this.formatter.formatFailure(error instanceof Error ? error : new Error(String(error)));
-        }
+        const result = await this.tool.handler(input);
+        return this.formatter.format(result);
     }
 
     readonly handler = async (input: any): Promise<CallToolResult> => {

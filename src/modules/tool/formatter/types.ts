@@ -1,10 +1,10 @@
 import {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
+import {Result} from "@/modules/tool";
 
 export interface FormatterFactory {
     create(): Formatter;
 }
 
 export interface Formatter {
-    formatSuccess(result: any): CallToolResult;
-    formatFailure(error: Error): CallToolResult;
+    format(result: Result<any>): CallToolResult;
 }
