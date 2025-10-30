@@ -17,38 +17,48 @@ export class GuidedApi extends EdgeTool {
     readonly schema = guidedApiToolSchema.shape;
 
     readonly handler = async ({action}: zod.infer<typeof guidedApiToolSchema>): Promise<Result<any>> => {
-        switch (action.type) {
-            case 'list-endpoints':
-                return await this.rest.listEndpoints();
-            case 'get-endpoint-details':
-                const detailsResult = await this.rest.getEndpointDetails(action.endpoint);
-                if (!detailsResult.success) {
-                    return detailsResult;
-                }
-                return success({
-                    ...detailsResult.value,
-                    acknowledgmentToken: (this.tokenService.getToken(
+        try {
+            switch (action.type) {
+                case 'list-endpoints':
+                    const endpoints = await this.rest.listEndpoints();
+                    return success(endpoints);
+                case 'get-endpoint-details':
+                    const details = await this.rest.getEndpointDetails(action.endpoint);
+                    return success({
+                        ...details,
+                        acknowledgmentToken: (this.tokenService.getToken(
+                            this.edge.name.toLowerCase(),
+                            p => p.method === action.endpoint.method.toLowerCase() && p.path === action.endpoint.path
+                        ) ?? this.tokenService.setToken(
+                            this.edge.name.toLowerCase(),
+                            {
+                                method: action.endpoint.method.toLowerCase(),
+                                path: action.endpoint.path,
+                            }
+                        )).code
+                    });
+                case 'call-endpoint':
+                    const token = this.tokenService.getToken(
                         this.edge.name.toLowerCase(),
                         p => p.method === action.endpoint.method.toLowerCase() && p.path === action.endpoint.path
-                    ) ?? this.tokenService.setToken(
-                        this.edge.name.toLowerCase(),
-                        {
-                            method: action.endpoint.method.toLowerCase(),
-                            path: action.endpoint.path,
-                        }
-                    )).code
-                });
-            case 'call-endpoint':
-                const token = this.tokenService.getToken(
-                    this.edge.name.toLowerCase(),
-                    p => p.method === action.endpoint.method.toLowerCase() && p.path === action.endpoint.path
-                );
-                if (!token || action.acknowledgmentToken !== token.code) {
-                    return failure({
-                        error: "Invalid acknowledgment token. You must obtain an acknowledgment token for this endpoint using the get-endpoint-details action."
-                    });
-                }
-                return await this.rest.callEndpoint(action.endpoint, action.pathParameters, action.queryParameters, action.body);
+                    );
+                    if (!token || action.acknowledgmentToken !== token.code) {
+                        return failure({
+                            error: "Invalid acknowledgment token. You must obtain an acknowledgment token for this endpoint using the get-endpoint-details action."
+                        });
+                    }
+                    const response = await this.rest.callEndpoint(action.endpoint, action.pathParameters, action.queryParameters, action.body);
+
+                    if (response.status >= 400) {
+                        return failure(response);
+                    }
+
+                    return success(response);
+            }
+        } catch (error) {
+            return failure({
+                error: error instanceof Error ? error.message : String(error)
+            });
         }
     }
 }
