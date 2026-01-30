@@ -24,18 +24,18 @@ To build Whisper (dist/index.js):
 
 To build Whisper as a Claude Desktop Extension (whispr.dxt):
 
-`npx ts-node scripts/build-dxt-manifest.ts`
+`npx tsx scripts/build-dxt-manifest.ts`
 `npx @anthropic-ai/dxt pack`
 
 #### How to configure
 
 Generate the Whisper configuration file:
 
-`npx ts-node scripts/build-configuration.ts`
+`npx tsx scripts/build-configuration.ts`
 
 Generate the configuration to attach Whisper as an MCP server to your AI of choice:
 
-`npx ts-node scripts/build-mcp-configuration.ts`
+`npx tsx scripts/build-mcp-configuration.ts`
 
 The output will look like this:
 
