@@ -115,6 +115,7 @@
   "exclude": [
     "scripts/**/*",
     "**/*.test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "vitest.config.ts"
   ]
 }
