@@ -5,7 +5,9 @@
         "manage Ratatouille recipes"
     ],
     "api": {
-        "specification": "http://localhost:3000/api/openapi",
+        "specification": {
+            "url": "http://localhost:3000/api/openapi"
+        },
         "request": {
             "url": "http://localhost:3000/api"
         }

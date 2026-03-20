@@ -4,7 +4,9 @@
         "manage WordPress websites"
     ],
     "api": {
-        "specification": "{{PLESK_API_BASE_URL}}/modules/wp-toolkit/v1/specification/public",
+        "specification": {
+            "url": "{{PLESK_API_BASE_URL}}/modules/wp-toolkit/v1/specification/public"
+        },
         "request": {
             "url": "{{PLESK_API_BASE_URL}}/modules/wp-toolkit",
             "headers": {

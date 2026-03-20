@@ -6,7 +6,9 @@
         "send Slack messages"
     ],
     "api": {
-        "specification": "https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2.json",
+        "specification": {
+            "url": "https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2.json",
+        },
         "request": {
             "url": "https://slack.com/api",
             "headers": {

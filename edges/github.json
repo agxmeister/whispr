@@ -7,7 +7,9 @@
         "manage GitHub organizations and teams"
     ],
     "api": {
-        "specification": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json",
+        "specification": {
+            "url": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json"
+        },
         "request": {
             "url": "https://api.github.com",
             "headers": {

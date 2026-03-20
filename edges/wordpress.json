@@ -8,7 +8,9 @@
         "manage WordPress site settings and configuration"
     ],
     "api": {
-        "specification": "{{BASE_URL}}/wp-json/wp-openapi/v1/schema",
+        "specification": {
+            "url": "{{BASE_URL}}/wp-json/wp-openapi/v1/schema"
+        },
         "request": {
             "url": "{{BASE_URL}}/wp-json",
             "headers": {

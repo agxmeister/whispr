@@ -6,7 +6,9 @@
         "search Confluence content"
     ],
     "api": {
-        "specification": "https://dac-static.atlassian.com/cloud/confluence/openapi-v2.v3.json",
+        "specification": {
+            "url": "https://dac-static.atlassian.com/cloud/confluence/openapi-v2.v3.json"
+        },
         "request": {
             "url": "https://{{DOMAIN}}.atlassian.net/wiki/api/v2",
             "headers": {
