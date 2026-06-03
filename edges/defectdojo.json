@@ -1,0 +1,29 @@
+{
+    "name": "DefectDojo",
+    "description": "DefectDojo is an open-source vulnerability management tool that streamlines the testing process by offering features such as importing third party security tools results, merging and de-duplication, integration with Jira, dynamic risk acceptance, false positive management, workflows for multiple business units and more.",
+    "tasks": [
+        "manage vulnerability findings and deduplication",
+        "manage products, engagements, and tests",
+        "import security tool results",
+        "track and remediate security issues"
+    ],
+    "api": {
+        "specification": {
+            "url": "https://demo.defectdojo.org/api/v2/oa3/schema/?format=json"
+        },
+        "request": {
+            "url": "{{HOST}}",
+            "headers": {
+                "Authorization": "Token {{API_KEY}}"
+            }
+        }
+    },
+    "environment": [{
+        "name": "HOST",
+        "description": "The base URL of your DefectDojo instance (e.g. https://defectdojo.example.com)."
+    }, {
+        "name": "API_KEY",
+        "description": "Your DefectDojo API key. Retrieve it from your profile page at <host>/api/key-v2.",
+        "sensitive": true
+    }]
+}
