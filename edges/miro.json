@@ -6,7 +6,7 @@
     ],
     "api": {
         "specification": {
-            "url": "https://developers.miro.com/openapi/6628045c567473003e032eba"
+            "url": "https://raw.githubusercontent.com/miroapp/api-clients/refs/heads/main/packages/generator/spec.json"
         },
         "request": {
             "url": "https://api.miro.com",
