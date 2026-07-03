@@ -36,7 +36,7 @@ const getSpecification = async (specification: Specification): Promise<any> => {
             }),
         })).data;
     } else if (specification.path) {
-        const resolvedPath = path.resolve(__dirname, '../../../../resources/specifications', specification.path);
+        const resolvedPath = path.resolve(__dirname, '../../../resources/specifications', specification.path);
         data = fs.readFileSync(resolvedPath, 'utf8');
     } else {
         return;
