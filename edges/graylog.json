@@ -1,0 +1,30 @@
+{
+    "name": "Graylog",
+    "description": "Graylog is a centralized log management platform for collecting, indexing, searching, and analyzing machine data and log events in real time.",
+    "tasks": [
+        "search and analyze log messages",
+        "manage streams, dashboards, and alerts",
+        "manage inputs, extractors, and pipelines",
+        "inspect cluster and system status"
+    ],
+    "api": {
+        "specification": {
+            "path": "graylog.json"
+        },
+        "request": {
+            "url": "{{HOST}}/api",
+            "headers": {
+                "Authorization": "Basic {{API_TOKEN}}",
+                "X-Requested-By": "whispr"
+            }
+        }
+    },
+    "environment": [{
+        "name": "HOST",
+        "description": "The base URL of your Graylog instance, without the /api suffix (e.g. https://graylog.example.com)."
+    }, {
+        "name": "API_TOKEN",
+        "description": "Base64-encoded HTTP Basic credential for the Graylog REST API. Create an API token in Graylog (System > Users > your user > Edit tokens), then base64-encode the string \"<token>:token\" (the literal word token as the password).",
+        "sensitive": true
+    }]
+}
