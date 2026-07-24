@@ -1,0 +1,29 @@
+{
+    "name": "Jenkins",
+    "description": "Jenkins is an open-source automation server for building, testing, and deploying software through CI/CD pipelines and jobs.",
+    "tasks": [
+        "inspect jobs, builds, and the build queue",
+        "trigger, enable, and disable jobs",
+        "read build status and console output",
+        "manage views and pipelines"
+    ],
+    "api": {
+        "specification": {
+            "url": "https://raw.githubusercontent.com/oapicf/swaggy-jenkins/main/specification/jenkins.yml"
+        },
+        "request": {
+            "url": "{{HOST}}",
+            "headers": {
+                "Authorization": "Basic {{API_TOKEN}}"
+            }
+        }
+    },
+    "environment": [{
+        "name": "HOST",
+        "description": "The base URL of your Jenkins instance (e.g. https://jenkins.example.com)."
+    }, {
+        "name": "API_TOKEN",
+        "description": "Base64-encoded HTTP Basic credential for the Jenkins REST API. Create an API token in Jenkins (your user menu > Configure > API Token > Add new Token), then base64-encode the string \"<username>:<api-token>\".",
+        "sensitive": true
+    }]
+}
