@@ -57,7 +57,7 @@ export class Rest {
             url: `${this.edge.api.request.url}${path}${query ? `?${query}` : ''}`,
             data: body ? JSON.parse(body) : undefined,
             maxRedirects: 0,
-            validateStatus: (status) => status < 500,
+            validateStatus: () => true,
             httpsAgent: new https.Agent({
                 rejectUnauthorized: false
             }),
