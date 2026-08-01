@@ -1,0 +1,25 @@
+{
+    "name": "Unity",
+    "description": "Uplink is an MCP remote control for the Unity Editor, allowing interaction with a running Unity project.",
+    "tasks": [
+        "inspect the state of the connected Unity Editor",
+        "read Editor console messages",
+        "compile project scripts and report errors",
+        "control play mode",
+        "capture screenshots of the Editor",
+        "inspect scenes and GameObjects",
+        "run project tests"
+    ],
+    "api": {
+        "specification": {
+            "url": "{{HOST}}/openapi.json"
+        },
+        "request": {
+            "url": "{{HOST}}"
+        }
+    },
+    "environment": [{
+        "name": "HOST",
+        "description": "The base URL of the Uplink server (e.g. http://localhost:8787)."
+    }]
+}
