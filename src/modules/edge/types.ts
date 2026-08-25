@@ -9,6 +9,7 @@ export type Edge = {
         request: {
             url: string,
             headers: Record<string, string>,
+            rejectUnauthorized?: boolean,
         },
     },
     environment?: {
