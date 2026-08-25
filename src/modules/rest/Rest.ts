@@ -37,6 +37,12 @@ export class Rest {
     }
 
     async callEndpoint(route: OpenApiEndpointRoute, pathParameters?: Parameter[], queryParameters?: Parameter[], body?: string): Promise<any> {
+        // The read-only flag also filters listEndpoints, but a model that already knows a route can
+        // call it directly, so the listing is a convenience and this check is the control.
+        if (this.profile.readonly && route.method.toLowerCase() !== 'get') {
+            throw new Error(`Profile is read-only: ${route.method.toUpperCase()} ${route.path} was rejected.`);
+        }
+
         const path = (pathParameters || []).reduce(
             (path, pathParam) => path
                 .split(`{${pathParam.key}}`)
