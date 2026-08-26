@@ -59,7 +59,7 @@ export class Rest {
             maxRedirects: 0,
             validateStatus: () => true,
             httpsAgent: new https.Agent({
-                rejectUnauthorized: false
+                rejectUnauthorized: this.edge.api.request.rejectUnauthorized ?? false
             }),
         };
 

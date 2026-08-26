@@ -33,6 +33,9 @@ Generate the Whisper configuration file:
 
 `npx tsx scripts/build-configuration.ts`
 
+TLS certificates are not verified by default, so services with self-signed certificates work as is.
+Set `"rejectUnauthorized": true` in an edge's `api.request` to verify the certificate for that edge.
+
 Generate the configuration to attach Whisper as an MCP server to your AI of choice:
 
 `npx tsx scripts/build-mcp-configuration.ts`
