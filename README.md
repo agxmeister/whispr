@@ -59,6 +59,19 @@ The output will look like this:
 
 Add these lines to the MCP client configuration file and fill in the environment variables.
 
+### Pinned specifications
+
+An edge may point `api.specification` at a `url` or at a `path` under `resources/specifications`.
+Prefer `path` for anything you rely on: a specification fetched at runtime is defined by whoever
+controls that host, and it drifts from the version your instance actually runs. The DefectDojo,
+Graylog and WebDriver edges ship pinned copies.
+
+Name the file after the service version it was taken from, so several versions can live side by
+side and an edge picks the one matching its instance. To add one, download the specification from
+your own instance, commit it, and point the edge's `specification.path` at it, e.g.:
+
+`curl -s 'https://defectdojo.example.com/api/v2/oa3/schema/?format=yaml' -o resources/specifications/defectdojo-2.54.1.yaml`
+
 ### How to troubleshoot
 
 `npx @modelcontextprotocol/inspector`

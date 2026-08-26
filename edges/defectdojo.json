@@ -9,7 +9,7 @@
     ],
     "api": {
         "specification": {
-            "url": "https://demo.defectdojo.org/api/v2/oa3/schema/?format=json"
+            "path": "defectdojo-2.54.1.yaml"
         },
         "request": {
             "url": "{{HOST}}",
